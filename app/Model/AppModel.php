@@ -1,9 +1,11 @@
 <?php
 /**
- * Application model for CakePHP.
+ * Application model for Cake.
  *
  * This file is application-wide model file. You can put all
  * application-wide model-related methods here.
+ *
+ * PHP 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)

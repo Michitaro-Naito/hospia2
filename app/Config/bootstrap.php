@@ -8,6 +8,8 @@
  * You should also use this file to include any files that provide global functions/constants
  * that your application uses.
  *
+ * PHP 5
+ *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
@@ -52,7 +54,7 @@ Cache::config('default', array('engine' => 'File'));
  */
 
 /**
- * Custom Inflector rules can be set to correctly pluralize or singularize table, model, controller names or whatever other
+ * Custom Inflector rules, can be set to correctly pluralize or singularize table, model, controller names or whatever other
  * string is passed to the inflection functions
  *
  * Inflector::rules('singular', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
@@ -62,7 +64,7 @@ Cache::config('default', array('engine' => 'File'));
 
 /**
  * Plugins need to be loaded manually, you can either load them one by one or all of them in a single call
- * Uncomment one of the lines below, as you need. Make sure you read the documentation on CakePlugin to use more
+ * Uncomment one of the lines below, as you need. make sure you read the documentation on CakePlugin to use more
  * advanced ways of loading plugins
  *
  * CakePlugin::loadAll(); // Loads all plugins at once
@@ -71,7 +73,7 @@ Cache::config('default', array('engine' => 'File'));
  */
 
 /**
- * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:
+ * You can attach event listeners to the request lifecycle as Dispatcher Filter . By Default CakePHP bundles two filters:
  *
  * - AssetDispatcher filter will serve your asset files (css, images, js, etc) from your themes and plugins
  * - CacheDispatcher filter will read the Cache.check configure variable and try to serve cached content generated from controllers
@@ -96,12 +98,12 @@ Configure::write('Dispatcher.filters', array(
  */
 App::uses('CakeLog', 'Log');
 CakeLog::config('debug', array(
-	'engine' => 'File',
+	'engine' => 'FileLog',
 	'types' => array('notice', 'info', 'debug'),
 	'file' => 'debug',
 ));
 CakeLog::config('error', array(
-	'engine' => 'File',
+	'engine' => 'FileLog',
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
