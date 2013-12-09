@@ -107,3 +107,70 @@ CakeLog::config('error', array(
 	'types' => array('warning', 'error', 'critical', 'alert', 'emergency'),
 	'file' => 'error',
 ));
+
+
+
+/**
+ * 定数
+ */
+
+// 表示切替：基本情報
+Configure::write('basic', array(
+	'bed' => '全病床数',
+	'general' => '一般病床数',
+	'doctor' => '医師数',
+	'nurse' => '看護師数'
+));
+
+//　表示切替：症例数
+Configure::write('mdc', array(
+	'全症例数',
+	'神経系',
+	'眼科系',
+	'耳鼻咽喉科系',
+	'呼吸器系',
+	'循環器系',
+	'消化器系',
+	'筋骨格系',
+	'皮膚系',
+	'乳房系',
+	'内分泌系',
+	'腎・尿路系',
+	'女性生殖器系',
+	'血液系',
+	'新生児系',
+	'小児系',
+	'外傷系',
+	'精神系',
+	'その他'
+));
+
+// 表示切替：DPC
+Configure::write('dpc', array(
+	'ave_month'		=> '月平均患者数',
+	'zone_share'	=> '医療圏シェア',
+	'ave_in'			=> '平均在院日数',
+	'complex'			=> '患者構成指標',
+	'efficiency'	=> '在院日数指標'
+));
+
+// 表示切替：比較区分
+Configure::write('ctgry', array(
+	'dpc'		=> '診療実績',
+	'basic'	=> '基本情報'
+));
+
+// 表示切替：比較リスト
+Configure::write('clst', array(
+	'distance'	=> '距離が近い病院',
+	'number'		=> '患者数が多い病院'
+));
+
+// 表示切替：Top List 比較指数
+Configure::write('cmplst', array(
+	'ave_month@dpc'			=> '月平均患者数',
+	'zone_share@dpc'		=> '医療圏シェア',
+	'ave_in@dpc'				=> '平均在院日数',
+	'complex@dpc'				=> '患者構成指標',
+	'efficiency@dpc'		=> '在院日数指標'
+));
