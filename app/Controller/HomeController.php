@@ -44,4 +44,17 @@ class HomeController extends AppController {
 		$this->set('maladyCategories', $this->Data->GetMaladyCategories());
 		$this->set('prefectures', $this->Data->GetPrefectures());
 	}
+	
+	/**
+	 * 病院詳細
+	 * 医療機関IDと会計年度から診療実績を検索表示
+	 */
+	public function Hosdetail(){
+		$this->set('dat', array(
+			'wamId'=>$_REQUEST['wam_id'],
+			'fiscalYears'=>$this->Data->GetFiscalYears(),
+			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
+			'getDpcsUrl'=>Router::url('/ajax/getDpcsByHospitalIdAndFiscalYear.json')
+		));
+	}
 }

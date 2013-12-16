@@ -21,6 +21,21 @@ class DataComponent extends Component {
 	}
 	
 	/**
+	 * Dpcテーブルから、医療機関IDと会計年度を指定して診療実績を取得する。
+	 */
+	public function GetDpcsByHospitalIdAndFiscalYear($wamId, $fiscalYear){
+		$this->Dpc = ClassRegistry::init('Dpc');
+		$dpcs = $this->Dpc->find('all', array(
+			'conditions'=>array(
+				'Dpc.wam_id'=>$wamId,
+				'Dpc.fiscal_year'=>$fiscalYear
+			),
+			'order'=>array('Dpc.mdc_cd'=>'asc')
+		));
+		return $dpcs;
+	}
+	
+	/**
 	 * 設定ファイルから表示区分一覧を取得する。
 	 */
 	public function GetDisplayTypes(){
@@ -35,6 +50,17 @@ class DataComponent extends Component {
 	}
 	
 	/**
+	 * 設定ファイルから、診療実績の並び替え方法一覧を取得する。
+	 */
+	public function GetDisplayTypesForDpc(){
+		$types = array();
+		foreach(Configure::read('dpc') as $key => $value){
+			array_push($types, array('id'=>$key, 'name'=>$value));
+		}
+		return $types;
+	}
+	
+	/**
 	 * Dpcテーブルから会計年度を取得する。
 	 */
 	public function GetFiscalYear(){
@@ -43,6 +69,26 @@ class DataComponent extends Component {
 			'fields'=>array('max(Dpc.fiscal_year) as max')
 		));
 		return $dpc[0]['max'];
+	}
+	
+	/**
+	 * Dpcテーブルから、選択可能な会計年度の一覧を取得する。
+	 */
+	public function GetFiscalYears(){
+		$this->Dpc = ClassRegistry::init('Dpc');
+		$dpc = $this->Dpc->find('first', array(
+			'fields'=>array(
+				'min(Dpc.fiscal_year) as min',
+				'max(Dpc.fiscal_year) as max'
+			)
+		));
+		$min = $dpc[0]['min'];
+		$max = $dpc[0]['max'];
+		$fiscalYears = array();
+		for($n=$max; $n>=$min; $n--){
+			array_push($fiscalYears, array('id'=>$n, 'name'=>'平成'.($n-1988).'年'));
+		}
+		return $fiscalYears;
 	}
 	
 	/**

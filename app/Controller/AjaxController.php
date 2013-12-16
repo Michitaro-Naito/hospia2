@@ -43,6 +43,15 @@ class AjaxController extends AppController {
 	}
 	
 	/**
+	 * Dpcテーブルから、医療機関IDと会計年度を指定して診療実績を取得する。
+	 */
+	public function GetDpcsByHospitalIdAndFiscalYear(){
+		$dpcs = $this->Data->GetDpcsByHospitalIdAndFiscalYear($this->data['wamId'], $this->data['fiscalYear']);
+		$this->set('dpcs', $dpcs);
+		$this->set('_serialize', array('dpcs'));
+	}
+	
+	/**
 	 * 手術情報を検索する。
 	 * TODO: DBのworkloadが大きいため、要キャッシュ。
 	 */
