@@ -153,6 +153,75 @@ class DataComponent extends Component {
 			'hospitals'=>$hospitals
 		);
 	}
+
+	/**
+	 * 疾患カテゴリと都道府県から、その疾患で患者数が多いトップ100の医療機関一覧を検索する。
+	 */
+	public function GetHospitalsByMalady($maladyId, $prefectureId){
+		$fiscalYear = $this->GetFiscalYear();
+		
+		// トップ100のMaladyDataを取得
+		$this->MaladyData = ClassRegistry::init('MaladyData');
+		$cond = array(
+			'MaladyData.upyear'=>$fiscalYear,
+			'MaladyData.mcatid'=>$maladyId
+		);
+		if(!empty($prefectureId))
+			$cond['addr1_cd'] = $prefectureId;
+		$rows = $this->MaladyData->find('all', array(
+			'conditions'=>$cond,
+			'order'=>array('MaladyData.mcounts'=>'desc'),
+			'limit'=>100
+		));
+		
+		// 後からHospitalとAreaを結合（パフォーマンスのため）
+		$ids = array();
+		foreach($rows as $row){
+			array_push($ids, $row['MaladyData']['wam_id']);
+		}
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$this->Hospital->bindModel(array(
+			'belongsTo'=>array(
+				'Area' => array(
+					'className'=>'Area',
+					'foreignKey'=>'addr2_cd'
+				)
+			)
+		));
+		$hospitals = $this->Hospital->find('all', array(
+			'conditions'=>array(
+				'Hospital.wam_id'=>$ids
+			)
+		));
+		foreach($rows as &$row){
+			foreach($hospitals as $h){
+				if($h['Hospital']['wam_id'] == $row['MaladyData']['wam_id']){
+					$row['Hospital'] = $h['Hospital'];
+					$row['Area'] = $h['Area'];
+					break;
+				}
+			}
+		}
+		
+		return $rows;
+	}
+
+	/**
+	 * MaladyCateテーブルから疾患カテゴリ一覧を取得する。
+	 */
+	public function GetMaladyCategories(){
+		$this->MaladyCat = ClassRegistry::init('MaladyCat');
+		$rows = $this->MaladyCat->find('all', array(
+			'order'=>array('MaladyCat.mcatid'=>'asc')
+		));
+		$maladyCategories = array();
+		foreach($rows as $row){
+			$id = $row['MaladyCat']['mcatid'];
+			$name = $row['MaladyCat']['mname'];
+			array_push($maladyCategories, array('id'=>$id, 'name'=>$name));
+		}
+		return $maladyCategories;
+	}
 	
 	/**
 	 * 設定ファイルから診断分類一覧を取得する。
