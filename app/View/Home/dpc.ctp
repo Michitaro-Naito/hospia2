@@ -53,14 +53,14 @@ function AppModel(){
 	
 	// 検索
 	s.search = function(){
-		$.postJSON(
-			getWoundsUrl,
-			{
+		$.postJSON({
+			url: getWoundsUrl,
+			data: {
 				mdcId: s.selectedMdc().id,
 				dpcId: s.selectedDpc().id,
 				prefectureId: s.selectedPrefecture().id
 			}
-		).done(function(data){
+		}).done(function(data){
 			console.info(data);
 			s.wounds([]);
 			for(var n=0; n<data.wounds.length; n++){
