@@ -1,30 +1,3 @@
-<!-- 改修前のコード -->
-
-<!-- Head -->
-<!--
-<div class="col-sm-6">空白　病院名　月平均患者数</div>
-<div class="col-sm-6">グラフ表示</div>
--->
-
-<!-- Data -->
-<!--
-<div class="row">
-	<div class="col-sm-6">空白　○○病院　123</div>
-	<div class="col-sm-6">123.4　バー</div>
-</div>
-<div class="row">
-	<div class="col-sm-6">空白　○○病院　123</div>
-	<div class="col-sm-6">123.4　バー</div>
-</div>
-<div class="row">
-	<div class="col-sm-6">空白　○○病院　123</div>
-	<div class="col-sm-6">123.4　バー</div>
-</div>
--->
-
-
-
-<!-- JavaScript----------------------------------------------------------- -->
 <?php $this->start('script'); ?>
 <script>
 
@@ -41,7 +14,6 @@ var defCmp = '<?php echo $defCmp; ?>';										// 比較指数
 
 // バインド対象のデータを設定する
 function AppModel(){
-
 	var self = this;
 
 	self.mdcs = mdcs;											// 診断分類一覧
@@ -50,21 +22,19 @@ function AppModel(){
 	self.hospitals = hospitals;									// 医療機関一覧
 	self.selectedMdc = ko.observable(defMdc);					// 選択された診断分類
 	self.selectedPrefecture = ko.observable(defPrefecture);		// 選択された都道府県
-	self.selectedCmp = ko.observable(defCmp);					// 選択された比較指数
-
-	// 比較指数
-	self.cmpDisp = {
-		ave_month : ko.observable(false),
-		zone_share : ko.observable(false),
-		ave_in : ko.observable(false),
-		complex : ko.observable(false),
-		efficiency : ko.observable(false)
-	};
-
-	// 比較指数が変更されたとき
-	self.selectedCmp.subscribe(function(newValue){
-		changeCmpVisible(newValue);
-	});
+	self.selectedCmp = ko.observable();					// 選択された比較指数
+	
+	// 初期値を設定する
+	self.setDefaultValues = function(){
+		// selectedCmp
+		for(var n=0; n<model.cmplst.length; n++){
+			var cmp = self.cmplst[n];
+			if(cmp.id === defCmp){
+				self.selectedCmp(cmp);
+				break;
+			}
+		}
+	}
 }
 
 // 医療機関一覧を検索する
@@ -72,44 +42,15 @@ function getHospitals(){
 	$("#menuForm").submit();
 }
 
-// 比較指数の表示非表示を切り替える
-function changeCmpVisible(cmp){
-	model.cmpDisp.ave_month(false);
-	model.cmpDisp.zone_share(false);
-	model.cmpDisp.ave_in(false);
-	model.cmpDisp.complex(false);
-	model.cmpDisp.efficiency(false);
-	switch (cmp) {
-	case 'ave_month@dpc':
-		model.cmpDisp.ave_month(true);
-		break;
-	case 'zone_share@dpc':
-		model.cmpDisp.zone_share(true);
-		break;
-	case 'ave_in@dpc':
-		model.cmpDisp.ave_in(true);
-		break;
-	case 'complex@dpc':
-		model.cmpDisp.complex(true);
-		break;
-	case 'efficiency@dpc':
-		model.cmpDisp.efficiency(true);
-		break;
-	default:
-		break;
-	}
-}
-
 // バインドする
 var model = new AppModel();
 ko.applyBindings(model);
-
-// 比較指数の表示・非表示に初期値を設定する
-changeCmpVisible(defCmp);
+model.setDefaultValues();
 
 </script>
 <?php $this->end(); ?>
-<!-- --------------------------------------------------------------------- -->
+
+
 
 <!-- メニュー -->
 <div class="row">
@@ -147,7 +88,7 @@ changeCmpVisible(defCmp);
 					<th colspan="2" width="300">
 						<span id="h02">
 							グラフ表示
-							<select data-bind="options: cmplst, optionsValue: 'id', optionsText: 'name', value: selectedCmp"></select>
+							<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
 							<img src="http://hospia.jp/img/helplink.jpg" alt="" />
 						</span>
 					</th>
@@ -177,11 +118,11 @@ changeCmpVisible(defCmp);
 					</td>
 					<!-- グラフ表示 -->
 					<td style="width:60px;" align="right">
-						<span data-bind="text: (Number(Dpc.ave_month)).toFixed(1), visible: model.cmpDisp.ave_month"></span>
-						<span data-bind="text: (Number(Dpc.zone_share) * 100).toFixed(1) + '%', visible: model.cmpDisp.zone_share"></span>
-						<span data-bind="text: (Number(Dpc.ave_in)).toFixed(1), visible: model.cmpDisp.ave_in"></span>
-						<span data-bind="text: (Number(Dpc.complex)).toFixed(2), visible: model.cmpDisp.complex"></span>
-						<span data-bind="text: (Number(Dpc.efficiency)).toFixed(2), visible: model.cmpDisp.efficiency"></span>
+						<span data-bind="text: (Number(Dpc.ave_month)).toFixed(1), visible: $root.selectedCmp().id == 'ave_month@dpc'"></span>
+						<span data-bind="text: (Number(Dpc.zone_share) * 100).toFixed(1) + '%', visible: $root.selectedCmp().id == 'zone_share@dpc'"></span>
+						<span data-bind="text: (Number(Dpc.ave_in)).toFixed(1), visible: $root.selectedCmp().id == 'ave_in@dpc'"></span>
+						<span data-bind="text: (Number(Dpc.complex)).toFixed(2), visible: $root.selectedCmp().id == 'complex@dpc'"></span>
+						<span data-bind="text: (Number(Dpc.efficiency)).toFixed(2), visible: $root.selectedCmp().id == 'efficiency@dpc'"></span>
 					</td>
 					<td>
 						<input type="hidden" id="id_barval1" value="213.167" />
