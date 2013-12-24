@@ -25,6 +25,15 @@ class AjaxController extends AppController {
 	}
 	
 	/**
+	 * 医療機関一覧を検索する。（比較リスト）
+	 */
+	public function GetComparableHospitals(){
+		$hospitals = $this->Data->GetComparableHospitals($this->data['wamId'], $this->data['ctgry'], $this->data['mdcId'], $this->data['clst']);
+		$this->set('hospitals', $hospitals);
+		$this->set('_serialize', array('hospitals'));
+	}
+	
+	/**
 	 * 疾患カテゴリと都道府県から、その疾患で患者数が多いトップ100の医療機関一覧を検索する。
 	 */
 	public function GetHospitalsByMalady(){

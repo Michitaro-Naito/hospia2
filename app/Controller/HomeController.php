@@ -57,4 +57,34 @@ class HomeController extends AppController {
 			'getDpcsUrl'=>Router::url('/ajax/getDpcsByHospitalIdAndFiscalYear.json')
 		));
 	}
+	
+	/**
+	 * 病院比較
+	 * ある医療機関と、近隣の医療機関もしくは患者数の多い医療機関を比較表示する。
+	 */
+	public function Hoscmp(){
+		$this->set('dat', array(
+			'wamId'=>$_REQUEST['wam_id'],
+			'comparisonCategories'=>$this->Data->GetComparisonCategories(),
+			'mdcs'=>$this->Data->GetMdcs(),
+			'displayTypesForHoscmp'=>$this->Data->GetDisplayTypesForHoscmp(),
+			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
+			'displayTypesForBasic'=>$this->Data->GetDisplayTypesForBasic(),
+			'searchUrl'=>Router::url('/ajax/getComparableHospitals.json')
+		));
+	}
+	
+	/**
+	 * 病院基本情報
+	 * ある病院の基本情報を表示する。
+	 */
+	public function Hosinfo(){
+		$wamId = $_REQUEST['wam_id'];
+		$hospital = $this->Data->GetHospital($wamId);
+		$this->set('dat', array(
+			'wamId'=>$wamId,
+			'hospital'=>$hospital,
+			'hospitalsNearby'=>$this->Data->GetHospitalsNearby($hospital)
+		));
+	}
 }

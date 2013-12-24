@@ -36,6 +36,8 @@
 	Router::connect('/toplst', array('controller'=>'home', 'action'=>'toplst'));
 	Router::connect('/malady/maladylist.php', array('controller'=>'home', 'action'=>'maladylist'));
 	Router::connect('/hosdetail', array('controller'=>'home', 'action'=>'hosdetail'));
+	Router::connect('/hoscmp', array('controller'=>'home', 'action'=>'hoscmp'));
+	Router::connect('/hosinfo', array('controller'=>'home', 'action'=>'hosinfo'));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

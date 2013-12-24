@@ -2,6 +2,33 @@
 App::uses('Component', 'Controller');
 
 /**
+ * 2つの病院を比較する。(ソート用)
+ */
+function _CompareHospitalsByDistance($h1, $h2){
+	$d1 = $h1['Hospital']['distance'];
+	$d2 = $h2['Hospital']['distance'];
+	if($d1 < $d2) return -1;
+	if($d1 == $d2) return 0;
+	return 1;
+}
+function _CompareHospitalsByGeneral($h1, $h2){
+	// 一般病床数で比較(Hospital.general)
+	$p1 = $h1['Hospital']['patient'];
+	$p2 = $h2['Hospital']['patient'];
+	if($p1 > $p2) return -1;
+	if($p1 == $p2) return 0;
+	return 1;
+}
+function _CompareHospitalsByDpcPatient($h1, $h2){
+	// DPCの患者数で比較(Dpc.ave_month)
+	$p1 = $h1['Dpc']['ave_month'];
+	$p2 = $h2['Dpc']['ave_month'];
+	if($p1 > $p2) return -1;
+	if($p1 == $p2) return 0;
+	return 1;
+}
+
+/**
  * データを扱うコンポーネント。データベースや設定ファイルからデータを取得し、指定の形式で返す処理はこちらへ集約する。
  * @example $prefectures = $this->Data->GetPrefectures();
  */
@@ -49,12 +76,42 @@ class DataComponent extends Component {
 		return $types;
 	}
 	
+	public function GetDisplayTypesForBasic(){
+		$types = array();
+		foreach(Configure::read('basic') as $key => $value){
+			array_push($types, array('id'=>$key, 'name'=>$value));
+		}
+		return $types;
+	}
+	
 	/**
 	 * 設定ファイルから、診療実績の並び替え方法一覧を取得する。
 	 */
 	public function GetDisplayTypesForDpc(){
 		$types = array();
 		foreach(Configure::read('dpc') as $key => $value){
+			array_push($types, array('id'=>$key, 'name'=>$value));
+		}
+		return $types;
+	}
+	
+	/**
+	 * 設定ファイルから、表示切替：比較区分を取得する。
+	 */
+	public function GetComparisonCategories(){
+		$types = array();
+		foreach(Configure::read('ctgry') as $key => $value){
+			array_push($types, array('id'=>$key, 'name'=>$value));
+		}
+		return $types;
+	}
+	
+	/**
+	 * 設定ファイルから、表示切替：比較リストを取得する。
+	 */
+	public function GetDisplayTypesForHoscmp(){
+		$types = array();
+		foreach(Configure::read('clst') as $key => $value){
 			array_push($types, array('id'=>$key, 'name'=>$value));
 		}
 		return $types;
@@ -89,6 +146,32 @@ class DataComponent extends Component {
 			array_push($fiscalYears, array('id'=>$n, 'name'=>'平成'.($n-1988).'年'));
 		}
 		return $fiscalYears;
+	}
+	
+	/**
+	 * Hospital, Jcqhcテーブルから医療機関情報を1件取得する。
+	 * @param int wamId 医療機関ID
+	 * @return mixed 医療機関情報。見つからない場合はnull。
+	 */
+	public function GetHospital($wamId){
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$this->Hospital->bindModel(array(
+			'hasOne'=>array(
+				'Coordinate'=>array(
+					'foreignKey'=>'wam_id'
+				),
+				'Jcqhc'=>array(
+					'foreignKey'=>'wam_id'
+				)
+			)
+		));
+		$hospital = $this->Hospital->find('first', array(
+			'conditions'=>array(
+				'Hospital.wam_id' => $wamId
+			)
+		));
+		if(empty($hospital)) return null;
+		return $hospital;
 	}
 	
 	/**
@@ -253,6 +336,157 @@ class DataComponent extends Component {
 	}
 
 	/**
+	 * 付近の医療機関を20件取得する。（その際、正確な距離も計算して近い順にソートする。）
+	 * @param src 医療機関。この周辺を検索する。
+	 */
+	public function GetHospitalsNearby($src){
+		// 付近の医療機関のIDを取得
+		$this->Distance = ClassRegistry::init('Distance');
+		$distance = $this->Distance->find('first', array(
+			'conditions'=>array(
+				'Distance.wam_id'=>$src['Hospital']['wam_id']
+			)
+		));
+		$ids = split(',', $distance['Distance']['basic']);
+		
+		// IDから医療機関情報を取得
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$this->Hospital->bindModel(array(
+			'hasOne'=>array(
+				'Coordinate'=>array(
+					'foreignKey'=>'wam_id'
+				)
+			)
+		));
+		$hospitals = $this->Hospital->find('all', array(
+			'conditions'=>array(
+				'Hospital.wam_id'=>$ids
+			)
+		));
+		
+		// 距離を計算して格納する
+		foreach($hospitals as &$h){
+			$h['Hospital']['distance'] = $this->GetDistance(
+				$src['Coordinate']['latitude'], $src['Coordinate']['longitude'],
+				$h['Coordinate']['latitude'], $h['Coordinate']['longitude']
+			);
+		}
+		
+		// 距離が短い順にソートする
+		usort($hospitals, '_CompareHospitalsByDistance');
+		
+		return $hospitals;
+	}
+
+	/**
+	 * 医療機関一覧を検索取得する。（比較リスト）
+	 */
+	public function GetComparableHospitals($wamId, $ctgry, $mdcId, $clst){
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$fiscalYear = $this->GetFiscalYear();
+		
+		// 閲覧中の病院を取得
+		$this->Hospital->bindModel(array(
+			'hasOne'=>array(
+				'Coordinate'=>array(
+					'foreignKey'=>'wam_id'
+				)
+			)
+		));
+		$src = $this->Hospital->find('first', array(
+			'conditions'=>array(
+				'Hospital.wam_id'=>$wamId
+			)
+		));
+		
+		if($clst==='distance'){
+			// 距離が近い病院を取得
+			$this->Distance = ClassRegistry::init('Distance');
+			$distance = $this->Distance->find('first', array(
+				'conditions'=>array(
+					'Distance.wam_id'=>$wamId
+				)
+			));
+			$ids = split(',', $distance['Distance']['basic']);
+			$this->Hospital->bindModel(array(
+				'hasOne'=>array(
+					'Coordinate'=>array(
+						'foreignKey'=>'wam_id'
+					),
+					'Dpc'=>array(
+						'foreignKey'=>'wam_id',
+						'conditions'=>array(
+							'Dpc.mdc_cd'=>$mdcId,
+							'Dpc.fiscal_year'=>$fiscalYear
+						)
+					)
+				)
+			));
+			$hospitals = $this->Hospital->find('all', array(
+				'conditions'=>array(
+					'Hospital.wam_id'=>$ids
+				)
+			));
+			
+			// 距離を計算して格納する
+			foreach($hospitals as &$h){
+				$h['Hospital']['distance'] = $this->GetDistance(
+					$src['Coordinate']['latitude'], $src['Coordinate']['longitude'],
+					$h['Coordinate']['latitude'], $h['Coordinate']['longitude']
+				);
+			}
+			
+			// 距離が短い順にソートする
+			usort($hospitals, '_CompareHospitalsByDistance');
+			
+			// 比較区分が診療実績の場合は、診療実績を結合する。（パフォーマンスのため後から）
+			
+			return $hospitals;
+			
+		}else{
+			// 患者数が多い病院（基本情報が選択されている場合はHospital.general(一般病床数)、DPCが選択されている場合はDpc.ave_month
+			//$order = array('Hospital.general'=>'desc');
+			//if($ctgry=='dpc') $order = array('Dpc.ave_month'=>'desc');
+			$mdcId = 0;		// 基本情報が選択されている場合はmdcId=0に固定
+			$order = array('Dpc.ave_month'=>'desc');
+			$this->Hospital->bindModel(array(
+				'hasOne'=>array(
+					'Coordinate'=>array(
+						'foreignKey'=>'wam_id'
+					),
+					'Dpc'=>array(
+						'foreignKey'=>'wam_id',
+						'conditions'=>array(
+							'Dpc.mdc_cd'=>$mdcId,
+							'Dpc.fiscal_year'=>$fiscalYear
+						)
+					)
+				)
+			));
+			$hospitals = $this->Hospital->find('all', array(
+				'conditions'=>array(
+				),
+				'order'=>$order,
+				'limit'=>20
+			));
+			
+			// 距離を計算して格納する
+			foreach($hospitals as &$h){
+				$h['Hospital']['distance'] = $this->GetDistance(
+					$src['Coordinate']['latitude'], $src['Coordinate']['longitude'],
+					$h['Coordinate']['latitude'], $h['Coordinate']['longitude']
+				);
+			}
+			
+			// 患者数が多い順にソートする
+			// $ctgry == 'basic'の場合は既にソートされている。
+			if($ctgry == 'dpc') usort($hospitals, '_CompareHospitalsByDpcPatient');
+			
+			return $hospitals;
+		}
+	}
+
+	/**
 	 * MaladyCateテーブルから疾患カテゴリ一覧を取得する。
 	 */
 	public function GetMaladyCategories(){
@@ -365,5 +599,47 @@ class DataComponent extends Component {
 			array_push($zones, array('id'=>$row['Area']['zone_cd'], 'name'=>$row['Area']['zone2nd']));
 		}
 		return $zones;
+	}
+	
+	/**
+	 * ２点間の直線距離を求める（Lambert-Andoyer）
+	 *
+	 * @param   float   $lat1       始点緯度(十進度)
+	 * @param   float   $lon1       始点経度(十進度)
+	 * @param   float   $lat2       終点緯度(十進度)
+	 * @param   float   $lon2       終点経度(十進度)
+	 * @return  float               距離（Km）
+	 */
+	function GetDistance($lat1, $lon1, $lat2, $lon2) {
+		if($lat1==$lat2 && $lon1==$lon2) return 0.0;
+	    // WGS84
+	    $A = 6378137.0;             // 赤道半径
+	    $F = 1 / 298.257222101;     // 扁平率
+	
+	    // 扁平率 F = (A - B) / A
+	    $B = $A * (1.0 - $F);       // 極半径
+	
+	    $lat1 = deg2rad($lat1);
+	    $lon1 = deg2rad($lon1);
+	    $lat2 = deg2rad($lat2);
+	    $lon2 = deg2rad($lon2);
+	
+	    $P1 = atan($B/$A) * tan($lat1);
+	    $P2 = atan($B/$A) * tan($lat2);
+	
+	    // Spherical Distance
+	    $sd = acos(sin($P1)*sin($P2) + cos($P1)*cos($P2)*cos($lon1-$lon2));
+	
+	    // Lambert-Andoyer Correction
+	    $cos_sd = cos($sd/2);
+	    $sin_sd = sin($sd/2);
+	    $c = (sin($sd) - $sd) * pow(sin($P1)+sin($P2),2) / $cos_sd / $cos_sd;
+	    $s = (sin($sd) + $sd) * pow(sin($P1)-sin($P2),2) / $sin_sd / $sin_sd;
+	    $delta = $F / 8.0 * ($c - $s);
+	
+	    // Geodetic Distance
+	    $distance = $A * ($sd + $delta);
+	
+	    return $distance / 1000.0;
 	}
 }
