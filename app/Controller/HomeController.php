@@ -17,7 +17,9 @@ class HomeController extends AppController {
 			'getZonesUrl'=>Router::url('/Ajax/GetZones.json'),
 			'hoslistUrl'=>Router::url('/hoslist'),
 			'rememberedHospitals'=>$this->CookieData->GetRememberedHospitals(),
-			'hospitalsMostViewed'=>$this->Data->GetHospitalsMostViewed()
+			'hospitalsMostViewed'=>$this->Data->GetHospitalsMostViewed(),
+			'maladyCategories'=>$this->Data->GetMaladyCategories(),
+			'mdcs'=>$this->Data->GetMdcs()
 		));
 	}
 

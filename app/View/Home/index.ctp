@@ -249,10 +249,24 @@ ko.applyBindings(model);
 	</div>
 	<div class="col-sm-3 bs-sidebar">
 		<div class="row">
-  		<div class="col-sm-12">疾患別</div>
+  		<div class="col-sm-12">
+  			疾患別
+  			<ul>
+  				<?php foreach($dat['maladyCategories'] as $key => $c): ?>
+  					<li><?php echo $this->Html->link($c['name'], array('action'=>'Maladylist', 'controller'=>'Home', '?'=>array('mdata'=>$c['id']))); ?></li>
+  				<?php endforeach; ?>
+  			</ul>
+  		</div>
 		</div>
 		<div class="row">
-  		<div class="col-sm-12">診断分類別</div>
+  		<div class="col-sm-12">
+  			診断分類別
+  			<ul>
+  				<?php foreach($dat['mdcs'] as $key => $m): ?>
+  					<li><?php echo $this->Html->link('MDC'.str_pad($key, 2, '0', STR_PAD_LEFT).' '.$m['name'], array('action'=>'Toplst', 'controller'=>'Home', '?'=>array('id'=>$m['id']))); ?></li>
+  				<?php endforeach; ?>
+  			</ul>
+  		</div>
 		</div>
 		<?php echo $this->element('ad_sidebar'); ?>
 	</div>
