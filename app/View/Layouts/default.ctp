@@ -113,6 +113,7 @@
     	echo $this->Html->script('jquery-1.10.2.min');
     	echo $this->Html->script('bootstrap.min.js');
 			echo $this->Html->script('knockout-3.0.0');
+			echo $this->Html->script('jsuri-1.1.1.min');
 			echo $this->Html->script('utility');
 			echo $this->fetch('script');
     ?>
