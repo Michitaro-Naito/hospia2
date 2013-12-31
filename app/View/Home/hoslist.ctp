@@ -5,7 +5,6 @@ var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
 var getZonesUrl = '<?php echo Router::url('/ajax/getZones.json'); ?>';
 var getHospitalsUrl = '<?php echo Router::url('/ajax/getHospitals.json'); ?>';
 var displayTypesOriginal = JSON.parse('<?php echo json_encode($displayTypes); ?>');
-//console.info(displayTypesOriginal);
 
 function Item(id, name){
 	this.id = id;
@@ -22,8 +21,6 @@ function Hospital(root, data){
 	s.Jcqhc = data['Jcqhc'];
 	
 	s.fmValue = ko.computed(function(){
-		//if(typeof root.currentDisplayType() == 'undefined') return '';
-		//if(root.currentDisplayType())
 		var t = root.currentDisplayType().id;
 		if(typeof t == 'undefined') return '';
 		switch(t){
@@ -55,6 +52,7 @@ function AppModel(){
 	s.selectedDisplayType = ko.observable();		// 選択された表示項目
 	s.currentDisplayType = ko.observable();			// 現在の表示項目
 	
+	s.initialized = ko.observable(false);				// 初回の病院一覧の取得が完了しているか
 	s.hospitalCount = ko.observable(0);
 	s.nextPage = 1;
 	
@@ -75,6 +73,18 @@ function AppModel(){
 				}
 			}).done(function(data){
 				s.zones(data.zones);
+				// GETパラメータでzoneIdが指定されている場合は、初期値として選択する。（選択中の都道府県に該当する医療圏が存在する場合のみ）
+				// また、病院一覧が未取得の場合は取得する。
+				if(!s.initialized()){
+					for(var n=0; n<s.zones().length; n++){
+						var z = s.zones()[n];
+						if(z.id == s.default.zoneId){
+							s.selectedZone(z);
+							break;
+						}
+					}
+					s.getHospitals();
+				}
 			});
 		}
 	});
@@ -86,6 +96,7 @@ function AppModel(){
 	
 	// 病院を検索取得
 	s.getHospitals = function(){
+		s.initialized(true);
 		s.nextPage = 1;
 		s.hospitals([]);
 		s.getHospitalsMore();
@@ -108,9 +119,7 @@ function AppModel(){
 		}).done(function(data){
 			console.info(data);
 			s.currentDisplayType(s.selectedDisplayType());
-			//s.hospitals(data.hospitals);
 			for(var n=0; n<data.hospitals.length; n++){
-				//s.hospitals.push(data.hospitals[n]);
 				s.hospitals.push(new Hospital(s, data.hospitals[n]));
 			}
 			s.hospitalCount(data.count);
@@ -119,9 +128,26 @@ function AppModel(){
 		s.nextPage++;
 	}
 	
+	// GETパラメータに応じて初期値を設定する
+	var uri = new Uri(location.href);
+	s.default = {};
+	s.default.prefectureId = uri.getQueryParamValue('prefectureId');
+	s.default.zoneId = uri.getQueryParamValue('zoneId');
+	s.default.hospitalName = uri.getQueryParamValue('hospitalName');
+	for(var n=0; n<s.prefectures.length; n++){
+		var p = s.prefectures[n];
+		if(p.id == s.default.prefectureId){
+			s.selectedPrefecture(p);
+			break;
+		}
+	}
+	if(s.default.hospitalName) s.hospitalName(decodeURI(s.default.hospitalName));
+	
 }
 var model = new AppModel();
 ko.applyBindings(model);
+
+if(model.selectedPrefecture().id == null) model.getHospitals();
 </script>
 <?php $this->end(); ?>
 
@@ -134,32 +160,12 @@ ko.applyBindings(model);
 		<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
 		<input type="text" data-bind="value: hospitalName"/>
 		<button type="button" data-bind="click: getHospitals">検索</button>
-		
-		<!--<div data-bind="visible: selectedPrefecture, with: selectedPrefecture">
-			<span data-bind="text: id"></span>
-			<span data-bind="text: name"></span>
-		</div>
-		<div data-bind="visible: selectedZone, with: selectedZone">
-			<span data-bind="text: id"></span>
-			<span data-bind="text: name"></span>
-		</div>
-		<div data-bind="text: hospitalName"></div>-->
 	</div>
 	
 	<div class="col-sm-6">
 		<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
 		<input type="radio" name="displayTypeGroup" value="1" data-bind="checked: displayTypeGroup" />
 		<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
-		
-		<!--<div data-bind="text: displayTypeGroup"></div>
-		<div data-bind="visible: selectedDisplayType, with: selectedDisplayType">
-			<span data-bind="text: id"></span>
-			<span data-bind="text: name"></span>
-		</div>
-		<div data-bind="visible: currentDisplayType, with: currentDisplayType">
-			<span data-bind="text: id"></span>
-			<span data-bind="text: name"></span>
-		</div>-->
 	</div>
 </div>
 
