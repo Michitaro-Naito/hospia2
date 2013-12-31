@@ -12,6 +12,11 @@ class HomeController extends AppController {
 			'limit'=>5
 		));
 		$this->set('hospitals', $hospitals);
+		$this->set('dat', array(
+			'prefectures'=>$this->Data->GetPrefectures(),
+			'getZonesUrl'=>Router::url('/Ajax/GetZones.json'),
+			'hoslistUrl'=>Router::url('/hoslist')
+		));
 	}
 
 	/**

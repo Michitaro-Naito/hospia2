@@ -160,11 +160,60 @@ if (isset($filePresent)):
 <?php
 	$this->set('is_top', TRUE);
 ?>
+<?php $this->start('script'); ?>
+<script>
+// Get initial variables from server
+var dat = JSON.parse('<?php echo json_encode($dat); ?>');
+//console.info(dat);
+
+function AppModel(){
+	var s = this;
+	
+	s.prefectures = dat.prefectures;
+	s.zones = ko.observableArray();
+	s.hospitalName = ko.observable();
+	
+	s.selectedPrefecture = ko.observable();
+	s.selectedZone = ko.observable();
+	
+	// 選択された都道府県に合わせて医療圏を再読み込み
+	s.selectedPrefecture.subscribe(function(newValue){
+		if(newValue.id !== null){
+			$.postJSON({
+				url: dat.getZonesUrl,
+				data: {
+					prefectureId: newValue.id
+				}
+			}).done(function(data){
+				s.zones(data.zones);
+			});
+		}
+	});
+	
+	// hoslstへページ移動する。その際、選択された都道府県・医療圏・病院名を渡す。
+	s.GotoHoslst = function(){
+		var uri = new Uri(dat.hoslistUrl);
+		uri.replaceQueryParam('prefectureId', s.selectedPrefecture().id);
+		if(s.selectedZone()) uri.replaceQueryParam('zoneId', s.selectedZone().id);
+		uri.replaceQueryParam('hospitalName', s.hospitalName());
+		window.location.href = uri.toString();
+	}
+}
+
+var model = new AppModel();
+ko.applyBindings(model);
+</script>
+<?php $this->end(); ?>
 
 
 
 <div class="row">
-	<div class="col-sm-6">病院検索</div>
+	<div class="col-sm-6">
+		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
+		<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
+		<input type="text" data-bind="value: hospitalName"/>
+		<button type="button" data-bind="click: GotoHoslst">検索</button>
+	</div>
 	<div class="col-sm-6">ご利用ガイド</div>
 </div>
 
