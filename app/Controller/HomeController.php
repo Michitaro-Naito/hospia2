@@ -89,6 +89,7 @@ class HomeController extends AppController {
 	public function Hosdetail(){
 		$wamId = $_REQUEST['wam_id'];
 		$this->CookieData->RememberHospitalId($wamId);
+		$this->Data->IncrementViewCount($wamId);
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
@@ -105,6 +106,7 @@ class HomeController extends AppController {
 	public function Hoscmp(){
 		$wamId = $_REQUEST['wam_id'];
 		$this->CookieData->RememberHospitalId($wamId);
+		$this->Data->IncrementViewCount($wamId);
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
@@ -124,6 +126,7 @@ class HomeController extends AppController {
 	public function Hosinfo(){
 		$wamId = $_REQUEST['wam_id'];
 		$this->CookieData->RememberHospitalId($wamId);
+		$this->Data->IncrementViewCount($wamId);
 		
 		$hospital = $this->Data->GetHospital($wamId);
 		$this->set('dat', array(

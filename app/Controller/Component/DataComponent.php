@@ -783,4 +783,29 @@ class DataComponent extends Component {
 		// 取得した医療機関一覧を呼び出し元に返す
 		return $hospitals;
 	}
+
+	/**
+	 * ViewCountを1増やす。
+	 */
+	public function IncrementViewCount($wamId){
+		$this->ViewCount = ClassRegistry::init('ViewCount');
+		$now = new DateTime();
+		$nowString = $now->format('Y-m-d');
+		$query = 'update viewcnt set cnt = cnt + 1 where wam_id = ' . intval($wamId) . ' and ymd = "' . $nowString . '"';
+		$this->ViewCount->query($query);
+		if($this->ViewCount->getAffectedRows() === 0){
+			// No row is affected. It's a first visit of a day. Insert a row.
+			try{
+				$this->ViewCount->create(array(
+					'wam_id' => $wamId,
+					'ymd' => $nowString,
+					'cnt' => 1
+				));
+				$this->ViewCount->save();
+			}catch(PDOException $e){
+				// Insert failed. Just try to update once more.
+				$this->ViewCount->query($query);
+			}
+		}
+	}
 }
