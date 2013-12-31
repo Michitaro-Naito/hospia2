@@ -33,7 +33,23 @@ function _CompareHospitalsByDpcPatient($h1, $h2){
  * @example $prefectures = $this->Data->GetPrefectures();
  */
 class DataComponent extends Component {
-
+	
+	/**
+	 * 2つの病院を比較する。(ソート用)
+	 */
+	private $_ids = array();
+	public function _CompareHospitalsByIds($h1, $h2){
+		$a = array_search($h1['Hospital']['wam_id'], $this->_ids);
+		$b = array_search($h2['Hospital']['wam_id'], $this->_ids);
+		if($a !== FALSE && $b === FALSE) return -1;
+		if($a === FALSE && $b !== FALSE) return 1;
+		if($b === FALSE && $b === FALSE) return 0;
+		
+		if($a < $b) return -1;
+		if($a > $b) return 1;
+		return 0;
+	}
+	
 	/**
 	 * MdcDpcテーブルから診療実績ID一覧を検索取得する。
 	 */
@@ -281,6 +297,22 @@ class DataComponent extends Component {
 			'count'=>$count,
 			'hospitals'=>$hospitals
 		);
+	}
+	
+	/**
+	 * IDを指定して病院を取得する。
+	 * @param ids wam_idの配列。
+	 */
+	public function GetHospitalsByIds($ids){
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$hospitals = $this->Hospital->find('all', array(
+			'conditions'=>array(
+				'Hospital.wam_id'=>$ids
+			)
+		));
+		// Sort hospitals by ids
+		usort($hospitals, array($this, '_CompareHospitalsByIds'));
+		return $hospitals;
 	}
 
 	/**

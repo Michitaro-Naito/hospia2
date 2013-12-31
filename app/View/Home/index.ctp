@@ -164,7 +164,7 @@ if (isset($filePresent)):
 <script>
 // Get initial variables from server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-//console.info(dat);
+console.info(dat);
 
 function AppModel(){
 	var s = this;
@@ -226,7 +226,14 @@ ko.applyBindings(model);
 			<div class="col-sm-12">Facebookボタン</div>
 		</div>
 		<div class="row">
-  		<div class="col-sm-6">最近チェックした病院</div>
+  		<div class="col-sm-6">
+  			最近チェックした病院
+  			<ul>
+	  			<?php foreach($dat['rememberedHospitals'] as $h): ?>
+	  				<li><?php echo h($h['Hospital']['name']); ?></li>
+	  			<?php endforeach; ?>
+  			</ul>
+  		</div>
   		<div class="col-sm-6">閲覧数の多い病院</div>
 		</div>
 		<div class="row">

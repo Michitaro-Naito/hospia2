@@ -1,6 +1,6 @@
 <?php
 class HomeController extends AppController {
-	public $components = array('Data');
+	public $components = array('CookieData', 'Data');
 
 	/**
 	 * トップページ
@@ -15,7 +15,8 @@ class HomeController extends AppController {
 		$this->set('dat', array(
 			'prefectures'=>$this->Data->GetPrefectures(),
 			'getZonesUrl'=>Router::url('/Ajax/GetZones.json'),
-			'hoslistUrl'=>Router::url('/hoslist')
+			'hoslistUrl'=>Router::url('/hoslist'),
+			'rememberedHospitals'=>$this->CookieData->GetRememberedHospitals()
 		));
 	}
 
@@ -85,8 +86,11 @@ class HomeController extends AppController {
 	 * 医療機関IDと会計年度から診療実績を検索表示
 	 */
 	public function Hosdetail(){
+		$wamId = $_REQUEST['wam_id'];
+		$this->CookieData->RememberHospitalId($wamId);
+		
 		$this->set('dat', array(
-			'wamId'=>$_REQUEST['wam_id'],
+			'wamId'=>$wamId,
 			'fiscalYears'=>$this->Data->GetFiscalYears(),
 			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
 			'getDpcsUrl'=>Router::url('/ajax/getDpcsByHospitalIdAndFiscalYear.json')
@@ -98,8 +102,11 @@ class HomeController extends AppController {
 	 * ある医療機関と、近隣の医療機関もしくは患者数の多い医療機関を比較表示する。
 	 */
 	public function Hoscmp(){
+		$wamId = $_REQUEST['wam_id'];
+		$this->CookieData->RememberHospitalId($wamId);
+		
 		$this->set('dat', array(
-			'wamId'=>$_REQUEST['wam_id'],
+			'wamId'=>$wamId,
 			'comparisonCategories'=>$this->Data->GetComparisonCategories(),
 			'mdcs'=>$this->Data->GetMdcs(),
 			'displayTypesForHoscmp'=>$this->Data->GetDisplayTypesForHoscmp(),
@@ -115,6 +122,8 @@ class HomeController extends AppController {
 	 */
 	public function Hosinfo(){
 		$wamId = $_REQUEST['wam_id'];
+		$this->CookieData->RememberHospitalId($wamId);
+		
 		$hospital = $this->Data->GetHospital($wamId);
 		$this->set('dat', array(
 			'wamId'=>$wamId,
