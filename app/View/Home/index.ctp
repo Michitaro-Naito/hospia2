@@ -234,7 +234,14 @@ ko.applyBindings(model);
 	  			<?php endforeach; ?>
   			</ul>
   		</div>
-  		<div class="col-sm-6">閲覧数の多い病院</div>
+  		<div class="col-sm-6">
+  			閲覧数の多い病院
+  			<ul>
+  				<?php foreach($dat['hospitalsMostViewed'] as $h): ?>
+  					<li><?php echo h($h['Hospital']['name'] . $h[0]['sum']); ?></li>
+  				<?php endforeach; ?>
+  			</ul>
+  		</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-12">お気に入りグループ一覧</div>

@@ -368,6 +368,40 @@ class DataComponent extends Component {
 	}
 
 	/**
+	 * 全ての訪問者に最もよく閲覧される病院を取得する。(1ヶ月以内のトップ10)
+	 */
+	public function GetHospitalsMostViewed(){
+		$this->ViewCount = ClassRegistry::init('ViewCount');
+		$since = new DateTime();
+		$since->modify('-1 month');
+		$counts = $this->ViewCount->find('all', array(
+			'conditions'=>array(
+				'ViewCount.ymd >=' => $since->format('Y-m-d')
+			),
+			'fields'=>array(
+				'ViewCount.wam_id',
+				'sum(ViewCount.cnt) as sum'
+			),
+			'group'=>array('ViewCount.wam_id'),
+			'order'=>array('sum'=>'desc'),
+			'limit'=>10
+		));
+		$ids = array();
+		foreach($counts as $c){
+			array_push($ids, $c['ViewCount']['wam_id']);
+		}
+		$hospitals = $this->GetHospitalsByIds($ids);
+		foreach($counts as &$c){
+			foreach($hospitals as $h){
+				if($c['ViewCount']['wam_id'] == $h['Hospital']['wam_id']){
+					$c['Hospital'] = $h['Hospital'];
+				}
+			}
+		}
+		return $counts;
+	}
+
+	/**
 	 * 付近の医療機関を20件取得する。（その際、正確な距離も計算して近い順にソートする。）
 	 * @param src 医療機関。この周辺を検索する。
 	 */
