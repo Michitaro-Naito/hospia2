@@ -207,6 +207,7 @@ ko.applyBindings(model);
 
 
 
+<?php echo $this->element('fb_root'); ?>
 <div class="row">
 	<div class="col-sm-6">
 		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
@@ -223,7 +224,12 @@ ko.applyBindings(model);
 			<div class="col-sm-12">新着情報</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-12">Facebookボタン</div>
+			<div class="col-sm-12">
+				<?php
+					echo $this->element('twitter_follow');
+					echo $this->element('fb_follow');
+				?>
+			</div>
 		</div>
 		<div class="row">
   		<div class="col-sm-6">
