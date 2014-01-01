@@ -92,3 +92,9 @@ ko.applyBindings(model);
 		<span data-bind="text: Hospital.distance"></span>
 	</li>
 </ul>
+
+<!-- Comments -->
+<?php
+	echo $this->element('fb_root');
+	echo $this->element('fb_comments', array('commentUrl'=>Router::url(null, true)));
+?>

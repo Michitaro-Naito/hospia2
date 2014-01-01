@@ -143,7 +143,7 @@ class HomeController extends AppController {
 	 * Old: /foo?wam_id=123
 	 * New: /foo/123
 	 * @param path to redirect like /foo/
-	 * @return wam_id if not redirected.
+	 * @return wam_id
 	 */
 	private function _RedirectIfOldUrl($path){
 		$wamId = $this->request->params['wam_id'];
