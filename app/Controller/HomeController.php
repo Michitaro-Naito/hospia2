@@ -89,7 +89,7 @@ class HomeController extends AppController {
 	 * 医療機関IDと会計年度から診療実績を検索表示
 	 */
 	public function Hosdetail(){
-		$wamId = $_REQUEST['wam_id'];
+		$wamId = $this->_RedirectIfOldUrl('/hosdetail/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
 		
@@ -106,7 +106,7 @@ class HomeController extends AppController {
 	 * ある医療機関と、近隣の医療機関もしくは患者数の多い医療機関を比較表示する。
 	 */
 	public function Hoscmp(){
-		$wamId = $_REQUEST['wam_id'];
+		$wamId = $this->_RedirectIfOldUrl('/hoscmp/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
 		
@@ -126,7 +126,7 @@ class HomeController extends AppController {
 	 * ある病院の基本情報を表示する。
 	 */
 	public function Hosinfo(){
-		$wamId = $_REQUEST['wam_id'];
+		$wamId = $this->_RedirectIfOldUrl('/hosinfo/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
 		
@@ -136,5 +136,21 @@ class HomeController extends AppController {
 			'hospital'=>$hospital,
 			'hospitalsNearby'=>$this->Data->GetHospitalsNearby($hospital)
 		));
+	}
+	
+	/**
+	 * Redirects if old url specified.
+	 * Old: /foo?wam_id=123
+	 * New: /foo/123
+	 * @param path to redirect like /foo/
+	 * @return wam_id if not redirected.
+	 */
+	private function _RedirectIfOldUrl($path){
+		$wamId = $this->request->params['wam_id'];
+		if(empty($wamId) && !empty($_REQUEST['wam_id'])){
+			$wamId = $_REQUEST['wam_id'];
+			$this->redirect($path . $wamId);
+		}
+		return $wamId;
 	}
 }
