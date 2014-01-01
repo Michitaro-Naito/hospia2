@@ -1,6 +1,10 @@
 <?php
 // app/Model/User.php
 class User extends AppModel {
+	
+	//Act as Soft Deletable...
+	public $actsAs = array('CakeSoftDelete.SoftDeletable');
+	
     public $validate = array(
         'username' => array(
             'required' => array(

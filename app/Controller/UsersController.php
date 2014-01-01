@@ -2,7 +2,7 @@
 // app/Controller/UsersController.php
 class UsersController extends AppController {
 	public $components = array('Auth');
-
+	
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('add');
@@ -59,7 +59,7 @@ class UsersController extends AppController {
 
     public function delete($id = null) {
         if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException();
+            throw new MethodNotAllowedException(); //Disable this to test delete.
         }
         $this->User->id = $id;
         if (!$this->User->exists()) {
