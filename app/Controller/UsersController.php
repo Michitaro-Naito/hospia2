@@ -24,13 +24,19 @@ class UsersController extends AppController {
     public function add() {
         if ($this->request->is('post')) {
             $this->User->create();
+            
+            $this->request['role'] = 'basic'; //Users role will always be basic for the moment.
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
+                $this->Session->setFlash(__('Registration Successful'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
+                $this->Session->setFlash(__('Something went wrong with your Registration. Please, try again.'));
             }
         }
+        
+        //All logged in users should not be able to access registration.
+        //Later this can be changed to allow admins to add new users including new admins.
+        if ($this->Auth->loggedIn()) { $this->redirect(array('action' => 'index')); }
     }
 
     public function edit($id = null) {

@@ -54,6 +54,19 @@
           	?>
           		<li class="<?php if(FALSE) echo 'active'; ?>"><?php echo $this->Html->link($key, $value); ?></li>
           	<?php endforeach; ?>
+          	
+          	<?php
+          	//Login/Logout/Register
+          		//If user is logged in display logout, else display register/login.
+          		if($this->Session->read('Auth.User')) {
+          		?>
+          		<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
+          		<?php
+          		} else {
+          		?>
+          		<li><?php echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'add')); ?></li>
+          		<li><?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?></li>
+          		<?php } ?>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

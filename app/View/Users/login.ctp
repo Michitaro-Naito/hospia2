@@ -8,4 +8,13 @@
     ?>
     </fieldset>
 <?php echo $this->Form->end(__('Login')); ?>
+<?php 
+	echo __('No Account? '); 
+	echo $this->Html->link(
+         	'Register <span class="glyphicon glyphicon-pencil"></span>', 
+         	array('controller' => 'users', 'action' => 'add'),
+         	array('escape' => false)
+    );
+    // ^^ Escape ->false allows you to add a span glyphicon to a link without it being escaped
+?>
 </div>
