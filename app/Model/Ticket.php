@@ -1,4 +1,6 @@
-<?php 
+<?php
+//http://bakery.cakephp.org/articles/eimermusic/2007/10/23/ticket-component-resetting-user-passwords
+//https://groups.google.com/forum/#!topic/cake-php/MDSLHOJ8vNM
 class Ticket extends AppModel {
     var $name = 'Ticket';   
     
