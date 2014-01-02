@@ -45,7 +45,7 @@ class EmailConfig {
 	);
 
 	//SET HOSPIA SMTP HERE
-	public $smtp = array(
+	/*public $smtp = array(
 		'transport' => 'Smtp',
 		'from' => array('site@localhost' => 'My Site'),
 		'host' => 'localhost',
@@ -57,6 +57,18 @@ class EmailConfig {
 		'log' => false,
 		//'charset' => 'utf-8',
 		//'headerCharset' => 'utf-8',
+	);*/
+	
+	public $smtp = array(
+		'transport' => 'Smtp',
+		'from' => array('do-not-reply@hospia.com' => 'Hospia'),
+		'host' => 'ssl://smtp.lolipop.jp',
+		'port' => 465,
+		'timeout' => 30,
+		'username' => 'hospia-debug@amlitek.com',
+		'password' => 'Qom72demean',
+		'client' => null,
+		'log' => false,
 	);
 	
 	public $fast = array(
