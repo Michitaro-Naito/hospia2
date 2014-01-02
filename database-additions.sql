@@ -15,3 +15,10 @@ CREATE TABLE `tickets` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `hashs` (`hash`)
 ) 
+
+CREATE TABLE `favorite_hospitals` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+)

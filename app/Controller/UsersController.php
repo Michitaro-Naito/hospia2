@@ -24,8 +24,8 @@ class UsersController extends AppController {
     public function add() {
         if ($this->request->is('post')) {
             $this->User->create();
-            $this->request['role'] = 'basic'; //Users role will always be basic for the moment.
-            $this->request['active'] = 0; //User will be inactive untill they confirm email.
+            $this->request->data['User']['role'] = 'basic'; //Users role will always be basic for the moment.
+            $this->request->data['User']['active'] = 0; //User will be inactive untill they confirm email.
             if ($this->User->save($this->request->data)) {
             	//**Ticket Logic**
             	$user_email = $this->request->data['User']['email'];
