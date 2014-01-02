@@ -44,6 +44,7 @@ class EmailConfig {
 		//'headerCharset' => 'utf-8',
 	);
 
+	//SET HOSPIA SMTP HERE
 	public $smtp = array(
 		'transport' => 'Smtp',
 		'from' => array('site@localhost' => 'My Site'),
