@@ -115,6 +115,9 @@ class UsersController extends AppController {
 		public function Subscribe(){
 			$this->JWTData = $this->Components->load('JWTData');
 			
+			// Makes sure that Cache is cleared to view this page.
+			$this->IsPremiumUser(true);
+			
 			// Get active subscriptions
 			$this->User->bindModel(array(
 				'hasMany'=>array(
