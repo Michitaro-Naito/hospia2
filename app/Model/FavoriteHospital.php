@@ -5,9 +5,12 @@ class FavoriteHospital extends AppModel {
 	public $name = 'FavoriteHospital';
 	public $useTable = 'favorite_hospitals';
 	
-	public $belongsTo = 'User';
-	
-	public $hasAndBelongsToMany = 'Hospital';
+	var $hasAndBelongsToMany = array(
+  		'Hospital' => array(
+    		'className' => 'Hospital',
+    		'unique' => false
+  		)
+	);
 	
 	public $validate = array(
         'user_id' => array(
@@ -26,9 +29,13 @@ class FavoriteHospital extends AppModel {
     }
     
     public function addHospital($gid, $hid) {
+    	
     	$this->data['Hospital']['id'] = $hid;
 		$this->data['FavoriteHospital']['id'] = $gid;
-		$this->save($this->data);
+		    	
+		if($this->save($this->data)){return true;}
+		
+		return false;
     }
 }
 

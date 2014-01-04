@@ -43,3 +43,10 @@ create table subscription(
   order_id varchar(255) unique comment '注文ID',
   product_id varchar(255) comment '製品ID'
 )engine=innodb comment = '現在有効なサブスクリプション(月額課金)';
+
+CREATE TABLE `favorite_hospital_hospital` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hospital_id` int(11) NOT NULL,
+  `favorite_hospital_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+)
