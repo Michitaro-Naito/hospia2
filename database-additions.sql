@@ -30,8 +30,8 @@ create table transaction(
   payload longtext comment 'デコードされたJWT',
   typ varchar(255) comment 'トランザクションの種類',
   user_id int comment '購入者のユーザーID',
-  username varchar(255) comment '購入者のユーザー名',
-  display_name varchar(255) comment '購入者の表示名',
+  username varchar(50) comment '購入者のユーザー名',
+  display_name varchar(50) comment '購入者の表示名',
   email varchar(255) comment '購入者のメールアドレス',
   order_id varchar(255) comment '注文ID',
   product_id varchar(255) comment '製品ID'
