@@ -1,7 +1,8 @@
 <?php
 
 class FavoriteHospital extends AppModel {
-	
+	public $actsAs = array('Containable');
+	 
 	public $name = 'FavoriteHospital';
 	public $useTable = 'favorite_hospitals';
 	
@@ -29,7 +30,7 @@ class FavoriteHospital extends AppModel {
     }
     
     public function addHospital($gid, $hid) {
-    	
+		    						
     	$this->data['Hospital']['id'] = $hid;
 		$this->data['FavoriteHospital']['id'] = $gid;
 		    	

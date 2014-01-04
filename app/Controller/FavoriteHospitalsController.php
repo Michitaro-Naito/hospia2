@@ -64,25 +64,32 @@ class FavoriteHospitalsController extends AppController {
     }
     
     public function addHospital($gid = null, $hid = null) {
-    	//$hid = 1010111085;
-    	//$gid = 3;
-    	/*$this->data['FavoriteHospital']['id'] = $gid;
-		$this->data['Hospital']['id'] = $hid;
+    	//tested with hid = 1010111085 and hid1010112489
 
-		$this->FavoriteHospital->save($this->data);*/
-    	/*$conditions = array("Post.title" => "This is a post", "Post.author_id" => 1);
-		// Example usage with a model:
-		$this->Post->find('first', array('conditions' => $conditions));*/
-    	
     	$favhos = $this->FavoriteHospital->find('first',array('conditions'=>array('FavoriteHospital.id'=> $gid)));
+
     	if($favhos['FavoriteHospital']['user_id'] != $this->Auth->user('id'))
     	{
-            $this->Session->setFlash($favhos['FavoriteHospital']['user_id'].'Not your hospital Group.'.$this->Auth->user('id'));
+            $this->Session->setFlash('Not your hospital Group.');
             $this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
         }
         else {
-        	$this->FavoriteHospital->addHospital($gid, $hid);
-        	$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        	$this->loadModel('Hospital');
+    		$hos = $this->Hospital->find('count',array('conditions'=>array('Hospital.wam_id'=> $hid)));
+    		if($hos){
+        		if($this->FavoriteHospital->addHospital($gid, $hid)){
+        			$this->Session->setFlash('Hospital Added To Group');
+        			$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        		}
+        		else {
+        			$this->Session->setFlash('Adding Hospital To Group Failed');
+        			$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        		}
+        	}
+        	else {
+        		$this->Session->setFlash('No Such Hospital Exists');
+        		$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        	}
         }
     }
     
