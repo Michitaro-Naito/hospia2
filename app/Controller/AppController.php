@@ -52,28 +52,13 @@ class AppController extends Controller {
 	/**
 	 * Returns true if current User is Premium.
 	 * Otherwise, returns false.
-	 * Caches result using Session.
-	 * @param bool $clearCache Clears cache if true.
+	 * TODO: Cache
 	 */
-	public function IsPremiumUser($clearCache = false){
-		$result = $this->_IsPremiumUser($clearCache);
-		$this->isPremiumUser = $result;
-		$this->set('isPremiumUser', $this->isPremiumUser);
-	}
-	private function _IsPremiumUser($clearCache = false){
-		// Logged in?
+	private function _IsPremiumUser(){
 		$this->Auth = $this->Components->load('Auth');
 		if(!$this->Auth->loggedIn())
 			return false;
 		
-		if(!$clearCache){
-			// Uses cached value if available
-			$sessionValue = $this->Session->read('Auth.User.IsPremium');
-			if($sessionValue !== null && $sessionValue['expires'] > time())
-				return $sessionValue['value'];
-		}
-		
-		// Desides from database
 		$this->User = ClassRegistry::init('User');
 		$this->User->bindModel(array(
 			'hasMany'=>array(
@@ -89,19 +74,13 @@ class AppController extends Controller {
 				break;
 			}
 		}
-		
-		// Caches to Session
-		$this->Session->write('Auth.User.IsPremium', array(
-			'value' => $result,
-			'expires' => time() + 300
-		));
-		
 		return $result;
 	}
 	
 	public function beforeFilter(){
 		// ブラウザキャッシュを無効にする
 		$this->disableCache();
-		$this->IsPremiumUser();
+		$this->isPremiumUser = $this->_IsPremiumUser();
+		$this->set('isPremiumUser', $this->isPremiumUser);
 	}
 }
