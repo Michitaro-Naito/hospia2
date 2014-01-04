@@ -214,6 +214,8 @@ class DataComponent extends Component {
 				'Hospital.wam_id'=>$wamId
 			)
 		));
+		$hospital['MinFiscalYear'] = intval($minFiscalYear);
+		$hospital['MaxFiscalYear'] = intval($maxFiscalYear);
 		return $hospital;
 	}
 

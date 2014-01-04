@@ -145,10 +145,27 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareMdcsByYear($wamId){
+		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
+		$chartData = array();
+		for($year = $hospital['MinFiscalYear']; $year<=$hospital['MaxFiscalYear']; $year++){
+			array_push($chartData, array(
+				'year'=>$year
+			));
+		}
+		foreach($hospital['Dpc'] as $d){
+			$row = &$chartData[intval($d['fiscal_year'])-$hospital['MinFiscalYear']];
+			foreach($displayTypesForDpc as $type){
+				$row[$d['mdc_cd'].'.'.$type['id']] = $d[$type['id']];
+			}
+		}
+		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
-			'hospital'=>$hospital
+			'chartData'=>$chartData,
+			//'hospital'=>$hospital,
+			'mdcs'=>$this->Data->GetMdcs(),
+			'displayTypesForDpc'=>$displayTypesForDpc,
 		));
 	}
 	
