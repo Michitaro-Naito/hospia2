@@ -108,6 +108,32 @@ class UsersController extends AppController {
 		    $this->redirect($this->Auth->logout());
 		}
 		
+		/**
+		 * User can begin to subscribe (pay monthly) to access advanced features.
+		 * User also can see active subscriptions here.
+		 */
+		public function Subscribe(){
+			$this->JWTData = $this->Components->load('JWTData');
+			
+			// Get active subscriptions
+			$this->User->bindModel(array(
+				'hasMany'=>array(
+					'Subscription'=>array()
+				)
+			));
+			$this->User->id = $this->Auth->user('id');
+			$user = $this->User->read();
+			
+			// Get JWT (User uses it to begin to subscribe)
+			$jwt = $this->JWTData->GeneratePremiumSubscriptionJWT(intval($user['User']['id']), $user['User']['username'], $user['User']['displayname'], $user['User']['email']);
+			
+			// Pass data to View
+			$this->set('dat', array(
+				'user' => $user,
+				'jwt' => $jwt
+			));
+		}
+		
 		//Activation for email confirmation.
 		function activate($hash = null) { 
 			$this->Ticket = ClassRegistry::init('Ticket'); //Issue with $this->loadModel('Ticket');
