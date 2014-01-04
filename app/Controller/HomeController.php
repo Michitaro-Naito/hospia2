@@ -139,6 +139,20 @@ class HomeController extends AppController {
 	}
 	
 	/**
+	 * 過年度比較機能
+	 * Compares hospital's MDCs by Fiscal Year.
+	 * Displayed as a chart.
+	 * Premium User only.
+	 */
+	public function CompareMdcsByYear($wamId){
+		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
+		$this->set('dat', array(
+			'wamId'=>$wamId,
+			'hospital'=>$hospital
+		));
+	}
+	
+	/**
 	 * Redirects if old url specified.
 	 * Old: /foo?wam_id=123
 	 * New: /foo/123
