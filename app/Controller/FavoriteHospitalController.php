@@ -55,9 +55,42 @@ class FavoriteHospitalController extends AppController {
         }
     }
     
-    public function addHospital($id = null) {
-    	$hid = 1010111085;
-    	$gid = 3;
+    public function view($id = null) {
+        $this->FavoriteHospital->id = $id;
+        if (!$this->FavoriteHospital->exists()) {
+            throw new NotFoundException(__('Invalid user'));
+        }
+        $this->set('fh', $this->FavoriteHospital->read(null, $id));
+    }
+    
+    public function addHospital($gid = null, $hid = null) {
+    	//$hid = 1010111085;
+    	//$gid = 3;
+    	$favhos = $this->FavoriteHospital->find('first',array('conditions'=>array('FavoriteHospital.id'=> $gid)));
+    	if($favhos['FavoriteHospital']['user_id'] != $this->Auth->user('id'))
+    	{
+            $this->Session->setFlash('Not your hospital Group.');
+            $this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        }
+        else {
+        	$this->FavoriteHospital->addHospital($gid, $hid);
+        	$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        }
+    }
+    
+    public function deleteHospital($gid = null, $hid = null) {
+    	//$hid = 1010111085;
+    	//$gid = 3;
+    	/*$favhos = $this->FavoriteHospital->find('first',array('conditions'=>array('FavoriteHospital.id'=> $gid)));
+    	if($favhos['FavoriteHospital']['user_id'] != $this->Auth->user('id'))
+    	{
+            $this->Session->setFlash('Not your hospital Group.');
+            $this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        }
+        else {
+        	$this->FavoriteHospital->addHospital($gid, $hid);
+        	$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        }*/
     }
 		
 }

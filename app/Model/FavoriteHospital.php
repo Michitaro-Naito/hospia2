@@ -28,7 +28,7 @@ class FavoriteHospital extends AppModel {
     public function addHospital($gid, $hid) {
     	$this->data['Hospital']['id'] = $hid;
 		$this->data['FavoriteHospital']['id'] = $gid;
-		$this->FavoriteHospital->save($this->data);
+		$this->save($this->data);
     }
 }
 
