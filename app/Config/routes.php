@@ -40,6 +40,7 @@
 	Router::connect('/hoscmp/:wam_id', array('controller'=>'home', 'action'=>'hoscmp'));
 	Router::connect('/hosinfo', array('controller'=>'home', 'action'=>'hosinfo'));
 	Router::connect('/hosinfo/:wam_id', array('controller'=>'home', 'action'=>'hosinfo'));
+	Router::connect('/GoogleWalletPostback', array('controller'=>'Transaction', 'action'=>'GoogleWalletPostback'));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

@@ -177,3 +177,10 @@ Configure::write('cmplst', array(
 	'complex@dpc'				=> '患者構成指標',
 	'efficiency@dpc'		=> '在院日数指標'
 ));
+
+// Google Wallet
+Configure::write('GoogleWallet_SellerId', '04806629248295947480');
+Configure::write('GoogleWallet_SellerSecret', 'xzFzun3WgEG6nAc1x0rtOQ');
+
+// Product ID
+Configure::write('ProductId_PremiumSubscription', 'jp.hospia.premium_subscription');

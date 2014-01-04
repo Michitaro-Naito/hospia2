@@ -22,3 +22,24 @@ CREATE TABLE `favorite_hospitals` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 )
+
+create table transaction(
+  id int primary key auto_increment,
+  created datetime comment '作成日時',
+  jwt longtext comment '受信されたJWT',
+  payload longtext comment 'デコードされたJWT',
+  typ varchar(255) comment 'トランザクションの種類',
+  user_id int comment '購入者のユーザーID',
+  username varchar(255) comment '購入者のユーザー名',
+  display_name varchar(255) comment '購入者の表示名',
+  email varchar(255) comment '購入者のメールアドレス',
+  order_id varchar(255) comment '注文ID',
+  product_id varchar(255) comment '製品ID'
+)engine=innodb comment = 'トランザクション(記録のみ)';
+
+create table subscription(
+  id int primary key auto_increment,
+  user_id int comment '購入者のユーザーID',
+  order_id varchar(255) unique comment '注文ID',
+  product_id varchar(255) comment '製品ID'
+)engine=innodb comment = '現在有効なサブスクリプション(月額課金)';
