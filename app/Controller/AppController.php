@@ -37,6 +37,7 @@ class AppController extends Controller {
 	
 	// Define Sitewide Components all controllers... 
 	public $components = array( 'Session' );
+	public $isPremiumUser = false;
 	
 	//Function to check if current user is Admin, useful later.
 	public function isAuthorized($user) {
@@ -48,8 +49,38 @@ class AppController extends Controller {
     	return false;
 	}
 	
+	/**
+	 * Returns true if current User is Premium.
+	 * Otherwise, returns false.
+	 * TODO: Cache
+	 */
+	private function _IsPremiumUser(){
+		$this->Auth = $this->Components->load('Auth');
+		if(!$this->Auth->loggedIn())
+			return false;
+		
+		$this->User = ClassRegistry::init('User');
+		$this->User->bindModel(array(
+			'hasMany'=>array(
+				'Subscription'=>array()
+			)
+		));
+		$this->User->id = $this->Auth->user('id');
+		$user = $this->User->read();
+		$result = false;
+		foreach($user['Subscription'] as $s){
+			if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
+				$result = true;
+				break;
+			}
+		}
+		return $result;
+	}
+	
 	public function beforeFilter(){
 		// ブラウザキャッシュを無効にする
 		$this->disableCache();
+		$this->isPremiumUser = $this->_IsPremiumUser();
+		$this->set('isPremiumUser', $this->isPremiumUser);
 	}
 }
