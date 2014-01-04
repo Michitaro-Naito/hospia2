@@ -41,26 +41,15 @@ class TransactionController extends AppController{
 					// Invalid Product ID
 					return;
 				}
-				// Find User
-				$this->User = ClassRegistry::init('User');
-				$this->User->bindModel(array(
-					'hasMany'=>array(
-						'Subscription'=>array(
-						)
-					)
-				), false);
-				$this->User->id = $userId;
-				$this->User->read();
-				//debug($this->User->data);
-				// Change state of Subscription
-				array_push(
-					$this->User->data['Subscription'],
-					array(
+				$this->Subscription = ClassRegistry::init('Subscription');
+				$this->Subscription->create(array(
+					'Subscription'=>array(
+						'user_id'=>$userId,
 						'order_id'=>$orderId,
 						'product_id'=>$productId
 					)
-				);
-				$this->User->saveAll();
+				));
+				$this->Subscription->save();
 				// Record detailed Transaction
 				$this->Transaction->data['Transaction']['user_id'] = $userId;
 				$this->Transaction->data['Transaction']['username'] = $payload->request->sellerData->username;

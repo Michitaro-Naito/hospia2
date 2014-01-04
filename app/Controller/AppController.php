@@ -37,6 +37,7 @@ class AppController extends Controller {
 	
 	// Define Sitewide Components all controllers... 
 	public $components = array( 'Session' );
+	public $isPremiumUser = false;
 	
 	//Function to check if current user is Admin, useful later.
 	public function isAuthorized($user) {
@@ -48,8 +49,61 @@ class AppController extends Controller {
     	return false;
 	}
 	
+	/**
+	 * Returns true if current User is Premium.
+	 * Otherwise, returns false.
+	 * Caches result using Session.
+	 * @param bool $clearCache Clears cache if true.
+	 */
+	public function IsPremiumUser($clearCache = false){
+		$result = $this->_IsPremiumUser($clearCache);
+		$this->isPremiumUser = $result;
+		$this->set('isPremiumUser', $this->isPremiumUser);
+	}
+	private function _IsPremiumUser($clearCache = false){
+		// Logged in?
+		$this->Auth = $this->Components->load('Auth');
+		$this->Auth->initialize($this);
+		if(!$this->Auth->loggedIn())
+			return false;
+		
+		if(!$clearCache){
+			// Uses cached value if available
+			$sessionValue = $this->Session->read('Auth.User.IsPremium');
+			if($sessionValue !== null && $sessionValue['expires'] > time())
+				return $sessionValue['value'];
+		}
+		
+		// Desides from database
+		$this->User = ClassRegistry::init('User');
+		$this->User->bindModel(array(
+			'hasMany'=>array(
+				'Subscription'=>array()
+			)
+		));
+		$this->User->id = $this->Auth->user('id');
+		$user = $this->User->read();
+		$result = false;
+		foreach($user['Subscription'] as $s){
+			if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
+				$result = true;
+				break;
+			}
+		}
+		
+		// Caches to Session
+		$this->Session->write('Auth.User.IsPremium', array(
+			'value' => $result,
+			'expires' => time() + 300
+		));
+		
+		return $result;
+	}
+	
 	public function beforeFilter(){
 		// ブラウザキャッシュを無効にする
 		$this->disableCache();
+		$this->IsPremiumUser();
+		$this->Auth->allow();
 	}
 }
