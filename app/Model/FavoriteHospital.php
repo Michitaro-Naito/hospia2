@@ -7,7 +7,7 @@ class FavoriteHospital extends AppModel {
 	
 	public $belongsTo = 'User';
 	
-	//public $hasAndBelongsToMany = 'Hospital';
+	public $hasAndBelongsToMany = 'Hospital';
 	
 	public $validate = array(
         'user_id' => array(
@@ -23,6 +23,12 @@ class FavoriteHospital extends AppModel {
             'conditions' => $check
         ));
         return $existing_groups_count < $limit;
+    }
+    
+    public function addHospital($gid, $hid) {
+    	$this->data['Hospital']['id'] = $hid;
+		$this->data['FavoriteHospital']['id'] = $gid;
+		$this->FavoriteHospital->save($this->data);
     }
 }
 
