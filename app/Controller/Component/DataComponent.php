@@ -189,6 +189,35 @@ class DataComponent extends Component {
 		if(empty($hospital)) return null;
 		return $hospital;
 	}
+	
+	/**
+	 * 過去7年間のDPCを全て含めて病院のデータを取得する。
+	 * Hospital has many DPCs
+	 */
+	public function GetHospitalWithDpcs($wamId){
+		$maxFiscalYear = $this->GetFiscalYear();
+		$minFiscalYear = $maxFiscalYear - 6;
+		$this->Hospital = ClassRegistry::init('Hospital');
+		$this->Hospital->bindModel(array(
+			'hasMany'=>array(
+				'Dpc'=>array(
+					'foreignKey'=>'wam_id',
+					'conditions'=>array(
+						'fiscal_year <='=>$maxFiscalYear,
+						'fiscal_year >='=>$minFiscalYear
+					)
+				)
+			)
+		));
+		$hospital = $this->Hospital->find('first', array(
+			'conditions'=>array(
+				'Hospital.wam_id'=>$wamId
+			)
+		));
+		$hospital['MinFiscalYear'] = intval($minFiscalYear);
+		$hospital['MaxFiscalYear'] = intval($maxFiscalYear);
+		return $hospital;
+	}
 
 	/**
 	 * Hospital, Dpc, Jcqhc, Areaテーブルから医療機関一覧を検索取得する。

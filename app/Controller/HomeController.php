@@ -139,6 +139,37 @@ class HomeController extends AppController {
 	}
 	
 	/**
+	 * 過年度比較機能
+	 * Compares hospital's MDCs by Fiscal Year.
+	 * Displayed as a chart.
+	 * Premium User only.
+	 */
+	public function CompareMdcsByYear($wamId){
+		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
+		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
+		$chartData = array();
+		for($year = $hospital['MinFiscalYear']; $year<=$hospital['MaxFiscalYear']; $year++){
+			array_push($chartData, array(
+				'year'=>$year
+			));
+		}
+		foreach($hospital['Dpc'] as $d){
+			$row = &$chartData[intval($d['fiscal_year'])-$hospital['MinFiscalYear']];
+			foreach($displayTypesForDpc as $type){
+				$row[$d['mdc_cd'].'.'.$type['id']] = $d[$type['id']];
+			}
+		}
+		
+		$this->set('dat', array(
+			'wamId'=>$wamId,
+			'chartData'=>$chartData,
+			//'hospital'=>$hospital,
+			'mdcs'=>$this->Data->GetMdcs(),
+			'displayTypesForDpc'=>$displayTypesForDpc,
+		));
+	}
+	
+	/**
 	 * Redirects if old url specified.
 	 * Old: /foo?wam_id=123
 	 * New: /foo/123
