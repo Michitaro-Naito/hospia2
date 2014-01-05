@@ -94,15 +94,20 @@ class FavoriteHospitalsController extends AppController {
     
     public function deleteHospital($gid = null, $hid = null) {
 		$favhos = $this->FavoriteHospital->find('first',array('conditions'=>array('FavoriteHospital.id'=> $gid)));
-		
+
     	if($favhos['FavoriteHospital']['user_id'] != $this->Auth->user('id'))
     	{
             $this->Session->setFlash('Not your hospital Group.');
             $this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
         }
         else {
-        	$this->FavoriteHospital->deleteHospital($gid, $hid);
-        	$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+			if($this->FavoriteHospital->deleteHospital($gid, $hid)){
+        		$this->Session->setFlash('Hospital Removed From Group');
+        		$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        	} else {
+        		$this->Session->setFlash('Removing Hospital Failed');
+        		$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
+        	}	
         }
     }
 		
