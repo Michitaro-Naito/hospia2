@@ -837,4 +837,58 @@ class DataComponent extends Component {
 			}
 		}
 	}
+
+	/*
+	 * 記事のIDを元に投稿記事のデータを検索取得する。
+	 */
+	public function GetPostsByPostId($postId){
+
+		// 投稿記事用のModelを取得する
+		$this->Post = ClassRegistry::init('Post');
+
+		// 投稿記事の検索条件を設定する
+		$cond = array();
+		$cond['Post.status'] = 'publish';
+		$cond['Post.category'] = array('topics', 'info', 'month', 'ranking');
+		if(isset($postId)) $cond['Post.post_id'] = $postId;
+
+		// 並び順を設定する
+		$order = array('Post.ID'=>'asc');
+
+		// 投稿記事を取得
+		$posts = $this->Post->find('all', array(
+			'conditions'=>$cond,
+			'order'=>$order
+		));
+
+		// 取得した投稿記事一覧を呼び出し元に返す
+		return $posts;
+	}
+
+	/**
+	 * 記事のカテゴリを元に投稿記事のデータを検索取得する。
+	 */
+	public function GetPostsByCategory($category){
+
+		// 投稿記事用のModelを取得する
+		$this->Post = ClassRegistry::init('Post');
+
+		// 投稿記事の検索条件を設定する
+		$cond = array();
+		$cond['Post.status'] = 'publish';
+		if(isset($category)) $cond['Post.category'] = $category;
+
+		// 並び順を設定する
+		$order = array('Post.created'=>'desc');
+
+		// 投稿記事を取得
+		$posts = $this->Post->find('all', array(
+			'conditions'=>$cond,
+			'order'=>$order,
+			'limit'=>30
+		));
+
+		// 取得した投稿記事一覧を呼び出し元に返す
+		return $posts;
+	}
 }

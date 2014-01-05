@@ -41,6 +41,7 @@
 	Router::connect('/hosinfo', array('controller'=>'home', 'action'=>'hosinfo'));
 	Router::connect('/hosinfo/:wam_id', array('controller'=>'home', 'action'=>'hosinfo'));
 	Router::connect('/GoogleWalletPostback', array('controller'=>'Transaction', 'action'=>'GoogleWalletPostback'));
+	Router::connect('/wp/:action/*', array('controller'=>'post'));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

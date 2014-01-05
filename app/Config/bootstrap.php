@@ -184,3 +184,12 @@ Configure::write('GoogleWallet_SellerSecret', 'xzFzun3WgEG6nAc1x0rtOQ');
 
 // Product ID
 Configure::write('ProductId_PremiumSubscription', 'jp.hospia.premium_subscription');
+
+// 投稿記事：Archives 記事カテゴリ表示名
+Configure::write('categoryDisp', array(
+	'topics' => '情報活用の視点',
+	'info' => 'お知らせ',
+	'month' => '特集',
+	'ranking' => '各種ランキング',
+	'policy' => 'サイトポリシー'
+));
