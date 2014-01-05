@@ -64,8 +64,9 @@ class FavoriteHospitalsController extends AppController {
     }
     
     public function addHospital($gid = null, $hid = null) {
-    	//tested with hid = 1010111085 and hid1010112489
-
+    	//tested with hid = 1010111085 and hid = 1010112489
+		//http://localhost:8888/hospia2/favoritehospitals/addHospital/3/1010111085
+		
     	$favhos = $this->FavoriteHospital->find('first',array('conditions'=>array('FavoriteHospital.id'=> $gid)));
 
     	if($favhos['FavoriteHospital']['user_id'] != $this->Auth->user('id'))
@@ -80,13 +81,11 @@ class FavoriteHospitalsController extends AppController {
         		if($this->FavoriteHospital->addHospital($gid, $hid)){
         			$this->Session->setFlash('Hospital Added To Group');
         			$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
-        		}
-        		else {
+        		} else {
         			$this->Session->setFlash('Adding Hospital To Group Failed');
         			$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
         		}
-        	}
-        	else {
+        	} else {
         		$this->Session->setFlash('No Such Hospital Exists');
         		$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
         	}
