@@ -63,6 +63,23 @@ class FavoriteHospitalsController extends AppController {
         $this->set('fh', $this->FavoriteHospital->read(null, $id));
     }
     
+    public function delete($id = null) {
+        if (!$this->request->is('post')) {
+            throw new MethodNotAllowedException(); //Disable this to test delete.
+        }
+        $this->FavoriteHospital->id = $id;
+        if (!$this->FavoriteHospital->exists()) {
+            throw new NotFoundException(__('Invalid Group'));
+        }
+        if ($this->FavoriteHospital->delete()) {
+            $this->Session->setFlash(__('Group deleted'));
+            $this->redirect(array('action' => 'index'));
+        }
+        $this->Session->setFlash(__('Group was not deleted'));
+        $this->redirect(array('action' => 'index'));
+    }
+    
+
     public function addHospital($gid = null, $hid = null) {
     	//tested with hid = 1010111085 and hid = 1010112489
 		//http://localhost:8888/hospia2/favoritehospitals/addHospital/3/1010111085
