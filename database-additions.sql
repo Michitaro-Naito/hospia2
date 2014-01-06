@@ -50,3 +50,15 @@ CREATE TABLE `favorite_hospitals_hospital` (
   `favorite_hospital_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 )
+
+CREATE TABLE IF NOT EXISTS `post` (
+  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'レコードの識別ID',
+  `post_id` bigint(20) unsigned NOT NULL COMMENT '記事の識別ID',
+  `title` text NOT NULL COMMENT '記事のタイトル',
+  `content` longtext NOT NULL COMMENT '記事の内容',
+  `category` varchar(20) NOT NULL DEFAULT 'topic' COMMENT '記事の種類(情報活用の視点・特集・お知らせ・各種ランキング・サイトポリシー)',
+  `status` varchar(20) NOT NULL DEFAULT 'private' COMMENT '記事の公開ステータス(公開・非公開・削除)',
+  `created` datetime DEFAULT NULL COMMENT '記事の作成日(UTC時刻)',
+  `modified` datetime DEFAULT NULL COMMENT '記事の更新日(UTC時刻)',
+  PRIMARY KEY (`ID`)
+) ENGINE=INNODB  DEFAULT CHARSET=utf8 ;
