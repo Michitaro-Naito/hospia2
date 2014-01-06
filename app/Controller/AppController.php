@@ -50,6 +50,16 @@ class AppController extends Controller {
 	}
 	
 	/**
+	 * Returns true if current User is Admin.
+	 * Otherwise, returns false.
+	 */
+	public function IsAdmin(){
+		if(!$this->Auth->loggedIn())
+			return false;
+		return $this->Auth->user('role') === 'admin';
+	}
+	
+	/**
 	 * Returns true if current User is Premium.
 	 * Otherwise, returns false.
 	 * Caches result using Session.
