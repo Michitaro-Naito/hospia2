@@ -26,8 +26,19 @@ class PostController extends AppController {
 		}else{
 			if($this->Post->save($this->data)){
 				$this->Session->setFlash('Saved!');
-				$this->redirect('/Post');
+				return $this->redirect('/Post');
 			}
+		}
+	}
+	
+	/**
+	 * 記事無効化
+	 * Disables a post. Admin only.
+	 */
+	public function Disable($id = null){
+		if($this->request->isPost()){
+			$this->Post->delete($id, false);
+			return $this->redirect('/Post');
 		}
 	}
 

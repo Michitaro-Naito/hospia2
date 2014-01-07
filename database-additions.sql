@@ -69,3 +69,5 @@ create table file(
 	created datetime not null comment '作成日時',
 	modified datetime not null comment '編集日時'
 ) comment 'アップロードされたファイルの名称';
+
+alter table post add deleted datetime null after modified;
