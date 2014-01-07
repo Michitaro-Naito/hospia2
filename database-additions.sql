@@ -62,3 +62,10 @@ CREATE TABLE IF NOT EXISTS `post` (
   `modified` datetime DEFAULT NULL COMMENT '記事の更新日(UTC時刻)',
   PRIMARY KEY (`ID`)
 ) ENGINE=INNODB  DEFAULT CHARSET=utf8 ;
+
+create table file(
+	id int primary key auto_increment,
+	name varchar(255) unique not null comment'ファイル名',
+	created datetime not null comment '作成日時',
+	modified datetime not null comment '編集日時'
+) comment 'アップロードされたファイルの名称';

@@ -6,6 +6,7 @@ app/[Cc]onfig/database.php
 # Automatically generated files #
 #################################
 app/tmp/*
+app/webroot/files/*
 
 # OS generated files #
 ######################

@@ -2,3 +2,4 @@ cp -r app/tmp.default app/tmp
 chmod -R 777 app/tmp
 cp app/Config/core.php.default app/Config/core.php
 cp app/Config/database.php.default app/Config/database.php
+chmod -R 777 app/webroot/files
