@@ -1,12 +1,34 @@
 <?php
 class PostController extends AppController {
-
 	public $components = array('Data');
-
+	
 	/**
-	 * トップページ
+	 * 記事一覧
+	 * Admin only.
 	 */
 	public function Index() {
+		$this->paginate = array(
+			'fields'=>array('Post.id', 'Post.title'),
+			'order'=>array('Post.ID'=>'desc'),
+			'limit'=>50,
+		);
+		$posts = $this->paginate('Post');
+		$this->set('posts', $posts);
+	}
+	
+	/**
+	 * 記事編集
+	 * Admin only.
+	 */
+	public function Edit($id = null){
+		if(empty($this->data)){
+			$this->data = $this->Post->findById($id);
+		}else{
+			if($this->Post->save($this->data)){
+				$this->Session->setFlash('Saved!');
+				$this->redirect('/Post');
+			}
+		}
 	}
 
 	/**
