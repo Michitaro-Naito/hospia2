@@ -62,6 +62,37 @@ class DataComponent extends Component {
 		));
 		return $dpcs;
 	}
+	
+	/**
+	 * Dpcテーブルから指定された複数の病院の診療実績を取得する。
+	 */
+	public function GetDpcsByIdsAndMdc($ids, $mdcId){
+		$maxFiscalYear = $this->GetFiscalYear();
+		$minFiscalYear = $maxFiscalYear-6;
+		$this->Dpc = ClassRegistry::init('Dpc');
+		$dpcs = $this->Dpc->find('all', array(
+			'conditions'=>array(
+				'Dpc.wam_id'=>$ids,
+				'Dpc.mdc_cd'=>$mdcId,
+				'Dpc.fiscal_year >='=>$minFiscalYear,
+				'Dpc.fiscal_year <='=>$maxFiscalYear,
+			)
+		));
+		$data = array();
+		$displayTypesForDpc = $this->GetDisplayTypesForDpc();
+		for($year=$minFiscalYear; $year<=$maxFiscalYear; $year++){
+			/*$data[$year] = array(
+				'year'=>$year
+			);*/
+			array_push($data, array('year'=>$year));
+		}
+		foreach($dpcs as $d){
+			foreach($displayTypesForDpc as $type){
+				$data[intval($d['Dpc']['fiscal_year'])-$minFiscalYear][$d['Dpc']['wam_id'].'.'.$type['id']] = $d['Dpc'][$type['id']];
+			}
+		}
+		return $data;
+	}
 
 	/**
 	 * Dpcテーブルから、医療機関IDと会計年度を指定して診療実績を取得する。

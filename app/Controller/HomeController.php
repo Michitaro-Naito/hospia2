@@ -170,6 +170,40 @@ class HomeController extends AppController {
 	}
 	
 	/**
+	 * プレミアム機能(お気に入りグループ比較-折れ線グラフ)
+	 * Compares hospitals in a favorite group.
+	 * Displayed as a line chart.
+	 * Premium User only.
+	 */
+	public function CompareInFavoriteGroupByYear($id){
+		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
+		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
+		$group = $this->FavoriteHospital->read(null, $id);
+		$ids = array();
+		foreach($group['Hospital'] as $h){
+			array_push($ids, $h['wam_id']);
+		}
+		$this->set('dat', array(
+			'id'=>$id,
+			'group'=>$group,
+			'ids'=>$ids,
+			'mdcs'=>$this->Data->GetMdcs(),
+			'displayTypesForDpc'=>$displayTypesForDpc,
+			'getDpcsUrl'=>Router::url('/Ajax/GetDpcsByIdsAndMdc.json'),
+		));
+	}
+	
+	/**
+	 * プレミアム機能(お気に入りグループ比較-バブルチャート)
+	 * Compares hospitals in a favorite group.
+	 * Displayed as a bubble chart.
+	 * Premium User only.
+	 */
+	public function CompareInFavoriteGroupByBubbles($id){
+		throw new NotImplementedException('Action not implemented.');
+	}
+	
+	/**
 	 * Redirects if old url specified.
 	 * Old: /foo?wam_id=123
 	 * New: /foo/123
