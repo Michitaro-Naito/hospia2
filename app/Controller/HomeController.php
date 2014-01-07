@@ -92,6 +92,7 @@ class HomeController extends AppController {
 		$wamId = $this->_RedirectIfOldUrl('/hosdetail/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
+		$this->_GetAdditionalInformation($wamId);
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
@@ -109,6 +110,7 @@ class HomeController extends AppController {
 		$wamId = $this->_RedirectIfOldUrl('/hoscmp/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
+		$this->_GetAdditionalInformation($wamId);
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
@@ -129,6 +131,7 @@ class HomeController extends AppController {
 		$wamId = $this->_RedirectIfOldUrl('/hosinfo/');
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
+		$this->_GetAdditionalInformation($wamId);
 		
 		$hospital = $this->Data->GetHospital($wamId);
 		$this->set('dat', array(
@@ -222,6 +225,17 @@ class HomeController extends AppController {
 			'displayTypesForDpc'=>$displayTypesForDpc,
 			'getDpcsUrl'=>Router::url('/Ajax/GetDpcsByIdsAndMdc.json'),
 		));
+	}
+	
+	/**
+	 * Gets additional information for registered User.
+	 */
+	private function _GetAdditionalInformation($wamId){
+		if($this->Auth->loggedIn()){
+			$this->set('additionalInformation', array(
+				'viewCount'=>$this->Data->GetViewCount($wamId),
+			));
+		}
 	}
 	
 	/**

@@ -35,6 +35,8 @@ ko.applyBindings(model);
 
 
 
+<?php echo $this->element('additional_information'); ?>
+
 <!-- Menu -->
 <select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
 <select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>

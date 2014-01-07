@@ -72,6 +72,8 @@ ko.applyBindings(model);
 
 
 
+<?php echo $this->element('additional_information'); ?>
+
 <!-- Menu -->
 <div data-bind="text: wamId"></div>
 <select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>

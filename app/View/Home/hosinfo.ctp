@@ -20,6 +20,8 @@ ko.applyBindings(model);
 
 
 
+<?php echo $this->element('additional_information'); ?>
+
 <!-- Data -->
 <div data-bind="visible: hospital !== null, with: hospital">
 	<div data-bind="text: Hospital.name"></div>

@@ -922,4 +922,28 @@ class DataComponent extends Component {
 		// 取得した投稿記事一覧を呼び出し元に返す
 		return $posts;
 	}
+	
+	/**
+	 * 指定した医療機関の最近1ヶ月間のページビュー数を取得する。
+	 */
+	public function GetViewCount($wamId){
+		$this->ViewCount = ClassRegistry::init('ViewCount');
+		$since = new DateTime();
+		$since->modify('-1 month');
+		$count = $this->ViewCount->find('first', array(
+			'conditions'=>array(
+				'ViewCount.wam_id'=>$wamId,
+				'ViewCount.ymd >='=>$since->format('Y-m-d'),
+			),
+			'fields'=>array(
+				'ViewCount.wam_id',
+				'sum(ViewCount.cnt) as sum',
+			),
+			'group'=>array('ViewCount.wam_id'),
+			'order'=>array('sum'=>'desc'),
+		));
+		if(empty($count))
+			return 0;
+		return $count[0]['sum'];
+	}
 }
