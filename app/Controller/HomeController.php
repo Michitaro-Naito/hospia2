@@ -200,7 +200,28 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareInFavoriteGroupByBubbles($id){
-		throw new NotImplementedException('Action not implemented.');
+		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
+		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
+		$group = $this->FavoriteHospital->read(null, $id);
+		$ids = array();
+		foreach($group['Hospital'] as $h){
+			array_push($ids, $h['wam_id']);
+		}
+		$years = array();
+		$max = $this->Data->GetFiscalYear();
+		$min = $max - 6;
+		for($year=$max; $year>=$min; $year--){
+			array_push($years, array('id'=>$year, 'name'=>'平成'.($year-1988).'年度'));
+		}
+		$this->set('dat', array(
+			'id'=>$id,
+			'group'=>$group,
+			'ids'=>$ids,
+			'mdcs'=>$this->Data->GetMdcs(),
+			'years'=>$years,
+			'displayTypesForDpc'=>$displayTypesForDpc,
+			'getDpcsUrl'=>Router::url('/Ajax/GetDpcsByIdsAndMdc.json'),
+		));
 	}
 	
 	/**
