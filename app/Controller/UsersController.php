@@ -7,10 +7,19 @@ class UsersController extends AppController {
         parent::beforeFilter();
         $this->Auth->allow('add','activate');
     }
-
-    public function index() {
-        $this->User->recursive = 0;
-        $this->set('users', $this->paginate());
+		
+		/**
+		 * List of Users. Admin only.
+		 */
+    public function Index() {
+        $this->paginate = array(
+        	'User'=>array(
+        		'order'=>array('User.id'=>'desc'),
+        		'limit'=>50,
+					)
+				);
+				$users = $this->paginate('User');
+				$this->set('users', $users);
     }
 
     public function view($id = null) {
