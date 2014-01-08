@@ -888,7 +888,7 @@ class DataComponent extends Component {
 		// 投稿記事の検索条件を設定する
 		$cond = array();
 		$cond['Post.status'] = 'publish';
-		$cond['Post.category'] = array('topics', 'info', 'month', 'ranking');
+		$cond['Post.category'] = array('topics', 'info', 'month', 'ranking', 'news');
 		if(isset($postId)) $cond['Post.post_id'] = $postId;
 
 		// 並び順を設定する

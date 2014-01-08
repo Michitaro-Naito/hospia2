@@ -41,6 +41,10 @@
 	Router::connect('/hosinfo', array('controller'=>'home', 'action'=>'hosinfo'));
 	Router::connect('/hosinfo/:wam_id', array('controller'=>'home', 'action'=>'hosinfo'));
 	Router::connect('/GoogleWalletPostback', array('controller'=>'Transaction', 'action'=>'GoogleWalletPostback'));
+	Router::connect('/wp/gu', array('controller'=>'Post', 'action'=>'Archives', 6));
+	Router::connect('/wp/company', array('controller'=>'Post', 'action'=>'Archives', 15));
+	Router::connect('/wp/ad', array('controller'=>'Post', 'action'=>'Archives', 19));
+	Router::connect('/wp/inquiry', array('controller'=>'Post', 'action'=>'Archives', 23));
 	Router::connect('/wp/:action/*', array('controller'=>'post'));
 	
 /**
