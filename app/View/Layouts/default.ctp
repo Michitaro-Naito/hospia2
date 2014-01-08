@@ -105,16 +105,17 @@
     
     <div id="footer">
       <div class="container">
-      	
-	<a href="http://hospia.jp/">ＴＯＰ</a>　|　
-<a href="http://hospia.jp/wp/gu/">ご利用ガイド</a>　|　
-<a href="http://hospia.jp/wp/policy/">サイトポリシー</a>　|　
-<a href="http://hospia.jp/wp/company/">運営会社</a>　|　
-<a href="http://hospia.jp/wp/sitemap/">サイトマップ</a>　|　
-<a href="http://hospia.jp/malady/aboutwidget.php">ウィジェット</a>　|　
-<a href="http://hospia.jp/wp/ad/">広告掲載</a>　|　
-<a href="http://hospia.jp/wp/inquiry/">お問い合わせ </a> 
-<p class="text-muted credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
+      	<?php
+	      	echo $this->Html->link('ＴＯＰ', '/'); ?>
+	      	| <?php echo $this->Html->link('ご利用ガイド', '/wp/gu/'); ?>
+	      	| <?php echo $this->Html->link('サイトポリシー', '/wp/policy/'); ?>
+	      	| <?php echo $this->Html->link('運営会社', '/wp/company/'); ?>
+	      	| <?php echo $this->Html->link('サイトマップ', '/wp/sitemap/'); ?>
+	      	| <?php echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); ?>
+	      	| <?php echo $this->Html->link('広告掲載', '/wp/ad/'); ?>
+	      	| <?php echo $this->Html->link('お問い合わせ', '/wp/inquiry/');
+      	?>
+				<p class="text-muted credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
       </div>
     </div>
 
