@@ -54,11 +54,14 @@ class HomeController extends AppController {
 		$selectedMdc = MDC_DEFAULT;
 		$selectedPrefecture = PREFECTURE_DEFAULT;
 		$selectedCmp = CMP_DEFAULT;
-		// フォーム送信されてきた場合は選択された値を取得する
 		if ($this->request->data) {
+			// フォーム送信されてきた場合は選択された値を取得する
 			$selectedMdc = $this->request->data("valueMdc");
 			$selectedPrefecture = $this->request->data("valuePrefecture");
 			$selectedCmp = $this->request->data("valueCmp");
+		}else{
+			// GETパラメーターからMDCの初期値を取得する
+			if(!empty($_GET['id'])) $selectedMdc = $_GET['id'];
 		}
 		// 医療機関検索のための検索条件を設定する
 		$condMdcValue = $selectedMdc;
