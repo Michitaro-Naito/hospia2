@@ -1,7 +1,8 @@
 <?php
 class HomeController extends AppController {
 	public $components = array('CookieData', 'Data');
-
+	public $helpers = array('Js' => array('Jquery'));
+	
 	/**
 	 * トップページ
 	 */
@@ -132,13 +133,21 @@ class HomeController extends AppController {
 		$this->CookieData->RememberHospitalId($wamId);
 		$this->Data->IncrementViewCount($wamId);
 		$this->_GetAdditionalInformation($wamId);
-		
+
 		$hospital = $this->Data->GetHospital($wamId);
 		$this->set('dat', array(
 			'wamId'=>$wamId,
 			'hospital'=>$hospital,
 			'hospitalsNearby'=>$this->Data->GetHospitalsNearby($hospital)
 		));
+		
+		$this->set( 'loggedIn', $this->Auth->loggedIn() );
+		if($this->Auth->loggedIn()) {
+			$uid = $this->Auth->user('id');
+			$this->loadModel('FavoriteHospital');
+    		$groups = $this->FavoriteHospital->find('all',array('conditions'=>array('FavoriteHospital.user_id'=> $uid),'recursive' => -1));
+			$this->set('groups', $groups);
+		}
 	}
 	
 	/**
