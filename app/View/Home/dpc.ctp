@@ -31,6 +31,7 @@ function AppModel(){
 	s.selectedMdc = ko.observable();
 	s.selectedDpc = ko.observable();
 	s.selectedPrefecture = ko.observable();
+	s.firstLoad = ko.observable(false);
 	
 	// MDC選択時にDPC一覧を読み込む
 	s.selectedMdc.subscribe(function(newValue){
@@ -48,7 +49,16 @@ function AppModel(){
 			for(var n=0; n<data.dpcs.length; n++){
 				s.dpcs.push(new Dpc(data.dpcs[n]));
 			}
+			if(!s.firstLoad()){
+				s.firstLoad(true);
+				s.search();
+			}
 		});
+	});
+	
+	s.selectedPrefecture.subscribe(function(newValue){
+		if(s.firstLoad())
+			s.search();
 	});
 	
 	// 検索
