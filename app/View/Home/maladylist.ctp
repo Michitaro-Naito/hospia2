@@ -4,6 +4,7 @@
 var maladyCategories = JSON.parse('<?php echo json_encode($maladyCategories); ?>');
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
 var getHospitalsByMaladyUrl = '<?php echo Router::url('/ajax/getHospitalsByMalady.json'); ?>';
+var defaultMaladyCategory = JSON.parse('<?php echo json_encode($defaultMaladyCategory); ?>');
 
 function MaladyCategory(data){
 	var s = this;
@@ -51,10 +52,20 @@ function AppModel(){
 			s.hospitals(data.hospitals);
 		});
 	}
+	
+	// 既定の疾患カテゴリを選択する
+	for(var n=0; n<s.maladyCategories.length; n++){
+		var c = s.maladyCategories[n];
+		if(c.id == defaultMaladyCategory){
+			s.selectedMaladyCategory(c);
+			return;
+		}
+	}
 }
 
 var model = new AppModel();
 ko.applyBindings(model);
+model.search();
 </script>
 <?php $this->end(); ?>
 

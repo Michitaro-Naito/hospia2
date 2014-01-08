@@ -79,8 +79,11 @@ class HomeController extends AppController {
 	 * 疾患別患者数ランキング
 	 */
 	public function Maladylist(){
+		$mdata = '';
+		if(isset($_GET['mdata'])) $mdata = $_GET['mdata'];
 		$this->set('maladyCategories', $this->Data->GetMaladyCategories());
 		$this->set('prefectures', $this->Data->GetPrefectures());
+		$this->set('defaultMaladyCategory', $mdata);
 	}
 
 	/**
