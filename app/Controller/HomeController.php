@@ -7,12 +7,7 @@ class HomeController extends AppController {
 	 * トップページ
 	 */
 	public function Index() {
-		// デバッグ
-		$this->loadModel('Hospital');
-		$hospitals = $this->Hospital->find('all',array(
-			'limit'=>5
-		));
-		$this->set('hospitals', $hospitals);
+		$this->set('recentPosts', $this->Data->GetRecentPosts());
 		$this->set('dat', array(
 			'prefectures'=>$this->Data->GetPrefectures(),
 			'getZonesUrl'=>Router::url('/Ajax/GetZones.json'),

@@ -895,6 +895,21 @@ class DataComponent extends Component {
 		// 取得した投稿記事一覧を呼び出し元に返す
 		return $posts;
 	}
+	
+	/**
+	 * 最新15件の記事を取得する。(公開されているもののみ)
+	 */
+	public function GetRecentPosts(){
+		$this->Post = ClassRegistry::init('Post');
+		$posts = $this->Post->find('all', array(
+			'conditions'=>array(
+				'Post.status'=>'publish'
+			),
+			'order'=>array('Post.created'=>'desc'),
+			'limit'=>15,
+		));
+		return $posts;
+	}
 
 	/**
 	 * 記事のカテゴリを元に投稿記事のデータを検索取得する。

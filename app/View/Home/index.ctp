@@ -152,9 +152,6 @@ if (isset($filePresent)):
 	?>
 </p>
 
-<h3>医療機関情報5件(デバッグ表示)</h3>
-<?php debug($hospitals); ?>
-
 
 
 <?php
@@ -222,6 +219,9 @@ ko.applyBindings(model);
 	<div class="col-sm-9">
 		<div class="row">
 			<div class="col-sm-12">新着情報</div>
+			<?php foreach($recentPosts as $p): ?>
+				<div><?php echo $this->Html->link($p['Post']['title'], "/wp/archives/{$p['Post']['post_id']}"); ?></div>
+			<?php endforeach; ?>
 		</div>
 		<div class="row">
 			<div class="col-sm-12">
