@@ -47,6 +47,7 @@
 	Router::connect('/wp/inquiry', array('controller'=>'Post', 'action'=>'Archives', 23));
 	Router::connect('/wp/:action/*', array('controller'=>'post'));
 	Router::connect('/malady/aboutwidget.php', array('controller'=>'Widget', 'action'=>'About'));
+	Router::connect('/widget/maladywidget.php', array('controller'=>'Widget', 'action'=>'Script'));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

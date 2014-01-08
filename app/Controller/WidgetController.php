@@ -12,6 +12,11 @@ class WidgetController extends AppController{
 	 * Returns JavaScript for Widget
 	 */
 	public function Script(){
-		
+		$this->layout = null;
+		$scode = '';
+		if(isset($_GET['scode']))
+			$scode = $_GET['scode'];
+		$this->set('scode', $scode);
+		$this->response->type('js');
 	}
 }
