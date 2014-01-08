@@ -1,7 +1,10 @@
 <?php $this->start('script'); ?>
 <script>
+var disableUrl = '<?php echo h(Router::url('/Users/Disable')); ?>';
 function Disable(id){
-	alert(id);
+	if(!window.confirm('ユーザーを無効化します。よろしいですか？'))
+		return;
+	$('#form0').attr('action', disableUrl+'/'+id).submit();
 }
 </script>
 <?php $this->end(); ?>
@@ -12,6 +15,7 @@ function Disable(id){
 <div class="page-header">
     <h1>Users</h1>
 </div>
+<?php echo $this->Html->link('Add', '/Users/Edit/'); ?>
 <ul>
 	<?php foreach($users as $u): ?>
 		<li>
@@ -21,26 +25,10 @@ function Disable(id){
 			<button type="button" onclick="Disable(<?php echo h($u['User']['id']); ?>);">無効化</button>
 		</li>
 	<?php endforeach; ?>
+	<?php
+	    echo $this->Paginator->prev('« Previous ', null, null, array('class' => 'disabled'));
+	    echo $this->Paginator->next(' Next »', null, null, array('class' => 'disabled'));
+	?>
 </ul>
 
-<!-- DEBUG -->
-<ul class="media-list">
-<?php foreach ($users as $user): ?>
-	<li>
-		<ul>
-		<li class="media">
-			<?php debug($user); ?>
-		</li>
-    	<li class="media">
-    		<?php echo $user['User']['id']; ?>
-    	</li>
-    	<li class="media">
-    		<?php echo $user['User']['username']; ?>
-    	</li>
-    	<li class="media">
-    	</li>
-    	</ul>
-    </li>
-<?php endforeach; ?>
-<?php unset($user); ?>
-</ul>
+<form method="post" action="" id="form0"></form>

@@ -62,39 +62,45 @@ class UsersController extends AppController {
         //Later this can be changed to allow admins to add new users including new admins.
         if ($this->Auth->loggedIn()) { $this->redirect(array('action' => 'index')); }
     }
-
-    public function edit($id = null) {
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->request->is('post') || $this->request->is('put')) {
-            if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('The user has been saved'));
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash(__('The user could not be saved. Please, try again.'));
-            }
-        } else {
-            $this->request->data = $this->User->read(null, $id);
-            unset($this->request->data['User']['password']);
-        }
+		
+		/**
+		 * Add or Edit an User.
+		 * Admin only.
+		 */
+		 public function Edit($id = null) {
+		 	if(!$this->IsAdmin())
+				return $this->redirect('/');
+			
+			if(empty($this->request->data)){
+				$this->request->data = $this->User->findById($id);
+			}else{
+				if ($this->request->is('post') || $this->request->is('put')){
+					// Try to save
+					if(!empty($this->request->data['User']['new_password'])){
+						$this->request->data['User']['password'] = $this->request->data['User']['new_password'];
+					}
+					if($this->User->save($this->request->data)){
+						$this->Session->setFlash('Saved!');
+						return $this->redirect(array('action'=>'Index'));
+					}
+				}
+			}
     }
-
-    public function delete($id = null) {
-        if (!$this->request->is('post')) {
-            throw new MethodNotAllowedException(); //Disable this to test delete.
-        }
-        $this->User->id = $id;
-        if (!$this->User->exists()) {
-            throw new NotFoundException(__('Invalid user'));
-        }
-        if ($this->User->delete()) {
-            $this->Session->setFlash(__('User deleted'));
-            $this->redirect(array('action' => 'index'));
-        }
-        $this->Session->setFlash(__('User was not deleted'));
-        $this->redirect(array('action' => 'index'));
+		
+		/**
+		 * Disable (SoftDelete) an User.
+		 * Admin only.
+		 */
+    public function Disable($id = null) {
+		 	if(!$this->IsAdmin() || !($this->request->is('post') || $this->request->is('put')))
+				return $this->redirect('/');
+			
+			if($this->User->delete($id, false))
+      	$this->Session->setFlash(__('User deleted'));
+			else
+				$this->Session->setFlash(__('User not deleted'));
+			
+			return $this->redirect(array('action'=>'Index'));
     }
 		
 		public function login() {
