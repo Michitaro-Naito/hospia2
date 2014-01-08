@@ -46,7 +46,7 @@ class AjaxController extends AppController {
 	 * 診療実績一覧を検索する。
 	 */
 	public function GetDpcs(){
-		$dpcs = $this->Data->GetDpcs($this->data['mdcId']);
+		$dpcs = $this->Data->GetDpcs($this->data['mdcId'], true);
 		$this->set('dpcs', $dpcs);
 		$this->set('_serialize', array('dpcs'));
 	}

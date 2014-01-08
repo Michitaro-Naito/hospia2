@@ -31,7 +31,7 @@ class HomeController extends AppController {
 	 * DPC全国統計
 	 */
 	public function Dpc(){
-		$this->set('mdcs', $this->Data->GetMdcs());
+		$this->set('mdcs', $this->Data->GetMdcs(true));
 		$this->set('prefectures', $this->Data->GetPrefectures());
 	}
 

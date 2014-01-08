@@ -53,13 +53,15 @@ class DataComponent extends Component {
 	/**
 	 * MdcDpcテーブルから診療実績ID一覧を検索取得する。
 	 */
-	public function GetDpcs($mdcId){
+	public function GetDpcs($mdcId, $excludeFirst=false){
 		$this->MdcDpc = ClassRegistry::init('MdcDpc');
 		$dpcs = $this->MdcDpc->find('all', array(
 			'conditions'=>array(
 				'MdcDpc.mdc_cd'=>$mdcId
 			)
 		));
+		if($excludeFirst && count($dpcs)>0)
+			array_shift($dpcs);
 		return $dpcs;
 	}
 	
@@ -631,10 +633,16 @@ class DataComponent extends Component {
 
 	/**
 	 * 設定ファイルから診断分類一覧を取得する。
+	 * @param bool excludeFirst 最初の要素を取り除くか。
 	 */
-	public function GetMdcs(){
+	public function GetMdcs($excludeFirst=false){
 		$mdcs = array();
+		$first = true;
 		foreach (Configure::read('mdc') as $key => $value){
+			if($excludeFirst && $first){
+				$first = false;
+				continue;
+			}
 			array_push($mdcs, array('id'=>$key, 'name'=>$value));
 		}
 		return $mdcs;
