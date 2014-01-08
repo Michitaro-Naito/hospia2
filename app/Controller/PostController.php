@@ -89,9 +89,9 @@ class PostController extends AppController {
 			return;
 		}
 
-		// カテゴリがtopic(情報活用の視点), info(お知らせ), month(特集), ranking(各種ランキング)以外の場合は
+		// カテゴリがtopic(情報活用の視点), info(お知らせ), month(特集), ranking(各種ランキング), news以外の場合は
 		// NotFound用処理を実行する
-		if (!in_array($category, array('topics', 'info', 'month', 'ranking'))) {
+		if (!in_array($category, array('topics', 'info', 'month', 'ranking', 'news'))) {
 			$this->setAction("notfound");
 			return;
 		}

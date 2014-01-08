@@ -191,5 +191,6 @@ Configure::write('categoryDisp', array(
 	'info' => 'お知らせ',
 	'month' => '特集',
 	'ranking' => '各種ランキング',
-	'policy' => 'サイトポリシー'
+	'policy' => 'サイトポリシー',
+	'news' => '病院ニュース',
 ));

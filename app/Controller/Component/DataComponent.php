@@ -931,6 +931,7 @@ class DataComponent extends Component {
 		$cond = array();
 		$cond['Post.status'] = 'publish';
 		if(isset($category)) $cond['Post.category'] = $category;
+		if($category==='news') $cond['Post.post_id'] = 86;				// 例外的処理。newsではpost_id=86の記事しか表示しないため。
 
 		// 並び順を設定する
 		$order = array('Post.created'=>'desc');
