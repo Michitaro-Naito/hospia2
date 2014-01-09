@@ -19,6 +19,15 @@ function Disable(id){
 
 <h2 class="posttitle">Post/Index</h2>
 <?php echo $this->Html->link('Add', '/Post/Edit/'); ?>
+
+<!-- Form to Search -->
+<?php
+	echo $this->Form->create('VM', array('type' => 'get'));
+	echo $this->Form->text('title');
+	echo $this->Form->end('Search');
+?>
+
+<!-- Data -->
 <?php foreach($posts as $p): ?>
 	<li>
 		<?php echo h($p['Post']['id']); ?>

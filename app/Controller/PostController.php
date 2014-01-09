@@ -7,12 +7,17 @@ class PostController extends AppController {
 	 * Admin only.
 	 */
 	public function Index() {
+		$this->request->data['VM'] = $this->request->query;
+		$cond = array();
+		if(!empty($this->request->data['VM']['title']))
+			$cond['Post.title like'] = "%{$this->request->data['VM']['title']}%";
 		$this->paginate = array(
+			'paramType'=>'querystring',
 			'fields'=>array('Post.id', 'Post.title'),
 			'order'=>array('Post.ID'=>'desc'),
 			'limit'=>50,
 		);
-		$posts = $this->paginate('Post');
+		$posts = $this->paginate('Post', $cond);
 		$this->set('posts', $posts);
 	}
 	
