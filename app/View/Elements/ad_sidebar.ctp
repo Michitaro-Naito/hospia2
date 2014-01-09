@@ -1,5 +1,3 @@
-<?php if(!$isPremiumUser): ?>
-<div class="row">
-	Advertisement sidebar
-</div>
-<?php endif; ?>
+<?php
+	// Always empty. See Post where Post.post_id = 2.
+?>
