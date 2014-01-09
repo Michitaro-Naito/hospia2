@@ -668,8 +668,17 @@ class DataComponent extends Component {
 
 	/**
 	 * Wound, Detail, Hospitalテーブルから詳細な手術情報を検索取得する。
+	 * 非常に重いため、$dpcIdと$prefectureIdをキーにしてファイルキャッシュする。
 	 */
 	public function GetWounds($dpcId, $prefectureId){
+		// キャッシュされていればそれを返す。
+		$cacheKey = "DataComponent::GetWounds()-{$dpcId}-{$prefectureId}";
+		$cache = Cache::read($cacheKey);
+		if($cache !== false){
+			return $cache;
+		}
+		
+		// キャッシュされていないため、データベースから取得する。
 		$fiscalYear = $this->GetFiscalYear();
 
 		// 手術情報を取得
@@ -711,6 +720,10 @@ class DataComponent extends Component {
 				$w[$v['name']] = $details;
 			}
 		}
+		
+		// キャッシュする
+		Cache::write($cacheKey, $wounds);
+		
 		return $wounds;
 	}
 
