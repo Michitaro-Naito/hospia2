@@ -16,6 +16,15 @@ function Disable(id){
     <h1>Users</h1>
 </div>
 <?php echo $this->Html->link('Add', '/Users/Edit/'); ?>
+
+<!-- Form to Search -->
+<?php
+	echo $this->Form->create('VM', array('type' => 'get'));
+	echo $this->Form->text('username');
+	echo $this->Form->end('Search');
+?>
+
+<!-- Data -->
 <ul>
 	<?php foreach($users as $u): ?>
 		<li>

@@ -12,13 +12,18 @@ class UsersController extends AppController {
 		 * List of Users. Admin only.
 		 */
     public function Index() {
+				$this->request->data['VM'] = $this->request->query;
+				$cond = array();
+				if(!empty($this->request->data['VM']['username']))
+					$cond['User.username like'] = "%{$this->request->data['VM']['username']}%";
         $this->paginate = array(
         	'User'=>array(
+        		'paramType'=>'querystring',
         		'order'=>array('User.id'=>'desc'),
         		'limit'=>50,
 					)
 				);
-				$users = $this->paginate('User');
+				$users = $this->paginate('User', $cond);
 				$this->set('users', $users);
     }
 
