@@ -208,6 +208,7 @@ ko.applyBindings(model);
 <div class="row">
 	<div class="col-sm-6">
 		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
+		医療圏<?php echo $this->My->tip('医療圏'); ?>：
 		<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
 		<input type="text" data-bind="value: hospitalName"/>
 		<button type="button" data-bind="click: GotoHoslst">検索</button>

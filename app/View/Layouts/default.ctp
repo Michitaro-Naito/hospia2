@@ -128,8 +128,12 @@
     	echo $this->Html->script('bootstrap.min.js');
 			echo $this->Html->script('knockout-3.0.0');
 			echo $this->Html->script('jsuri-1.1.1.min');
+			echo $this->Html->script('jquery.balloon.min.js');
 			echo $this->Html->script('utility');
 			echo $this->fetch('script');
     ?>
+    <script>
+    	$.initBalloons('<?php echo h(Router::url('/Tip/View')); ?>');
+    </script>
   </body>
 </html>

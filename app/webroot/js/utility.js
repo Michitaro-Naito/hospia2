@@ -26,4 +26,16 @@
 		return $.ajax(options);
 	};
 	
+	// Makes tips balloons.
+	// Called from layout because the root url is not sure here.
+	$.initBalloons = function(urlToTipView){
+		$('.tip').each(function(index, Element){
+			var e = $(Element);
+			var key = e.data('tipkey');
+			e.balloon({
+				url: urlToTipView + '/' + key
+			});
+		});
+	};
+	
 })();
