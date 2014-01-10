@@ -26,7 +26,10 @@ $(document).ready(function(){
 </script>
 <?php $this->end(); ?>
 
-<?php echo $this->Form->create('Post'); ?>
+<?php
+	echo $this->Form->create('Post');
+	echo $this->Form->hidden('ID');
+?>
 
 <?php
 	echo $this->Form->inputs(array(

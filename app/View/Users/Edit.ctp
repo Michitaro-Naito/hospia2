@@ -1,4 +1,7 @@
-<?php echo $this->Form->create(); ?>
+<?php
+	echo $this->Form->create();
+	echo $this->Form->hidden('id');
+?>
 <?php
 	echo $this->Form->inputs(array(
 		'id',
