@@ -71,3 +71,9 @@ create table file(
 ) comment 'アップロードされたファイルの名称';
 
 alter table post add deleted datetime null after modified;
+
+create table tip(
+  id int primary key auto_increment,
+  name varchar(20) unique not null comment '表示する際のkey',
+  value longtext not null comment '本文'
+) comment 'ユーザーへ表示する短い説明文';
