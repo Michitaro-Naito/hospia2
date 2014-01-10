@@ -85,7 +85,18 @@ Powered by <a style="color: #FF6600;" href="http://hospia.jp/">病院情報局</
 				<script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script>
 			</td>
 			<td align="center">
-				<g:plusone size="medium" count="false"></g:plusone>
+			<!-- Google +1 -->
+			<div class="g-plusone" data-annotation="inline" data-width="300"></div>
+			<script type="text/javascript">
+			  window.___gcfg = {lang: 'ja'};
+			
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/platform.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>
+			<!-- /Google +1 -->
 			</td>
 		</tr>
 	</table>
