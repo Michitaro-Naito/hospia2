@@ -141,14 +141,6 @@ class HomeController extends AppController {
 			'hospital'=>$hospital,
 			'hospitalsNearby'=>$this->Data->GetHospitalsNearby($hospital)
 		));
-		
-		$this->set( 'loggedIn', $this->Auth->loggedIn() );
-		if($this->Auth->loggedIn()) {
-			$uid = $this->Auth->user('id');
-			$this->loadModel('FavoriteHospital');
-    		$groups = $this->FavoriteHospital->find('all',array('conditions'=>array('FavoriteHospital.user_id'=> $uid),'recursive' => -1));
-			$this->set('groups', $groups);
-		}
 	}
 	
 	/**

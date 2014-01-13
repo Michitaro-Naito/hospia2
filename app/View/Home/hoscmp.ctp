@@ -64,7 +64,7 @@ function AppModel(){
 }
 
 var model = new AppModel();
-ko.applyBindings(model);
+ko.applyBindings(model, document.getElementById('hoscmp'));
 
 })();
 </script>
@@ -74,26 +74,30 @@ ko.applyBindings(model);
 
 <?php echo $this->element('additional_information'); ?>
 
-<!-- Menu -->
-<div data-bind="text: wamId"></div>
-<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
-<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
-<button data-bind="click: search">検索</button>
+<div id="hoscmp">
+	<!-- Menu -->
+	<div data-bind="text: wamId"></div>
+	<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
+	<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+	<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
+	<button data-bind="click: search">検索</button>
+	
+	<select data-bind="visible: currentComparisonCategory().id == 'basic', options: displayTypesForBasic, optionsText: 'name', value: selectedDisplayTypeForBasic"></select>
+	<select data-bind="visible: currentComparisonCategory().id == 'dpc', options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+	
+	<!-- Data -->
+	<div data-bind="text: currentComparisonCategory().name"></div>
+	<ul data-bind="foreach: hospitals">
+		<li>
+			<span data-bind="text: Hospital.name"></span>
+			<span data-bind="text: patients"></span>
+			<span data-bind="text: valueForSelection"></span>
+			<span data-bind="text: Hospital.distance"></span>
+		</li>
+	</ul>
+</div>
 
-<select data-bind="visible: currentComparisonCategory().id == 'basic', options: displayTypesForBasic, optionsText: 'name', value: selectedDisplayTypeForBasic"></select>
-<select data-bind="visible: currentComparisonCategory().id == 'dpc', options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
-
-<!-- Data -->
-<div data-bind="text: currentComparisonCategory().name"></div>
-<ul data-bind="foreach: hospitals">
-	<li>
-		<span data-bind="text: Hospital.name"></span>
-		<span data-bind="text: patients"></span>
-		<span data-bind="text: valueForSelection"></span>
-		<span data-bind="text: Hospital.distance"></span>
-	</li>
-</ul>
+<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>
 
 <!-- Comments -->
 <?php

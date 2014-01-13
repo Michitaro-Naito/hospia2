@@ -29,7 +29,7 @@ function AppModel(){
 }
 
 var model = new AppModel();
-ko.applyBindings(model);
+ko.applyBindings(model, document.getElementById('hosdetail'));
 </script>
 <?php $this->end(); ?>
 
@@ -37,21 +37,25 @@ ko.applyBindings(model);
 
 <?php echo $this->element('additional_information'); ?>
 
-<!-- Menu -->
-<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
-<select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
-<button data-bind="click: search">検索</button>
+<div id="hosdetail">
+	<!-- Menu -->
+	<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
+	<select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+	<button data-bind="click: search">検索</button>
+	
+	<!-- Data -->
+	<ul data-bind="foreach: dpcs">
+		<li>
+			<span data-bind="text: Dpc.ave_month"></span>
+			<span data-bind="text: Dpc.zone_share"></span>
+			<span data-bind="text: Dpc.ave_in"></span>
+			<span data-bind="text: Dpc.complex"></span>
+			<span data-bind="text: Dpc.efficiency"></span>
+		</li>
+	</ul>
+</div>
 
-<!-- Data -->
-<ul data-bind="foreach: dpcs">
-	<li>
-		<span data-bind="text: Dpc.ave_month"></span>
-		<span data-bind="text: Dpc.zone_share"></span>
-		<span data-bind="text: Dpc.ave_in"></span>
-		<span data-bind="text: Dpc.complex"></span>
-		<span data-bind="text: Dpc.efficiency"></span>
-	</li>
-</ul>
+<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>
 
 <!-- Comments -->
 <?php

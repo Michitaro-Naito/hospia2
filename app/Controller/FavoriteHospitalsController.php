@@ -1,6 +1,134 @@
 <?php
 class FavoriteHospitalsController extends AppController {
-	public $components = array('Auth');
+	public $components = array('RequestHandler', 'Data');
+	
+	/**
+	 * お気に入りグループの一覧を取得する。
+	 */
+	public function GetFavoriteGroups(){
+		$loggedIn = $this->Auth->loggedIn();
+		$groups = array();
+		if($loggedIn){
+			$userId = $this->Auth->user('id');
+			$this->loadModel('FavoriteHospital');
+			$groups = $this->FavoriteHospital->find('all', array(
+				'conditions'=>array(
+					'FavoriteHospital.user_id'=>$userId
+				),
+				//'recursive'=>-1
+			));
+		}
+		
+		$this->set('dat', array(
+			'loggedIn'=>$loggedIn,
+			'favoriteGroups'=>$groups
+		));
+		$this->set('_serialize', array('dat'));
+	}
+	
+	public function AddFavoriteGroup(){
+		$result = false;
+		$groupId = null;
+		
+		if($this->Auth->loggedIn()){
+			$userId = $this->Auth->user('id');
+			$newName = $this->request->data['newName'];
+			
+			$this->loadModel('FavoriteHospital');
+			$this->FavoriteHospital->data['FavoriteHospital']['user_id'] = $userId;
+			$this->FavoriteHospital->data['FavoriteHospital']['name'] = $newName;
+			if($this->FavoriteHospital->save()){
+				$result = true;
+				$groupId = $this->FavoriteHospital->id;
+			}
+		}
+		
+		$this->set('dat', array(
+			'result'=>$result,
+			'groupId'=>$groupId
+		));
+		$this->set('_serialize', array('dat'));
+	}
+	
+	public function RenameFavoriteGroup(){
+		$result = false;
+		
+		if($this->Auth->loggedIn()){
+			$userId = $this->Auth->user('id');
+			$groupId = $this->request->data['groupId'];
+			$newName = $this->request->data['newName'];
+			
+			$this->loadModel('FavoriteHospital');
+			$this->FavoriteHospital->id = $groupId;
+			$this->FavoriteHospital->read();
+			if($this->FavoriteHospital->data['FavoriteHospital']['user_id'] == $userId){
+				$this->FavoriteHospital->data['FavoriteHospital']['name'] = $newName;
+				if($this->FavoriteHospital->save())
+					$result = true;
+			}
+		}
+		
+		$this->set('dat', array('result'=>$result));
+		$this->set('_serialize', array('dat'));
+	}
+	
+	/**
+	 * 
+	 */
+	public function AddHospitalToFavoriteGroup(){
+		$result = false;
+		
+		if($this->Auth->loggedIn()){
+			$userId = $this->Auth->user('id');
+			$groupId = $this->request->data['groupId'];
+			$wamId = $this->request->data['wamId'];
+			
+			$this->loadModel('FavoriteHospital');
+			$group = $this->FavoriteHospital->find('first', array(
+				'conditions'=>array(
+					'FavoriteHospital.id'=>$groupId,
+					'FavoriteHospital.user_id'=>$userId
+				)
+			));
+			if(!empty($group)){
+				if($this->FavoriteHospital->addHospital($groupId, $wamId))
+					$result = true;
+			}
+		}
+
+		$this->set('dat', array('result'=>$result));
+		$this->set('_serialize', array('dat'));
+	}
+	
+	/**
+	 * 
+	 */
+	public function RemoveHospitalFromFavoriteGroup(){
+		$result = false;
+		
+		if($this->Auth->loggedIn()){
+			$userId = $this->Auth->user('id');
+			$groupId = $this->request->data['groupId'];
+			$wamId = $this->request->data['wamId'];
+			
+			$this->loadModel('FavoriteHospital');
+			$group = $this->FavoriteHospital->find('first', array(
+				'conditions'=>array(
+					'FavoriteHospital.id'=>$groupId,
+					'FavoriteHospital.user_id'=>$userId
+				)
+			));
+			if(!empty($group)){
+				if($this->FavoriteHospital->deleteHospital($groupId, $wamId))
+					$result = true;
+			}
+		}
+		
+		$this->set('dat', array('result'=>$result));
+		$this->set('_serialize', array('dat'));
+	}
+	
+	/*public $components = array('Auth');
 	
     public function beforeFilter() {
         parent::beforeFilter();
@@ -126,6 +254,6 @@ class FavoriteHospitalsController extends AppController {
         		$this->redirect(array('controller' => 'users', 'action' => 'view', $this->Auth->user('id')));
         	}	
         }
-    }
+    }*/
 		
 }
