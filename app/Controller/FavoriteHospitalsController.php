@@ -91,8 +91,10 @@ class FavoriteHospitalsController extends AppController {
 				)
 			));
 			if(!empty($group)){
-				if($this->FavoriteHospital->addHospital($groupId, $wamId))
+				if($this->FavoriteHospital->addHospital($groupId, $wamId)){
 					$result = true;
+					$this->Data->IncrementFavoriteCount($wamId);
+				}
 			}
 		}
 

@@ -1,4 +1,4 @@
 <!-- Additional Information -->
 <?php if(isset($additionalInformation)): ?>
-	View Count: <?php echo h($additionalInformation['viewCount']); ?>
+	View Count: <?php print_r($additionalInformation['viewCount']); ?>
 <?php endif; ?>

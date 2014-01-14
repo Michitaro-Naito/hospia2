@@ -880,7 +880,34 @@ class DataComponent extends Component {
 				$this->ViewCount->create(array(
 					'wam_id' => $wamId,
 					'ymd' => $nowString,
-					'cnt' => 1
+					'cnt' => 1,
+					'favorite_count' => 0
+				));
+				$this->ViewCount->save();
+			}catch(PDOException $e){
+				// Insert failed. Just try to update once more.
+				$this->ViewCount->query($query);
+			}
+		}
+	}
+	
+	/**
+	 * FavoriteCountを1増やす。
+	 */
+	public function IncrementFavoriteCount($wamId){
+		$this->ViewCount = ClassRegistry::init('ViewCount');
+		$now = new DateTime();
+		$nowString = $now->format('Y-m-d');
+		$query = 'update viewcnt set favorite_count = favorite_count + 1 where wam_id = ' . intval($wamId) . ' and ymd = "' . $nowString . '"';
+		$this->ViewCount->query($query);
+		if($this->ViewCount->getAffectedRows() === 0){
+			// No row is affected. It's a first visit of a day. Insert a row.
+			try{
+				$this->ViewCount->create(array(
+					'wam_id' => $wamId,
+					'ymd' => $nowString,
+					'cnt' => 0,
+					'favorite_count' => 1
 				));
 				$this->ViewCount->save();
 			}catch(PDOException $e){
@@ -975,12 +1002,14 @@ class DataComponent extends Component {
 			'fields'=>array(
 				'ViewCount.wam_id',
 				'sum(ViewCount.cnt) as sum',
+				'sum(ViewCount.favorite_count) as favorite_sum'
 			),
 			'group'=>array('ViewCount.wam_id'),
 			'order'=>array('sum'=>'desc'),
 		));
 		if(empty($count))
 			return 0;
-		return $count[0]['sum'];
+		//return $count[0]['sum'];
+		return $count[0];
 	}
 }

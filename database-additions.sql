@@ -77,3 +77,5 @@ create table tip(
   name varchar(20) unique not null comment '表示する際のkey',
   value longtext not null comment '本文'
 ) comment 'ユーザーへ表示する短い説明文';
+
+alter table viewcnt add favorite_count int(11) not null default 0;
