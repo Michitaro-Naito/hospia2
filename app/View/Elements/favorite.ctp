@@ -198,11 +198,11 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 					<button type="button" data-bind="click: RemoveFromParent">Remove</button>
 				</li>
 			</ul>
-			<input type="text" data-bind="value: newName" />
-			<button type="button" data-bind="click: Add">Add</button>
 			<button type="button" data-bind="click: Rename">Rename</button>
 			<button type="button" data-bind="click: AddHospital">AddHospital</button>
 		</div>
+		<input type="text" data-bind="value: newName" />
+		<button type="button" data-bind="click: Add">Add</button>
 	</div>
 	<!-- ログインを促すメッセージ(ログインしていない場合) -->
 	<div data-bind="if: !loggedIn()">
