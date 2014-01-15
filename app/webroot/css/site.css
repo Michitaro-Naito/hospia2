@@ -124,7 +124,7 @@ body{
 
 .box h2{
 	margin: 0;
-	padding-left: 20px;
+	padding-left: 10px;
 	height: 32px;
 	line-height: 32px;
 	overflow: hidden;
@@ -136,7 +136,28 @@ body{
 }
 
 .box .content{
-	padding: 10px 15px;
+	padding: 12px 12px;
+}
+
+ul.basic{
+	padding: 0;
+	list-style: none;
+}
+ul.basic li{
+	padding-left: 20px;
+	background-image: url('../img/icon/li1.png');
+	background-repeat: no-repeat;
+	background-position: 0px 6px;
+	line-height: 24px;
+}
+ul.basic li a{
+	color: #333;
+}
+ul.basic li.li2{
+	padding-left: 40px;
+	background-image: url('../img/icon/li2.png');
+	background-repeat: no-repeat;
+	background-position: 25px 6px;
 }
 
 .navbar{
@@ -151,6 +172,24 @@ body{
 
 .navbar .navbar-brand{
 	padding: 25px 15px;
+}
+
+.navbar .navbar-collapse ul.nav li a{
+	color: #742954;
+}
+
+@media (min-width: 768px){
+	.navbar .navbar-collapse ul.nav{
+		margin-top: 33px;
+	}
+	.navbar .navbar-collapse ul.nav li{
+		text-align: center;
+	}
+}
+@media (max-width: 767px){
+	.navbar .navbar-collapse{
+		background: #481934;
+	}
 }
 
 div#footer{

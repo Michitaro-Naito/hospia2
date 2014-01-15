@@ -37,22 +37,12 @@
           </button>
           <?php //echo $this->Html->link('病院情報局', '/', array('class'=>'navbar-brand')); ?>
           <div class="navbar-brand">
-          	<?php echo $this->Html->image('logo.png'); ?>
+          	<?php echo $this->Html->link($this->Html->image('logo.png'), '/', array('escape'=>false)); ?>
           </div>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
           	<?php
-          		/*$items = array(
-          			//'ホーム'=>'/',
-          			'病院検索'=>'/hoslist',
-          			'DPC全国統計'=>'/dpc',
-          			'患者数ランキング'=>'/toplst',
-          			'病院ニュース'=>'/wp/archives/category/news/',
-          			'情報活用の視点'=>'/wp/archives/category/topics/',
-          			'特集'=>'/wp/archives/category/month/',
-          			'お知らせ'=>'/wp/archives/category/info/'
-							);*/
 							$items = array(
 								array('label'=>'病院検索', 'small'=>'Hospital Search', 'url'=>'/hoslist'),
 								array('label'=>'患者数ランキング', 'small'=>'Top Hospitals', 'url'=>'/toplst'),
@@ -62,19 +52,21 @@
 								array('label'=>'特集', 'small'=>'Special', 'url'=>'/wp/archives/category/month/'),
 								array('label'=>'お知らせ', 'small'=>'Information', 'url'=>'/wp/archives/category/info/'),
 							);
+							// ログイン
+							if($this->Session->read('Auth.User'))
+								array_push($items, array('label'=>'ログアウト', 'small'=>'Logout', 'url'=>array('controller'=>'Users', 'action'=>'Logout')));
+							else
+								array_push($items, array('label'=>'ログイン', 'small'=>'Login', 'url'=>array('controller'=>'Users', 'action'=>'Login')));
 							foreach($items as $key => $value):
           	?>
-          		<li><?php echo $this->Html->link($value['label'], $value['url']); ?></li>
+          		<?php if($key != 0): ?>
+          			<li>|</li>
+          		<?php endif; ?>
+          		<li>
+          			<?php echo $this->Html->link($value['label'], $value['url']); ?>
+          			<small><?php echo h($value['small']); ?></small>
+          		</li>
           	<?php endforeach; ?>
-          	
-          	<!-- ログイン -->
-          	<?php if($this->Session->read('Auth.User')): ?>
-          		<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
-          	<?php else: ?>
-          		<li><?php echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'add')); ?></li>
-          		<li><?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?></li>
-          	<?php endif; ?>
-          	
           </ul>
         </div><!--/.nav-collapse -->
       </div>
