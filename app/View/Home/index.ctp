@@ -53,76 +53,105 @@ ko.applyBindings(model);
 
 
 <?php echo $this->element('fb_root'); ?>
+
 <div class="row">
+	
+	<!-- 検索 -->
 	<div class="col-sm-6">
-		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
-		医療圏<?php echo $this->My->tip('医療圏'); ?>：
-		<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
-		<input type="text" data-bind="value: hospitalName"/>
-		<button type="button" data-bind="click: GotoHoslst">検索</button>
+		<div class="box">
+			<h2>病院検索</h2>
+			<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
+			医療圏<?php echo $this->My->tip('医療圏'); ?>：
+			<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
+			<input type="text" data-bind="value: hospitalName"/>
+			<button type="button" data-bind="click: GotoHoslst">検索</button>
+		</div>
 	</div>
+	
+	<!-- ご利用ガイド -->
 	<div class="col-sm-6">ご利用ガイド</div>
+	
 </div>
 
 <div class="row">
 	<div class="col-sm-9">
-		<div class="row">
-			<div class="col-sm-12">新着情報</div>
-			<?php foreach($recentPosts as $p): ?>
-				<div><?php echo $this->Html->link($p['Post']['title'], "/wp/archives/{$p['Post']['post_id']}"); ?></div>
-			<?php endforeach; ?>
-		</div>
-		<div class="row">
-			<div class="col-sm-12">
-				<?php
-					echo $this->element('twitter_follow');
-					echo $this->element('fb_follow');
-				?>
+		
+		<!-- 新着情報 -->
+		<div class="box">
+			<h2>新着情報</h2>
+			<div class="content">
+				<?php foreach($recentPosts as $p): ?>
+					<div><?php echo $this->Html->link($p['Post']['title'], "/wp/archives/{$p['Post']['post_id']}"); ?></div>
+				<?php endforeach; ?>
 			</div>
 		</div>
+		
+		<!-- ソーシャル連携 -->
+		<div class="">
+			<?php
+				echo $this->element('twitter_follow');
+				echo $this->element('fb_follow');
+			?>
+		</div>
+		
+		<!-- 最近チェックした病院　と　閲覧数の多い病院 -->
 		<div class="row">
   		<div class="col-sm-6">
-  			最近チェックした病院
-  			<ul>
-	  			<?php foreach($dat['rememberedHospitals'] as $h): ?>
-	  				<li><?php echo h($h['Hospital']['name']); ?></li>
-	  			<?php endforeach; ?>
-  			</ul>
+  			<div class="box">
+	  			<h2>最近チェックした病院</h2>
+	  			<ul>
+		  			<?php foreach($dat['rememberedHospitals'] as $h): ?>
+		  				<li><?php echo h($h['Hospital']['name']); ?></li>
+		  			<?php endforeach; ?>
+	  			</ul>
+  			</div>
   		</div>
+  		
   		<div class="col-sm-6">
-  			閲覧数の多い病院
-  			<ul>
-  				<?php foreach($dat['hospitalsMostViewed'] as $h): ?>
-  					<li><?php echo h($h['Hospital']['name'] . $h[0]['sum']); ?></li>
-  				<?php endforeach; ?>
-  			</ul>
+  			<div class="box">
+	  			<h2>閲覧数の多い病院</h2>
+	  			<ul>
+	  				<?php foreach($dat['hospitalsMostViewed'] as $h): ?>
+	  					<li><?php echo h($h['Hospital']['name'] . $h[0]['sum']); ?></li>
+	  				<?php endforeach; ?>
+	  			</ul>
+  			</div>
   		</div>
 		</div>
-		<div class="row">
-  		<div class="col-sm-12">お気に入りグループ一覧</div>
+		
+		<!-- お気に入りグループ一覧 -->
+		<div class="box">
+			<h2>お気に入りグループ一覧</h2>
 		</div>
+		
 	</div>
+	
+	<!-- サイドバー -->
 	<div class="col-sm-3 bs-sidebar">
-		<div class="row">
-  		<div class="col-sm-12">
-  			疾患別
-  			<ul>
-  				<?php foreach($dat['maladyCategories'] as $key => $c): ?>
-  					<li><?php echo $this->Html->link($c['name'], array('action'=>'Maladylist', 'controller'=>'Home', '?'=>array('mdata'=>$c['id']))); ?></li>
-  				<?php endforeach; ?>
-  			</ul>
-  		</div>
+		
+		<!-- 疾患別メニュー -->
+		<div class="box">
+			<h2>主な疾患別患者数ランキング</h2>
+			<ul>
+				<?php foreach($dat['maladyCategories'] as $key => $c): ?>
+					<li><?php echo $this->Html->link($c['name'], array('action'=>'Maladylist', 'controller'=>'Home', '?'=>array('mdata'=>$c['id']))); ?></li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
-		<div class="row">
-  		<div class="col-sm-12">
-  			診断分類別
-  			<ul>
-  				<?php foreach($dat['mdcs'] as $key => $m): ?>
-  					<li><?php echo $this->Html->link('MDC'.str_pad($key, 2, '0', STR_PAD_LEFT).' '.$m['name'], array('action'=>'Toplst', 'controller'=>'Home', '?'=>array('id'=>$m['id']))); ?></li>
-  				<?php endforeach; ?>
-  			</ul>
-  		</div>
+		
+		<!-- 診断分類別メニュー -->
+		<div class="box">
+			<h2>診断分類別患者数ランキング</h2>
+			<ul>
+				<?php foreach($dat['mdcs'] as $key => $m): ?>
+					<li><?php echo $this->Html->link('MDC'.str_pad($key, 2, '0', STR_PAD_LEFT).' '.$m['name'], array('action'=>'Toplst', 'controller'=>'Home', '?'=>array('id'=>$m['id']))); ?></li>
+				<?php endforeach; ?>
+			</ul>
 		</div>
+		
+		<!-- 広告ユニット(未使用) -->
 		<?php echo $this->element('ad_sidebar'); ?>
+		
 	</div>
+	<!-- /サイドバー -->
 </div>

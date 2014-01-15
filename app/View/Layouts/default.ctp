@@ -12,7 +12,7 @@
     <?php
 			echo $this->Html->meta('icon');
     	echo $this->Html->css('bootstrap.min');			// Bootstrap core CSS
-			echo $this->Html->css('starter-template');
+			echo $this->Html->css('site');
 			echo $this->fetch('meta');
 			echo $this->fetch('css');
     ?>
@@ -35,12 +35,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <?php echo $this->Html->link('病院情報局', '/', array('class'=>'navbar-brand')); ?>
+          <?php //echo $this->Html->link('病院情報局', '/', array('class'=>'navbar-brand')); ?>
+          <div class="navbar-brand">
+          	<?php echo $this->Html->image('logo.png'); ?>
+          </div>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
           	<?php
-          		$items = array(
+          		/*$items = array(
           			//'ホーム'=>'/',
           			'病院検索'=>'/hoslist',
           			'DPC全国統計'=>'/dpc',
@@ -49,24 +52,29 @@
           			'情報活用の視点'=>'/wp/archives/category/topics/',
           			'特集'=>'/wp/archives/category/month/',
           			'お知らせ'=>'/wp/archives/category/info/'
+							);*/
+							$items = array(
+								array('label'=>'病院検索', 'small'=>'Hospital Search', 'url'=>'/hoslist'),
+								array('label'=>'患者数ランキング', 'small'=>'Top Hospitals', 'url'=>'/toplst'),
+								array('label'=>'DPC全国統計', 'small'=>'DPC Statistics', 'url'=>'/dpc'),
+								array('label'=>'病院ニュース', 'small'=>'Hospital News', 'url'=>'/wp/archives/category/news/'),
+								array('label'=>'情報活用の視点', 'small'=>'Point of View', 'url'=>'/wp/archives/category/topics/'),
+								array('label'=>'特集', 'small'=>'Special', 'url'=>'/wp/archives/category/month/'),
+								array('label'=>'お知らせ', 'small'=>'Information', 'url'=>'/wp/archives/category/info/'),
 							);
 							foreach($items as $key => $value):
           	?>
-          		<li class="<?php if(FALSE) echo 'active'; ?>"><?php echo $this->Html->link($key, $value); ?></li>
+          		<li><?php echo $this->Html->link($value['label'], $value['url']); ?></li>
           	<?php endforeach; ?>
           	
-          	<?php
-          	//Login/Logout/Register
-          		//If user is logged in display logout, else display register/login.
-          		if($this->Session->read('Auth.User')) {
-          		?>
+          	<!-- ログイン -->
+          	<?php if($this->Session->read('Auth.User')): ?>
           		<li><?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?></li>
-          		<?php
-          		} else {
-          		?>
+          	<?php else: ?>
           		<li><?php echo $this->Html->link('Register', array('controller' => 'users', 'action' => 'add')); ?></li>
           		<li><?php echo $this->Html->link('Login', array('controller' => 'users', 'action' => 'login')); ?></li>
-          		<?php } ?>
+          	<?php endif; ?>
+          	
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -84,14 +92,14 @@
     			
   			<?php else: ?>
     			<div class="row">
-	    			<div class="col-sm-8">
+	    			<div class="col-sm-9">
 		    			<?php
 		    				echo $this->element('ad_top');
 		    				echo $this->fetch('content');
 		    				echo $this->element('ad_bottom');
 		    			?>
 	    			</div>
-	    			<div class="col-sm-4">
+	    			<div class="col-sm-3">
 	    				<?php
 	    					echo $this->element('sidebar');
 								echo $this->element('ad_sidebar');
@@ -105,17 +113,19 @@
     
     <div id="footer">
       <div class="container">
-      	<?php
-	      	echo $this->Html->link('ＴＯＰ', '/'); ?>
-	      	| <?php echo $this->Html->link('ご利用ガイド', '/wp/gu/'); ?>
-	      	| <?php echo $this->Html->link('サイトポリシー', '/wp/policy/'); ?>
-	      	| <?php echo $this->Html->link('運営会社', '/wp/company/'); ?>
-	      	| <?php echo $this->Html->link('サイトマップ', '/wp/sitemap/'); ?>
-	      	| <?php echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); ?>
-	      	| <?php echo $this->Html->link('広告掲載', '/wp/ad/'); ?>
-	      	| <?php echo $this->Html->link('お問い合わせ', '/wp/inquiry/');
-      	?>
-				<p class="text-muted credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
+      	<div class="nav">
+	      	<?php
+		      	echo $this->Html->link('ＴＯＰ', '/'); 
+		      	echo $this->Html->link('ご利用ガイド', '/wp/gu/'); 
+		      	echo $this->Html->link('サイトポリシー', '/wp/policy/'); 
+		      	echo $this->Html->link('運営会社', '/wp/company/'); 
+		      	echo $this->Html->link('サイトマップ', '/wp/sitemap/'); 
+		      	echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); 
+		      	echo $this->Html->link('広告掲載', '/wp/ad/'); 
+		      	echo $this->Html->link('お問い合わせ', '/wp/inquiry/');
+	      	?>
+      	</div>
+				<p class="credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
       </div>
     </div>
 
