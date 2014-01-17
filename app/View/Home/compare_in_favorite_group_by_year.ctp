@@ -76,7 +76,7 @@ function AppModel(){
 		for(var n=0; n<s.group.Hospital.length; n++){
 			var h = s.group.Hospital[n];
 			var graph = new AmCharts.AmGraph();
-		  graph.title = h.name;
+		  graph.title = h.alias;//.name;
 		  graph.valueField = h.wam_id + '.' + s.selectedDisplayType().id;
 		  graph.balloonText = dat.mdcs[n].name + " [[category]]: [[value]]";
 		  graph.lineAlpha = 1;
