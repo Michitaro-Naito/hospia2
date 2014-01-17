@@ -78,7 +78,7 @@ function AppModel(){
 			var graph = new AmCharts.AmGraph();
 		  graph.title = h.alias;//.name;
 		  graph.valueField = h.wam_id + '.' + s.selectedDisplayType().id;
-		  graph.balloonText = dat.mdcs[n].name + " [[category]]: [[value]]";
+		  graph.balloonText = h.alias + " [[category]]: [[value]]";
 		  graph.lineAlpha = 1;
 		  graph.bullet = "round";
 		  chart.addGraph(graph);
