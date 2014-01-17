@@ -18,6 +18,8 @@ body {
   margin: 0 auto -93px;
   /* Pad bottom by footer height */
   padding: 0 0 93px;
+  
+  overflow: hidden;
 }
 
 #body {
@@ -160,6 +162,52 @@ ul.basic li.li2{
 	background-position: 25px 6px;
 }
 
+ul.news{
+	list-style: none;
+	padding: 0;
+}
+ul.news li{
+	margin-bottom: 10px;
+}
+ul.news li a time{
+	padding: 4px;
+	background: #742954;
+	color: white;
+	font-size: 10px;
+}
+ul.news li a span{
+	padding-left: 10px;
+	color: #333;
+	font-size: 12px;
+}
+
+table.search{
+	width: 100%;
+}
+table.search tr{
+	height: 24px;
+}
+table.search select,
+table.search input{
+	width: 100%;
+}
+table.search button.search{
+	width: 100%;
+	background: #8e4570; /* Old browsers */
+	background: -moz-linear-gradient(top,  #8e4570 0%, #551839 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8e4570), color-stop(100%,#551839)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #8e4570 0%,#551839 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #8e4570 0%,#551839 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #8e4570 0%,#551839 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #8e4570 0%,#551839 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8e4570', endColorstr='#551839',GradientType=0 ); /* IE6-9 */
+	color: white;
+	border: solid 1px white;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+	letter-spacing: 1.2em;
+	font-size: 14px;
+}
+
 .navbar{
 	background: transparent;
 	background-image: url("../img/bg.png");
@@ -176,9 +224,23 @@ ul.basic li.li2{
 
 .navbar .navbar-collapse ul.nav li a{
 	color: #742954;
+	font-size: 12px;
+}
+
+.navbar .navbar-collapse ul.nav li small{
+	color: #969696;
+	font-size: 8px;
 }
 
 @media (min-width: 768px){
+	.navbar .navbar-collapse ul.nav li.divider{
+		background: url('../img/icon/sep.jpg');
+		background-repeat: no-repeat;
+		background-position: 8px 0px;
+		width: 16px;
+		height: 40px;
+	}
+	
 	.navbar .navbar-collapse ul.nav{
 		margin-top: 33px;
 	}
@@ -189,6 +251,35 @@ ul.basic li.li2{
 @media (max-width: 767px){
 	.navbar .navbar-collapse{
 		background: #481934;
+	}
+	.navbar .navbar-collapse ul.nav{
+		margin: 0;
+	}
+	.navbar .navbar-collapse ul.nav li{
+		padding: 10px;
+		border-bottom: solid 1px #6C465C;
+		font-size: 14px;
+		background: url('../img/icon/sp_menu_li1.png');
+		background-repeat: no-repeat;
+		background-position: right center;
+	}
+	.navbar .navbar-collapse ul.nav li.divider{
+		padding: 0;
+		border: none;
+	}
+	.navbar .navbar-collapse ul.nav li a{
+		color: #979797;
+	}
+	.navbar .navbar-collapse ul.nav li small{
+		display: none;
+	}
+	.navbar-inverse .navbar-toggle,
+	.navbar-inverse .navbar-toggle:focus,
+	.navbar-inverse .navbar-toggle:hover{
+		background: #792857;
+	}
+	.navbar-inverse .navbar-toggle .icon-bar{
+		background: white;
 	}
 }
 
@@ -212,14 +303,39 @@ div#footer .nav{
 	margin: 17px 0;
 }
 
-div#footer a{
+div#footer .nav a{
 	color: white;
+	padding-left: 10px;
+	padding-right: 15px;
+	background-image: url('../img/icon/footer_li1.png');
+	background-repeat: no-repeat;
+	background-position: 0px 2px;
 }
 
 div#footer .credit{
 	font-size: 10px;
 }
 
+/* Page Specific */
+#IndexSearch{
+	padding: 34px 20px 0 20px;
+}
+@media (max-width: 767px){
+	#IndexSearch{
+		padding: 5px;
+	}
+}
 
-
-
+#main, #sp-main{
+	display: none;
+}
+@media (min-width: 539px){
+	#main{
+		display: inline;
+	}
+}
+@media (max-width: 538px){
+	#sp-main{
+		display: inline;
+	}
+}

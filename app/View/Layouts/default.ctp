@@ -60,7 +60,7 @@
 							foreach($items as $key => $value):
           	?>
           		<?php if($key != 0): ?>
-          			<li>|</li>
+          			<li class="divider"></li>
           		<?php endif; ?>
           		<li>
           			<?php echo $this->Html->link($value['label'], $value['url']); ?>
@@ -77,9 +77,9 @@
     	<div id="body" class="container">
   			<?php if(!empty($is_top)): ?>
     			<?php
-    				echo $this->element('ad_top');
+    				//echo $this->element('ad_top');
     				echo $this->fetch('content');
-    				echo $this->element('ad_bottom');
+    				//echo $this->element('ad_bottom');
     			?>
     			
   			<?php else: ?>

@@ -63,25 +63,44 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
 				病院検索
 			</h2>
-			<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
-			医療圏<?php echo $this->My->tip('医療圏'); ?>：
-			<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
-			<input type="text" data-bind="value: hospitalName"/>
-			<button type="button" data-bind="click: GotoHoslst">
-				<?php echo $this->Html->image('icon/search.png'); ?>
-				検索
-			</button>
+			<div class="content">
+				<table class="search">
+					<tr>
+						<td>都道府県</td>
+						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>
+					</tr>
+					<tr>
+						<td>医療圏<?php echo $this->My->tip('医療圏'); ?></td>
+						<td><select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select></td>
+					</tr>
+					<tr>
+						<td>病院名(一部でも可)</td>
+						<td><input type="text" data-bind="value: hospitalName"/></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="button" class="search" data-bind="click: GotoHoslst">
+								<?php echo $this->Html->image('icon/search.png', array('style'=>'padding-bottom:3px;')); ?>
+								検索
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
 		</div>
 	</div>
 	
 	<!-- ご利用ガイド -->
 	<div class="col-sm-7">
-		<?php echo $this->Html->link($this->Html->image('main.png'), '/wp/gu/', array('escape'=>false)); ?>
+		<?php echo $this->Html->link($this->Html->image('main.png'), '/wp/gu/', array('escape'=>false, 'id'=>'main')); ?>
+		<div class="row">
+			<?php echo $this->Html->link($this->Html->image('sp_main.jpg'), '/wp/gu/', array('escape'=>false, 'id'=>'sp-main')); ?>
+		</div>
 	</div>
 	
 </div>
 
-<div class="row">
+<div class="row" style="margin-top: 17px;">
 	<div class="col-sm-9">
 		
 		<!-- 新着情報 -->
@@ -91,18 +110,26 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 				新着情報
 			</h2>
 			<div class="content">
-				<?php foreach($recentPosts as $p): ?>
-					<div><?php echo $this->Html->link($p['Post']['title'], "/wp/archives/{$p['Post']['post_id']}"); ?></div>
-				<?php endforeach; ?>
+				<ul class="news">
+					<?php foreach($recentPosts as $p): ?>
+						<?php ob_start(); ?>
+						<?php
+							$utcDate = new DateTime($p['Post']['created'], new DateTimeZone('UTC'));
+							$utcDate->setTimezone(new DateTimeZone('Asia/Tokyo'));
+						?>
+						<time datetime="<?php echo h($utcDate->format('Y-m-d H:i:s')); ?>"><?php echo h($utcDate->format('Y.m.d')); ?></time>
+						<span><?php echo h($p['Post']['title']); ?></span>
+						<?php $element = ob_get_clean(); ?>
+						<li><?php echo $this->Html->link($element, "/wp/archives/{$p['Post']['post_id']}", array('escape'=>false)); ?></li>
+					<?php endforeach; ?>
+				</ul>
 			</div>
 		</div>
 		
 		<!-- ソーシャル連携 -->
 		<div class="">
-			<?php
-				echo $this->element('twitter_follow');
-				echo $this->element('fb_follow');
-			?>
+			<div><?php echo $this->element('twitter_follow'); ?></div>
+			<div><?php echo $this->element('fb_follow'); ?></div>
 		</div>
 		
 		<!-- 最近チェックした病院　と　閲覧数の多い病院 -->
@@ -116,7 +143,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	  			<div class="content">
 		  			<ul class="basic">
 			  			<?php foreach($dat['rememberedHospitals'] as $h): ?>
-			  				<li><?php echo h($h['Hospital']['name']); ?></li>
+			  				<li><?php echo $this->Html->link($h['Hospital']['name'], '/hosdetail/'.$h['Hospital']['wam_id']); ?></li>
 			  			<?php endforeach; ?>
 		  			</ul>
 	  			</div>
@@ -132,7 +159,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	  			<div class="content">
 		  			<ul class="basic">
 		  				<?php foreach($dat['hospitalsMostViewed'] as $h): ?>
-		  					<li><?php echo h($h['Hospital']['name'] . $h[0]['sum']); ?></li>
+		  					<li><?php echo $this->Html->link($h['Hospital']['name'], '/hosdetail/'.$h['Hospital']['wam_id']); ?></li>
 		  				<?php endforeach; ?>
 		  			</ul>
 	  			</div>
@@ -150,6 +177,9 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 				<?php echo $this->element('favorite'); ?>
 			</div>
 		</div>
+		
+		<!-- 広告ユニット(下部) -->
+		<?php echo $this->element('ad_bottom'); ?>
 		
 	</div>
 	
