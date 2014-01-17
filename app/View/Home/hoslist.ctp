@@ -290,4 +290,4 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 	<span data-bind="text: hospitals().length"></span>
 	/<span data-bind="text: hospitalCount"></span>
 </div>
-<div data-bind="visible: isReadMoreVisible(), click: getHospitalsMore">さらに読み込む</div>
+<button class="btn btn-default" data-bind="visible: isReadMoreVisible(), click: getHospitalsMore">さらに読み込む</button>
