@@ -76,6 +76,14 @@ function AppModel(){
 		for(var n=0; n<s.ids.length; n++){
 			var id = s.ids[n];
 			var row = {};
+			row.name = '';
+			for(var m=0; m<s.group.Hospital.length; m++){
+				var h = s.group.Hospital[m];
+				if(h.wam_id==id){
+					row.name = h.name;
+					break;
+				}
+			}
 			row.x = dataOfYear[id + '.' + s.selectedDisplayTypeX().id];
 			row.y = dataOfYear[id + '.' + s.selectedDisplayTypeY().id];
 			row.value = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
@@ -111,7 +119,7 @@ function AppModel(){
 		graph.yField = "y";
 		graph.lineAlpha = 0;
 		graph.bullet = "bubble";
-		graph.balloonText = "x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[value]]</b>"
+		graph.balloonText = "[[name]]</br>x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[value]]</b>"
 		chart.addGraph(graph);
 		
 		// WRITE                                
