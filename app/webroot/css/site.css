@@ -18,8 +18,11 @@ body {
   margin: 0 auto -93px;
   /* Pad bottom by footer height */
   padding: 0 0 93px;
-  
-  overflow: hidden;
+}
+@media (max-width: 767px){
+	#wrap{
+		overflow: hidden;
+	}
 }
 
 #body {
@@ -276,6 +279,7 @@ table.search button.search{
 	.navbar-inverse .navbar-toggle,
 	.navbar-inverse .navbar-toggle:focus,
 	.navbar-inverse .navbar-toggle:hover{
+		margin-top: 30px;
 		background: #792857;
 	}
 	.navbar-inverse .navbar-toggle .icon-bar{
@@ -317,6 +321,7 @@ div#footer .credit{
 }
 
 /* Page Specific */
+/* Home/Index */
 #IndexSearch{
 	padding: 34px 20px 0 20px;
 }
@@ -337,5 +342,47 @@ div#footer .credit{
 @media (max-width: 538px){
 	#sp-main{
 		display: inline;
+	}
+}
+/* Home/Hoslist */
+ul.hoslist{
+	list-style: none;
+	padding: 0;
+}
+ul.hoslist li{
+	border-bottom: solid 1px #DDD;
+	padding: 5px 0;
+}
+@media (min-width: 768px){
+	ul.hoslist li{
+		height 60px;
+	}
+	ul.hoslist li .left,
+	ul.hoslist li .right{
+		height: 50px;
+	}
+}
+ul.hoslist li .left table,
+ul.hoslist li .right table{
+	width: 100%;
+	height: 100%;
+}
+ul.hoslist li .dpc,
+ul.hoslist li .jcqhc,
+ul.hoslist li .training{
+	width: 45px;
+}
+ul.hoslist li .right table tr td.value{
+	width: 50px;
+}
+ul.hoslist li .right table tr td .progress{
+	margin: 0;
+}
+@media (min-width: 768px){
+	ul.hoslist li .left td.name{
+		width: 126px;
+	}
+	ul.hoslist li .left td.address{
+		width: 86px;
 	}
 }

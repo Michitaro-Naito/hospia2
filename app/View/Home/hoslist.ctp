@@ -4,6 +4,7 @@
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
 var getZonesUrl = '<?php echo Router::url('/ajax/getZones.json'); ?>';
 var getHospitalsUrl = '<?php echo Router::url('/ajax/getHospitals.json'); ?>';
+var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
 var displayTypesOriginal = JSON.parse('<?php echo json_encode($displayTypes); ?>');
 
 function Item(id, name){
@@ -34,6 +35,14 @@ function Hospital(root, data){
 				return s.Dpc.ave_month;
 		}
 	});
+	s.GetStyle = ko.computed(function(){
+		if(!root.barInitialized()) return 'width: 0%';
+		var rate = 100 * parseFloat(s.fmValue()) / root.MaxValue();
+		return 'width: ' + rate + '%';
+	});
+	s.DetailUrl = ko.computed(function(){
+		return detailUrl + '/' + s.Hospital.wam_id;
+	});
 }
 
 function AppModel(){
@@ -53,6 +62,7 @@ function AppModel(){
 	s.currentDisplayType = ko.observable();			// 現在の表示項目
 	
 	s.initialized = ko.observable(false);				// 初回の病院一覧の取得が完了しているか
+	s.barInitialized = ko.observable(false);
 	s.hospitalCount = ko.observable(0);
 	s.nextPage = 1;
 	
@@ -94,6 +104,17 @@ function AppModel(){
 		s.displayTypes(s.displayTypesOriginal[newValue]);
 	});
 	
+	s.MaxValue = ko.computed(function(){
+		var max = 0;
+		for(var n=0; n<s.hospitals().length; n++){
+			var h = s.hospitals()[n];
+			var value = parseFloat(h.fmValue());
+			if(value > max)
+				max = value;
+		}
+		return max;
+	});
+	
 	// 病院を検索取得
 	s.getHospitals = function(){
 		s.initialized(true);
@@ -123,6 +144,10 @@ function AppModel(){
 				s.hospitals.push(new Hospital(s, data.hospitals[n]));
 			}
 			s.hospitalCount(data.count);
+			s.barInitialized(false);
+			setTimeout(function(){
+				s.barInitialized(true);
+			}, 1000);
 		});
 		
 		s.nextPage++;
@@ -156,41 +181,106 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 <!-- Menu -->
 <div class="row">
 	<div class="col-sm-6">
-		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
-		<select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select>
-		<input type="text" data-bind="value: hospitalName"/>
-		<button type="button" data-bind="click: getHospitals">検索</button>
+		<div class="box">
+			<h2>
+				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
+				病院検索
+			</h2>
+			<div class="content">
+				<table class="search">
+					<tr>
+						<td>都道府県</td>
+						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>
+					</tr>
+					<tr>
+						<td>医療圏</td>
+						<td><select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select></td>
+					</tr>
+					<tr>
+						<td>病院名(一部でも可)</td>
+						<td><input type="text" data-bind="value: hospitalName"/></td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<button type="button" class="search" data-bind="click: getHospitals">
+								<?php echo $this->Html->image('icon/search.png', array('style'=>'padding-bottom:3px;')); ?>
+								検索
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	
 	<div class="col-sm-6">
-		<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
-		<input type="radio" name="displayTypeGroup" value="1" data-bind="checked: displayTypeGroup" />
-		<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
+		<div class="box">
+			<h2>
+				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
+				表示切替
+			</h2>
+			<div class="content">
+				<div>
+					<label>
+						<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
+						基本項目
+					</label>
+					<label>
+						<input type="radio" name="displayTypeGroup" value="1" data-bind="checked: displayTypeGroup" />
+						診断分類別患者数
+					</label>
+				</div>
+				<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
+				<button type="button" class="" data-bind="click: getHospitals">表示</button>
+			</div>
+		</div>
 	</div>
 </div>
 
 <!-- Head -->
 <div class="row">
-	<div class="col-sm-6">空白　病院名　所在地　DPC　機能評価　臨床研修</div>
+	<div class="col-sm-6">病院名　所在地</div>
 	<div class="col-sm-6" data-bind="visible: currentDisplayType, with: currentDisplayType">
 		<span data-bind="text: name"></span>
 	</div>
 </div>
 
 <!-- Data -->
-<ul data-bind="visible: hospitals, foreach: hospitals">
+<ul class="hoslist" data-bind="visible: hospitals, foreach: hospitals">
 	<li class="row">
-		<div class="col-sm-6">
-			空白
-			<span data-bind="text: Hospital.name"></span>
-			<span data-bind="text: Area.addr2"></span>
-			<span data-bind="visible: Hospital.dpc_id != 0">*DPC*</span>
-			<span data-bind="visible: typeof Jcqhc != 'undefined'">*機能評価*</span>
-			<span data-bind="visible: Hospital.training != 0">*臨床検収*</span>
+		<div class="col-sm-6 left">
+			<table>
+				<tr>
+					<td class="name">
+						<a data-bind="text: Hospital.name, attr: {href: DetailUrl}, visible: Hospital.dpc_id != 0"></a>
+						<span data-bind="text: Hospital.name, visible: Hospital.dpc_id == 0"></span>
+					</td>
+					<td class="address" data-bind="text: Area.addr2"></td>
+					<td class="dpc">
+						<?php echo $this->Html->image('icon/mark1.jpg', array('data-bind'=>'visible: Hospital.dpc_id != 0')); ?>
+					</td>
+					<td class="jcqhc">
+						<?php echo $this->Html->image('icon/mark2.jpg', array('data-bind'=>"visible: typeof Jcqhc != 'undefined'")); ?>
+					</td>
+					<td class="training">
+						<?php echo $this->Html->image('icon/mark3.jpg', array('data-bind'=>"visible: Hospital.training != 0")); ?>
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div class="col-sm-6">
-			<span data-bind="text: fmValue"></span>
-			バー
+		<div class="col-sm-6 right">
+			<table>
+				<tr>
+					<td class="value"><span data-bind="text: fmValue"></span></td>
+					<td>
+						<div class="progress">
+						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
+						    <span class="sr-only">60% Complete</span>
+						  </div>
+						</div>
+					</td>
+				</tr>
+			</table>
 		</div>
 	</li>
 </ul>
