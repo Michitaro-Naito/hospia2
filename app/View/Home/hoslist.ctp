@@ -138,7 +138,6 @@ function AppModel(){
 				page: s.nextPage
 			}
 		}).done(function(data){
-			console.info(data);
 			s.currentDisplayType(s.selectedDisplayType());
 			for(var n=0; n<data.hospitals.length; n++){
 				s.hospitals.push(new Hospital(s, data.hospitals[n]));
@@ -253,7 +252,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 				<tr>
 					<td class="name">
 						<a data-bind="text: Hospital.name, attr: {href: DetailUrl}, visible: Hospital.dpc_id != 0"></a>
-						<span data-bind="text: Hospital.name, visible: Hospital.dpc_id == 0"></span>
+						<span data-bind="text: Hospital.name, visible: Hospital.dpc_id == 0" class="muted"></span>
 					</td>
 					<td class="address" data-bind="text: Area.addr2"></td>
 					<td class="dpc">

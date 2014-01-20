@@ -42,6 +42,12 @@ body {
 
 
 /* bootstrap override */
+a{
+	color: #333;
+}
+span.muted{
+	color: #777;
+}
 .row {
   margin-right: -5px;
   margin-left: -5px;
@@ -108,14 +114,16 @@ margin: 7.5px -5px;
   padding-left: 5px;
   width: 100%;
 }
+.nav li a{
+	padding: 0;
+}
+.progress-bar{
+	background: #742954;
+}
 @media (min-width: 768px){
 	.container{
 		width: 970px;
 	}
-}
-
-.nav li a{
-	padding: 0;
 }
 
 
@@ -389,4 +397,35 @@ ul.hoslist li .right table tr td .progress{
 	ul.hoslist li .left td.name{
 		width: 126px;
 	}
+}
+
+/* Home/Toplst */
+ul.items{
+	list-style: none;
+	padding: 0;
+}
+ul.items li{
+	border-bottom: solid 1px #DDD;
+	padding 5px 0;
+}
+ul.items table{
+	width: 100%;
+	height: 100%;
+}
+ul.items li .progress{
+	margin: 0;
+}
+@media (min-width: 768px){
+	ul.items li{
+		height: 60px;
+	}
+	ul.items li .left,
+	ul.items li .right{
+		height: 60px;
+	}
+}
+ul.items.toplst li .address,
+ul.items.toplst li .ave_month,
+ul.items.toplst li .value{
+	width: 50px;
 }

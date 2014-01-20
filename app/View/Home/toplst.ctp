@@ -6,11 +6,68 @@ var mdcs = JSON.parse('<?php echo json_encode($mdcs); ?>');					// 診断分類�
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');	// 都道府県一覧
 var cmplst = JSON.parse('<?php echo json_encode($cmplst); ?>');				// 比較指数一覧
 var hospitals = JSON.parse('<?php echo json_encode($hospitals); ?>');		// 医療機関一覧
+var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
 
 // コンボボックスの初期値を設定する
 var defMdc = '<?php echo $defMdc; ?>';										// 診断分類
 var defPrefecture = '<?php echo $defPrefecture; ?>';						// 都道府県
 var defCmp = '<?php echo $defCmp; ?>';										// 比較指数
+
+// Represents a Hospital
+function Hospital(root, data){
+	var s = this;
+	s.root = root;
+	s.Area = data.Area;
+	s.Dpc = data.Dpc;
+	s.Hospital = data.Hospital;
+	
+	// 選択中の値を返す
+	s.Value = ko.computed(function(){
+		var cmp = s.root.selectedCmp();
+		if(typeof cmp === 'undefined')
+			return 0;
+		switch(cmp.id){
+			case 'ave_month@dpc':
+				return Number(s.Dpc.ave_month);
+			case 'zone_share@dpc':
+				return Number(s.Dpc.zone_share);
+			case 'ave_in@dpc':
+				return Number(s.Dpc.ave_in);
+			case 'complex@dpc':
+				return Number(s.Dpc.complex);
+			case 'efficiency@dpc':
+				return Number(s.Dpc.efficiency);
+		}
+		return 0;
+	});
+	
+	// フォーマットされた選択中の値を返す
+	s.fmValue = ko.computed(function(){
+		var value = s.Value();
+		var cmp = s.root.selectedCmp();
+		if(typeof cmp === 'undefined')
+			return value;
+		switch(cmp.id){
+			case 'ave_month@dpc':
+			case 'ave_in@dpc':
+				return value.toFixed(1);
+			case 'zone_share@dpc':
+				return (value * 100).toFixed(1) + '%';
+			case 'complex@dpc':
+			case 'efficiency@dpc':
+				return value.toFixed(2);
+		}
+		return value;
+	});
+	s.GetStyle = ko.computed(function(){
+		if(!root.barInitialized()) return 'width: 0%';
+		var rate = 100 * s.Value() / root.MaxValue();
+		return 'width: ' + rate + '%';
+	});
+	s.DetailUrl = ko.computed(function(){
+		return detailUrl + '/' + s.Hospital.wam_id;
+	});
+}
 
 // バインド対象のデータを設定する
 function AppModel(){
@@ -19,10 +76,26 @@ function AppModel(){
 	self.mdcs = mdcs;											// 診断分類一覧
 	self.prefectures = prefectures;								// 都道府県一覧
 	self.cmplst = cmplst;										// 比較指数一覧
-	self.hospitals = hospitals;									// 医療機関一覧
 	self.selectedMdc = ko.observable(defMdc);					// 選択された診断分類
 	self.selectedPrefecture = ko.observable(defPrefecture);		// 選択された都道府県
 	self.selectedCmp = ko.observable();					// 選択された比較指数
+	self.barInitialized = ko.observable(false);
+	var hs = [];
+	for(var n=0; n<hospitals.length; n++){
+		hs.push(new Hospital(self, hospitals[n]));
+	}
+	self.hospitals = hs;			// 医療機関一覧
+	
+	self.MaxValue = ko.computed(function(){
+		var max = 0;
+		for(var n=0; n<self.hospitals.length; n++){
+			var h = self.hospitals[n];
+			var value = h.Value();
+			if(value > max)
+				max = value;
+		}
+		return max;
+	});
 	
 	// 初期値を設定する
 	self.setDefaultValues = function(){
@@ -34,6 +107,10 @@ function AppModel(){
 				break;
 			}
 		}
+		self.barInitialized(false);
+		setTimeout(function(){
+			self.barInitialized(true);
+		}, 1000);
 	}
 }
 
@@ -53,83 +130,65 @@ model.setDefaultValues();
 
 
 <!-- メニュー -->
-<div class="row">
+<div class="box">
 	<form action="<?php echo $this->webroot.'toplst'; ?>" method="POST" id="menuForm">
-		<div class="col-sm-12">神経系患者数ランキング</div>
-		<input type="hidden" name="valueMdc" data-bind="value: selectedMdc"/>
-		<input type="hidden" name="valuePrefecture" data-bind="value: selectedPrefecture"/>
-		<input type="hidden" name="valueCmp" data-bind="value: selectedCmp"/>
-		<table>
-			<tr>
-				<td>
-					　診断分類　
-					<select data-bind="options: mdcs, optionsValue: 'id', optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
-				</td>
-				<td>
-					<span id="h01">　　都道府県&nbsp;<img src="http://hospia.jp/img/helplink2.jpg" alt="" />&nbsp;</span>
-					<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
-				</td>
-			</tr>
-		</table>
+		<h2>神経系患者数ランキング</h2>
+		<div class="content">
+			<input type="hidden" name="valueMdc" data-bind="value: selectedMdc"/>
+			<input type="hidden" name="valuePrefecture" data-bind="value: selectedPrefecture"/>
+			<input type="hidden" name="valueCmp" data-bind="value: selectedCmp"/>
+			<table>
+				<tr>
+					<td>
+						　診断分類　
+						<select data-bind="options: mdcs, optionsValue: 'id', optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
+					</td>
+					<td>
+						<span id="h01">　　都道府県&nbsp;<img src="http://hospia.jp/img/helplink2.jpg" alt="" />&nbsp;</span>
+						<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</form>
 </div>
 
-<!-- 医療機関一覧 -->
+<!-- Head -->
 <div class="row">
-	<div id="ht_toplst_main">
-		<table class="hosdetail_table" border="1">
-			<!-- ヘッダ -->
-			<thead>
-				<tr>
-					<th></th>
-					<th><span id="h03">病院名<img src="http://hospia.jp/img/helplink.jpg" alt="" /></span></th>
-					<th>都道府県</th>
-					<th width = "80"><span id="h04" >月平均<br>患者数<br><img src="http://hospia.jp/img/helplink.jpg" alt="" /></span></th>
-					<th colspan="2" width="300">
-						<span id="h02">
-							グラフ表示
-							<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
-							<img src="http://hospia.jp/img/helplink.jpg" alt="" />
-						</span>
-					</th>
-				</tr>
-			</thead>
-			<!-- 医療機関情報 -->
-			<tbody data-bind="foreach: hospitals">
-				<tr bgcolor="#f6f6f6">
-					<!-- 医療機関詳細表示用のアイコン -->
-					<td style="width:20px;" class="centertd">
-						<!-- <img src="http://hospia.jp/img/URLgray.jpg" style="cursor:pointer;" alt="" onClick="TODO" /> -->
-						<span data-bind="text: Hospital.wam_id"></span>
-					</td>
-					<!-- 医療機関名のリンク(医療機関詳細ページに遷移) -->
-					<td style="width:220px;" >
-						<a data-bind="attr: { href: 'http://hospia.jp/hosdetail/?wam_id=' + Hospital.wam_id}">
-							<span data-bind="text: Hospital.name"></span>
-						</a>
-					</td>
-					<!-- 医療機関が在る都道府県の名前 -->
-					<td style="width:100px;" >
-						<span data-bind="text: Area.addr1"></span>
-					</td>
-					<!-- 月平均患者数 -->
-					<td style="width:50px;" align="center">
-						<span data-bind="text: (Number(Dpc.ave_month)).toFixed(1)"></span>
-					</td>
-					<!-- グラフ表示 -->
-					<td style="width:60px;" align="right">
-						<span data-bind="text: (Number(Dpc.ave_month)).toFixed(1), visible: $root.selectedCmp().id == 'ave_month@dpc'"></span>
-						<span data-bind="text: (Number(Dpc.zone_share) * 100).toFixed(1) + '%', visible: $root.selectedCmp().id == 'zone_share@dpc'"></span>
-						<span data-bind="text: (Number(Dpc.ave_in)).toFixed(1), visible: $root.selectedCmp().id == 'ave_in@dpc'"></span>
-						<span data-bind="text: (Number(Dpc.complex)).toFixed(2), visible: $root.selectedCmp().id == 'complex@dpc'"></span>
-						<span data-bind="text: (Number(Dpc.efficiency)).toFixed(2), visible: $root.selectedCmp().id == 'efficiency@dpc'"></span>
-					</td>
-					<td>
-						<input type="hidden" id="id_barval1" value="213.167" />
-						<img id="id_bar1" src="http://hospia.jp/img/bar.jpg" width="213.167" height="20" />
-					</td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="col-sm-6">病院名　都道府県</div>
+	<div class="col-sm-6">
+		グラフ表示
+		<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
 	</div>
 </div>
+
+<!-- Data -->
+<ul data-bind="foreach: hospitals" class="items toplst">
+	<li class="row">
+		
+		<div class="col-sm-6 left">
+			<table>
+				<tr>
+					<td class="name"><a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a></td>
+					<td class="address"><span data-bind="text: Area.addr1"></span></td>
+					<td class="ave_month"><span data-bind="text: (Number(Dpc.ave_month)).toFixed(1)"></span></td>
+				</tr>
+			</table>
+		</div>
+		
+		<div class="col-sm-6 right">
+			<table>
+				<tr>
+					<td data-bind="text: fmValue" class="value"></td>
+					<td>
+						<div class="progress">
+						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
+						    <span class="sr-only">60% Complete</span>
+						  </div>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</li>
+</ul>
