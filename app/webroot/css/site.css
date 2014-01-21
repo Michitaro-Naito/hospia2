@@ -487,3 +487,20 @@ table.maladylist tr{
 table.maladylist tr td{
 	padding: 5px;
 }
+
+/* Hosdetail */
+table.hosdetail-head{
+	width: 100%;
+}
+table.hosdetail-head tr th.ave_month,
+table.hosdetail-head tr th.zone_share,
+table.hosdetail-head tr th.ave_in,
+table.hosdetail-head tr th.complex,
+table.hosdetail-head tr th.efficiency,
+ul.items.hosdetail li .left table tr td.ave_month,
+ul.items.hosdetail li .left table tr td.zone_share,
+ul.items.hosdetail li .left table tr td.ave_in,
+ul.items.hosdetail li .left table tr td.complex,
+ul.items.hosdetail li .left table tr td.efficiency{
+	width: 50px;
+}
