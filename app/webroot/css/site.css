@@ -117,6 +117,9 @@ margin: 7.5px -5px;
 .nav li a{
 	padding: 0;
 }
+.progress{
+	margin: 0;
+}
 .progress-bar{
 	background: #742954;
 }
@@ -399,20 +402,24 @@ ul.hoslist li .right table tr td .progress{
 	}
 }
 
-/* Home/Toplst */
-ul.items{
+/* items, items-half */
+ul.items,
+ul.items-half{
 	list-style: none;
 	padding: 0;
 }
-ul.items li{
+ul.items li,
+ul.items-half li{
 	border-bottom: solid 1px #DDD;
 	padding 5px 0;
 }
-ul.items table{
+ul.items table,
+ul.items-half table{
 	width: 100%;
 	height: 100%;
 }
-ul.items li .progress{
+ul.items li .progress,
+ul.items-half li .progress{
 	margin: 0;
 }
 @media (min-width: 768px){
@@ -424,8 +431,48 @@ ul.items li .progress{
 		height: 60px;
 	}
 }
+
+/* Home/Toplst */
 ul.items.toplst li .address,
 ul.items.toplst li .ave_month,
 ul.items.toplst li .value{
 	width: 50px;
+}
+
+/* Home/Dpc */
+table.dpc{
+	width: 100%;
+}
+table.dpc tr td{
+	padding: 5px;
+}
+table.dpc tr td.count,
+table.dpc tr td.rate,
+table.dpc tr td.days,
+table.dpc tr td.bar{
+	width: 50px;
+}
+h2.dpc{
+	background: #f1f1f1;
+	border: solid 1px #ccc;
+	font-size: 14px;
+	padding: 5px;
+	font-weight: bold;
+}
+h3.dpc{
+	font-size: 14px;
+	font-weight: bold;
+}
+table.dpc-half{
+}
+table.dpc-half tr{
+	border-bottom: solid 1px #ccc;
+}
+table.dpc-half tr td{
+	padding: 5px 0;
+}
+@media (min-width: 768px){
+	table.dpc tr td.bar{
+		width: 150px;
+	}
 }
