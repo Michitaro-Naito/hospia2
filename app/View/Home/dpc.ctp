@@ -53,6 +53,7 @@ function AppModel(){
 	s.wounds = ko.observableArray();									// 検索結果
 	s.selectedMdc = ko.observable();
 	s.selectedDpc = ko.observable();
+	s.currentDpc = ko.observable();
 	s.selectedPrefecture = ko.observable();
 	s.firstLoad = ko.observable(false);
 	s.detailUrl = detailUrl;
@@ -122,6 +123,7 @@ function AppModel(){
 			}
 		}).done(function(data){
 			//console.info(data);
+			s.currentDpc(s.selectedDpc());
 			s.wounds([]);
 			for(var n=0; n<data.wounds.length; n++){
 				s.wounds.push(new Wound(s, data.wounds[n]));
@@ -150,8 +152,8 @@ ko.applyBindings(model);
 </div>
 
 <!-- Data -->
-<h2 data-bind="if: selectedDpc()" class="dpc">
-	<span data-bind="text: selectedDpc().name"></span>
+<h2 data-bind="if: currentDpc()" class="dpc">
+	<span data-bind="text: currentDpc().name"></span>
 </h2>
 <table class="dpc">
 	<thead>
