@@ -5,20 +5,22 @@
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
 console.info(dat);
 
-function Hospital(data){
+function Hospital(root, data){
 	var s = this;
 	s.Hospital = data.Hospital;
 	s.Area = data.Area;
 	s.Dpc = data.Dpc;
-	s.patients = ko.computed(function(){
-		return s.Dpc.ave_month;
-		//if(model.currentComparisonCategory().id == 'basic') return s.Hospital.patient;
-		//if(model.currentComparisonCategory().id == 'dpc') return s.Dpc.ave_month;
-	}, this);
 	s.valueForSelection = ko.computed(function(){
-		if(model.currentComparisonCategory().id == 'basic') return s.Hospital[model.selectedDisplayTypeForBasic().id];
-		if(model.currentComparisonCategory().id == 'dpc') return s.Dpc[model.selectedDisplayTypeForDpc().id];
+		var value = 0;
+		if(model.currentComparisonCategory().id == 'basic')
+			value = s.Hospital[model.selectedDisplayTypeForBasic().id];
+		if(model.currentComparisonCategory().id == 'dpc')
+			value = s.Dpc[model.selectedDisplayTypeForDpc().id];
+		return Number(value);
 	}, this);
+	s.GetStyle = ko.computed(function(){
+		return 'width: ' + 100 * s.valueForSelection() / root.MaxValueForSelection() + '%';
+	});
 }
 
 function AppModel(){
@@ -40,6 +42,27 @@ function AppModel(){
 	
 	s.hospitals = ko.observableArray();										// 検索取得された病院一覧
 	
+	s.NameForSelection = ko.computed(function(){
+		var id = s.currentComparisonCategory().id;
+		if(id == 'basic')
+			var sel = s.selectedDisplayTypeForBasic();
+		else
+			var sel = s.selectedDisplayTypeForDpc();
+		if(typeof sel == 'undefined')
+			return '';
+		return sel.name;
+	});
+	
+	s.MaxValueForSelection = ko.computed(function(){
+		var max = 0;
+		$.each(s.hospitals(), function(index, h){
+			var value = h.valueForSelection();
+			if(value > max)
+				max = value;
+		});
+		return max;
+	});
+	
 	s.search = function(){
 		var sendData = {
 			wamId: s.wamId,
@@ -57,7 +80,7 @@ function AppModel(){
 			//s.hospitals(data.hospitals);
 			s.hospitals([]);
 			for(var n=0; n<data.hospitals.length; n++){
-				s.hospitals.push(new Hospital(data.hospitals[n]));
+				s.hospitals.push(new Hospital(s, data.hospitals[n]));
 			}
 		});
 	}
@@ -65,6 +88,7 @@ function AppModel(){
 
 var model = new AppModel();
 ko.applyBindings(model, document.getElementById('hoscmp'));
+model.search();
 
 })();
 </script>
@@ -75,24 +99,71 @@ ko.applyBindings(model, document.getElementById('hoscmp'));
 <?php echo $this->element('additional_information'); ?>
 
 <div id="hoscmp">
-	<!-- Menu -->
-	<div data-bind="text: wamId"></div>
-	<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
-	<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-	<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
-	<button data-bind="click: search">検索</button>
+	<?php echo $this->element('hosdetail_menu'); ?>
 	
-	<select data-bind="visible: currentComparisonCategory().id == 'basic', options: displayTypesForBasic, optionsText: 'name', value: selectedDisplayTypeForBasic"></select>
-	<select data-bind="visible: currentComparisonCategory().id == 'dpc', options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+	<!-- Menu -->
+	<div class="box">
+		<h2 data-bind="">他病院比較</h2>
+		<div class="content">
+			<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
+			<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+			<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
+			<button data-bind="click: search">検索</button>
+		</div>
+	</div>
+	
+	<!-- Head -->
+	<div class="row">
+		<div class="col-sm-6">
+			<table class="hoscmp-head">
+				<tr>
+					<th class="name">病院名</th>
+					<th class="address">所在地</th>
+					<th data-bind="text: NameForSelection" class="value"></th>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-6">
+			<table class="hoscmp-head">
+				<tr>
+					<th class="display">
+						グラフ表示
+						<select data-bind="visible: currentComparisonCategory().id == 'basic', options: displayTypesForBasic, optionsText: 'name', value: selectedDisplayTypeForBasic"></select>
+						<select data-bind="visible: currentComparisonCategory().id == 'dpc', options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+					</th>
+					<th class="distance">距離(km)</th>
+				</tr>
+			</table>
+		</div>
+	</div>
 	
 	<!-- Data -->
-	<div data-bind="text: currentComparisonCategory().name"></div>
-	<ul data-bind="foreach: hospitals">
-		<li>
-			<span data-bind="text: Hospital.name"></span>
-			<span data-bind="text: patients"></span>
-			<span data-bind="text: valueForSelection"></span>
-			<span data-bind="text: Hospital.distance"></span>
+	<ul data-bind="foreach: hospitals" class="items">
+		<li class="row">
+			<div class="col-sm-6 left">
+				<table>
+					<tr>
+						<td data-bind="text: Hospital.name" class="name"></td>
+						<td data-bind="" class="address">所在地</td>
+						<td data-bind="text: valueForSelection().toFixed(1)" class="value"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="col-sm-6 right">
+				<table>
+					<tr>
+						<td>
+							<div class="progress">
+							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
+							    <span class="sr-only">60% Complete</span>
+							  </div>
+							</div>
+						</td>
+						<td data-bind="text: Number(Hospital.distance).toFixed(1)" class="distance"></td>
+					</tr>
+				</table>
+			</div>
 		</li>
 	</ul>
 </div>

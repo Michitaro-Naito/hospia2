@@ -98,10 +98,7 @@ model.search();
 <?php echo $this->element('additional_information'); ?>
 
 <div id="hosdetail">
-	<!-- Menu -->
-	<?php echo $this->Html->link('診療実績', '/hosdetail/' . $dat['wamId']); ?>
-	<?php echo $this->Html->link('他病院比較', '/hoscmp/' . $dat['wamId']); ?>
-	<?php echo $this->Html->link('病院基本情報', '/hosinfo/' . $dat['wamId']); ?>
+	<?php echo $this->element('hosdetail_menu'); ?>
 	
 	<!-- Menu -->
 	<div class="box">

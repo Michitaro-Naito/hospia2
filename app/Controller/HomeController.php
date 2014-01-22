@@ -98,6 +98,7 @@ class HomeController extends AppController {
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
+			'hospital'=>$this->Data->GetHospital($wamId),
 			'fiscalYears'=>$this->Data->GetFiscalYears(),
 			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
 			'mdcs'=>$this->Data->GetMdcs(),
@@ -117,6 +118,7 @@ class HomeController extends AppController {
 		
 		$this->set('dat', array(
 			'wamId'=>$wamId,
+			'hospital'=>$this->Data->GetHospital($wamId),
 			'comparisonCategories'=>$this->Data->GetComparisonCategories(),
 			'mdcs'=>$this->Data->GetMdcs(),
 			'displayTypesForHoscmp'=>$this->Data->GetDisplayTypesForHoscmp(),

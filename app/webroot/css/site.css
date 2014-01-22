@@ -504,3 +504,16 @@ ul.items.hosdetail li .left table tr td.complex,
 ul.items.hosdetail li .left table tr td.efficiency{
 	width: 50px;
 }
+
+/* Hoscmp */
+#hoscmp table.hoscmp-head{
+	width: 100%;
+}
+#hoscmp table.hoscmp-head tr th.address,
+#hoscmp table.hoscmp-head tr th.value,
+#hoscmp table.hoscmp-head tr th.distance,
+#hoscmp ul.items li .left table tr td.address,
+#hoscmp ul.items li .left table tr td.value,
+#hoscmp ul.items li .right table tr td.distance{
+	width: 50px;
+}
