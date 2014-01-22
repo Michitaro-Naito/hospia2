@@ -566,8 +566,29 @@ class DataComponent extends Component {
 
 			// 距離が短い順にソートする
 			usort($hospitals, '_CompareHospitalsByDistance');
+			
+			$ids = array();
+			foreach($hospitals as $h)
+				array_push($ids, $h['Hospital']['addr2_cd']);
+			
+			// Areaを結合する。（パフォーマンスのため後から）
+			$this->Area = ClassRegistry::init('Area');
+			$areas = $this->Area->find('all', array(
+				'conditions'=>array(
+					'Area.addr2_cd' => $ids
+				)
+			));
+			foreach($hospitals as &$h){
+				foreach($areas as $a){
+					if($a['Area']['addr2_cd']==$h['Hospital']['addr2_cd']){
+						$h['Area'] = $a['Area'];
+						break;
+					}
+				}
+			}
 
 			// 比較区分が診療実績の場合は、診療実績を結合する。（パフォーマンスのため後から）
+			
 
 			return $hospitals;
 

@@ -19,7 +19,12 @@ function Hospital(root, data){
 		return Number(value);
 	}, this);
 	s.GetStyle = ko.computed(function(){
+		if(!root.barInitialized())
+			return 'width: 0%';
 		return 'width: ' + 100 * s.valueForSelection() / root.MaxValueForSelection() + '%';
+	});
+	s.DetailUrl = ko.computed(function(){
+		return dat.detailUrl + '/' + s.Hospital.wam_id;
 	});
 }
 
@@ -39,6 +44,7 @@ function AppModel(){
 	s.selectedDisplayTypeForHoscmp = ko.observable();
 	s.selectedDisplayTypeForBasic = ko.observable();
 	s.selectedDisplayTypeForDpc = ko.observable();
+	s.barInitialized = ko.observable(false);
 	
 	s.hospitals = ko.observableArray();										// 検索取得された病院一覧
 	
@@ -82,6 +88,10 @@ function AppModel(){
 			for(var n=0; n<data.hospitals.length; n++){
 				s.hospitals.push(new Hospital(s, data.hospitals[n]));
 			}
+			s.barInitialized(false);
+			setTimeout(function(){
+				s.barInitialized(true);
+			}, 1000);
 		});
 	}
 }
@@ -143,8 +153,10 @@ model.search();
 			<div class="col-sm-6 left">
 				<table>
 					<tr>
-						<td data-bind="text: Hospital.name" class="name"></td>
-						<td data-bind="" class="address">所在地</td>
+						<td class="name">
+							<a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a>
+						</td>
+						<td data-bind="text: Area.addr1 + Area.addr2" class="address"></td>
 						<td data-bind="text: valueForSelection().toFixed(1)" class="value"></td>
 					</tr>
 				</table>

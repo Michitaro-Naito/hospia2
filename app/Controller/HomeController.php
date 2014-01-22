@@ -124,7 +124,8 @@ class HomeController extends AppController {
 			'displayTypesForHoscmp'=>$this->Data->GetDisplayTypesForHoscmp(),
 			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
 			'displayTypesForBasic'=>$this->Data->GetDisplayTypesForBasic(),
-			'searchUrl'=>Router::url('/ajax/getComparableHospitals.json')
+			'searchUrl'=>Router::url('/ajax/getComparableHospitals.json'),
+			'detailUrl'=>Router::url('/hosdetail'),
 		));
 	}
 
