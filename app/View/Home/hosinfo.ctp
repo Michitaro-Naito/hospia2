@@ -6,16 +6,6 @@
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
 console.info(dat);
 
-// knockout.js
-function AppModel(){
-	var s = this;
-	s.hospital = dat.hospital;
-	s.hospitalsNearby = dat.hospitalsNearby;
-}
-
-var model = new AppModel();
-ko.applyBindings(model, document.getElementById('hosinfo'));
-
 // Google Maps v3
 var map;
 google.maps.event.addDomListener(window, 'load', function(){
@@ -59,30 +49,90 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 <!-- Data -->
 <div id="hosinfo">
-	<div data-bind="visible: hospital !== null, with: hospital">
-		<div data-bind="text: Hospital.name"></div>
-		<div data-bind="text: Hospital.wam_id"></div>
-		<div data-bind="text: Hospital.addr3"></div>
-		<div data-bind="text: Hospital.tel"></div>
-		<div data-bind="text: Hospital.url"></div>
-		<div data-bind="text: Jcqhc.url"></div>
-		<div data-bind="text: Hospital.bed"></div>
-		<div data-bind="text: Hospital.general"></div>
-		<div data-bind="text: Hospital.doctor"></div>
-		<div data-bind="text: Hospital.nurse"></div>
-		<div data-bind="text: Hospital.patient"></div>
-		<div data-bind="text: Hospital.outpatient"></div>
-		<div data-bind="text: Jcqhc.first_rd"></div>
-		<div data-bind="text: Jcqhc.latest_rd"></div>
+	<?php echo $this->element('hosdetail_menu'); ?>
+	
+	<?php
+		$h = $dat['hospital'];
+		if(!empty($h)):
+	?>
+		<div class="row">
+			<div class="col-sm-6 left">
+				<div class="address"><?php echo h($h['Hospital']['addr3']); ?></div>
+				<div class="tel">TEL: <?php echo h($h['Hospital']['tel']); ?></div>
+				<?php if(!empty($h['Hospital']['url'])): ?>
+					<div class="url"><?php echo $this->Html->link('病院ホームページ', $h['Hospital']['url']); ?></div>
+				<?php endif; ?>
+				<?php if(!empty($h['Jcqhc']['url'])): ?>
+					<div class="jcqhc"><?php echo $this->Html->link('関連ページ', $h['Jcqhc']['url']); ?></div>
+				<?php endif; ?>
+			</div>
+			
+			<div class="col-sm-6 right">
+				<table>
+					<tr>
+						<td rowspan="2">病床数</td>
+						<td>総病床数</td>
+						<td><?php echo h($h['Hospital']['bed']); ?>床</td>
+					</tr>
+					<tr>
+						<td>うち一般病床数</td>
+						<td><?php echo h($h['Hospital']['general']); ?>床</td>
+					</tr>
+					<tr>
+						<td rowspan="2">職員数</td>
+						<td>医師数</td>
+						<td><?php echo h($h['Hospital']['doctor']); ?>人</td>
+					</tr>
+					<tr>
+						<td>看護師数</td>
+						<td><?php echo h($h['Hospital']['nurse']); ?>人</td>
+					</tr>
+					<tr>
+						<td rowspan="2">1日平均患者数</td>
+						<td>入院患者数(一般病床)</td>
+						<td><?php echo h($h['Hospital']['patient']); ?>人</td>
+					</tr>
+					<tr>
+						<td>外来患者数</td>
+						<td><?php echo h($h['Hospital']['outpatient']); ?>人</td>
+					</tr>
+					<tr>
+						<td rowspan="2">病院機能評価</td>
+						<td>当初認定日</td>
+						<td><?php
+							if(!empty($h['Jcqhc']['first_rd'])){
+								$dt = new DateTime($h['Jcqhc']['first_rd']);
+								echo h($dt->format('Y-m-d'));
+							}
+						?></td>
+					</tr>
+					<tr>
+						<td>最新認定日</td>
+						<td><?php
+							if(!empty($h['Jcqhc']['latest_rd'])){
+								$dt = new DateTime($h['Jcqhc']['latest_rd']);
+								echo h($dt->format('Y-m-d'));
+							}
+						?></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	<?php endif; ?>
+	
+	<div class="row">
+		<div class="col-sm-3 left">
+			<ul class="hospitals-nearby">
+				<?php foreach($dat['hospitalsNearby'] as $key => $h): ?>
+					<li><?php echo h($key+1 . ' '); echo $this->Html->link($h['Hospital']['name'], '/hosdetail/' . $h['Hospital']['wam_id']); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+		
+		<div class="col-sm-9 right">
+			<div id="map-canvas" style="width: 100%; height: 500px; border: 1px solid black;">Loading...</div>
+		</div>
 	</div>
-	
-	<ul data-bind="foreach: hospitalsNearby">
-		<li>
-			<span data-bind="text: Hospital.name"></span>
-		</li>
-	</ul>
-	
-	<div id="map-canvas" style="width: 590px; height: 590px; border: 1px solid black;">Loading...</div>
 </div>
 
 <?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>

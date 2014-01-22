@@ -489,6 +489,14 @@ table.maladylist tr td{
 }
 
 /* Hosdetail */
+#hosdetail-menu{
+	margin-bottom: 10px;
+}
+#hosdetail-menu a{
+	color: #742954;
+	font-size: 14px;
+	padding: 5px;
+}
 table.hosdetail-head{
 	width: 100%;
 }
@@ -516,4 +524,10 @@ ul.items.hosdetail li .left table tr td.efficiency{
 #hoscmp ul.items li .left table tr td.value,
 #hoscmp ul.items li .right table tr td.distance{
 	width: 50px;
+}
+
+/* Hosinfo */
+#hosinfo ul.hospitals-nearby{
+	list-style: none;
+	padding: 0;
 }
