@@ -20,10 +20,6 @@ body {
 	}
 }
 
-#body {
-	padding-top: 130px;
-}
-
 /* Set the fixed height of the footer here */
 #footer {
   height: 93px;
@@ -37,6 +33,10 @@ body {
 	#footer{
 		height: 140px;
 	}
+}
+
+.navbar{
+	z-index: 1030;
 }
 
 
