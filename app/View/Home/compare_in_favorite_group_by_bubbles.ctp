@@ -135,7 +135,7 @@ ko.applyBindings(model);
 
 
 <div data-bind="text: group.FavoriteHospital.name"></div>
-<div id="chartdiv" style="width: 100%; height: 362px;"></div>
+<div id="chartdiv" class="bubbles"></div>
 <select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
 <select data-bind="options: years, optionsText: 'name', value: selectedYear"></select>
 <select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeX"></select>

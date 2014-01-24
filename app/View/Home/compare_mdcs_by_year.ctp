@@ -83,5 +83,5 @@ ko.applyBindings(model);
 
 
 
-<div id="chartdiv" style="width: 100%; height: 362px;"></div>
+<div id="chartdiv"></div>
 <select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>

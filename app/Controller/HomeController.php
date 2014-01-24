@@ -169,6 +169,7 @@ class HomeController extends AppController {
 			}
 		}
 		
+		$this->set('bareLayout', true);
 		$this->set('dat', array(
 			'wamId'=>$wamId,
 			'chartData'=>$chartData,
@@ -192,6 +193,7 @@ class HomeController extends AppController {
 		foreach($group['Hospital'] as $h){
 			array_push($ids, $h['wam_id']);
 		}
+		$this->set('bareLayout', true);
 		$this->set('dat', array(
 			'id'=>$id,
 			'group'=>$group,
@@ -222,6 +224,7 @@ class HomeController extends AppController {
 		for($year=$max; $year>=$min; $year--){
 			array_push($years, array('id'=>$year, 'name'=>'平成'.($year-1988).'年度'));
 		}
+		$this->set('bareLayout', true);
 		$this->set('dat', array(
 			'id'=>$id,
 			'group'=>$group,

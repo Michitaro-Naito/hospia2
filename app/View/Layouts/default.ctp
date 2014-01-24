@@ -25,7 +25,8 @@
   </head>
 
   <body>
-
+  	
+  	<?php if(empty($bareLayout)): ?>
     <div class="navbar navbar-inverse" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -71,11 +72,12 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
+    <?php endif; ?>
     
     
     <div id="wrap">
     	<div id="body" class="container">
-  			<?php if(!empty($is_top)): ?>
+  			<?php if(!empty($is_top) || !empty($bareLayout)): ?>
     			<?php
     				//echo $this->element('ad_top');
     				echo $this->fetch('content');
@@ -103,6 +105,7 @@
     </div><!-- /.container -->
     
     
+    <?php if(empty($bareLayout)): ?>
     <div id="footer">
       <div class="container">
       	<div class="nav">
@@ -120,6 +123,7 @@
 				<p class="credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
       </div>
     </div>
+    <?php endif; ?>
 
 
     <!-- Bootstrap core JavaScript
