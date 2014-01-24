@@ -1,21 +1,25 @@
 <div class="users form">
-<?php //echo $this->Session->flash('auth'); ?>
-<?php echo $this->Session->flash(); ?>
 <?php echo $this->Form->create('User'); ?>
-    <fieldset>
-        <legend><?php echo __('Please enter your username and password'); ?></legend>
-        <?php echo $this->Form->input('username');
-        echo $this->Form->input('password');
-    ?>
-    </fieldset>
-<?php echo $this->Form->end(__('Login')); ?>
-<?php 
-	echo __('No Account? '); 
-	echo $this->Html->link(
-         	'Register <span class="glyphicon glyphicon-pencil"></span>', 
-         	array('controller' => 'users', 'action' => 'add'),
-         	array('escape' => false)
-    );
-    // ^^ Escape ->false allows you to add a span glyphicon to a link without it being escaped
-?>
+	<div class="box">
+		<h2>ログイン</h2>
+		<div class="content">
+			<?php echo $this->Session->flash(); ?>
+			<table>
+				<tr>
+					<td>ユーザー名</td>
+					<td><?php echo $this->Form->input('username', array('label'=>false)); ?></td>
+				</tr>
+				<tr>
+					<td>パスワード</td>
+					<td><?php echo $this->Form->input('password', array('label'=>false)); ?></td>
+				</tr>
+				<tr>
+					<td colspan="2"><?php echo $this->Form->submit('ログイン'); ?></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+<?php echo $this->Form->end(); ?>
+<span>アカウントがありませんか？</span>
+<?php echo $this->Html->link('こちらから登録できます。<span class="glyphicon glyphicon-pencil"></span>', array('controller' => 'users', 'action' => 'add'), array('escape'=>false)); ?>
 </div>

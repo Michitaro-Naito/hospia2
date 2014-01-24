@@ -1,4 +1,4 @@
-<?php if(!$isPremiumUser): ?>
+<?php if(!$isPremiumUser && empty($noAds)): ?>
 	<?php if($this->request->is('mobile')): ?>
 		<div class="row">
 			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>

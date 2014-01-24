@@ -36,6 +36,7 @@ class UsersController extends AppController {
     }
 
     public function add() {
+			$this->set('noAds', true);
         if ($this->request->is('post')) {
             $this->User->create();
             $this->request->data['User']['role'] = 'basic'; //Users role will always be basic for the moment.
@@ -51,15 +52,15 @@ class UsersController extends AppController {
             	//**Email Logic (This can be templated, just using simple solution for now)
             	$email = new CakeEmail('smtp');
             	$email->to($user_email);
-            	$email->subject('Verification');
-            	$email->send('Click the link to activate ' . $link);
+            	$email->subject('病院情報局登録確認メール');
+            	$email->send("病院情報局へご登録いただきありがとうございます。\n以下のリンクをクリックして登録を完了して下さい。\n" . $link . "\n\nこのメールにお心当たりがない場合は、どなたかが誤って貴方のメールアドレスを誤って入力してしまったと思われますので廃棄していただけますようよろしくお願いいたします。また、このメールは自動で送信されておりますので、ご返信いただいてもお返事申し上げる事ができません。何卒ご了承ください。 - 病院情報局 http://hospia.jp/");
             	//**Email Logic** End
             	//**Ticket Logic** End
             	
-                $this->Session->setFlash(__('<strong>Registration Successful</strong> Please activate your email before you log in.'));
-                $this->redirect(array('action' => 'index'));
+                $this->Session->setFlash('ユーザー情報を登録しました。メールを確認してからログインして下さい。');
+                $this->redirect(array('controller'=>'Users', 'action' => 'Login'));
             } else {
-                $this->Session->setFlash(__('Something went wrong with your Registration. Please, try again.'));
+                $this->Session->setFlash('ユーザー情報の登録中にエラーが発生しました。内容を修正してから再度お試しください。');
             }
         }
         
@@ -109,17 +110,18 @@ class UsersController extends AppController {
     }
 		
 		public function login() {
+			$this->set('noAds', true);
 		    if ($this->request->is('post')) {
 		        if ($this->Auth->login()) {
 		        	if ($this->Auth->user('active')) {
-		            	$this->redirect(array('action' => 'index'));
+		            	$this->redirect(array('controller'=>'Home', 'action' => 'Index'));
 		            }
 		            else {
-		            	$this->Session->setFlash(__('Please confirm your email to log in.'));
+		            	$this->Session->setFlash('ログインの前にメールをご確認ください。');
 		            	$this->redirect($this->Auth->logout());
 		            }
 		        } else {
-		            $this->Session->setFlash(__('Invalid username or password, try again'));
+		            $this->Session->setFlash('ユーザー名かパスワードが間違っています。');
 		        }
 		    }
 		}
@@ -166,7 +168,7 @@ class UsersController extends AppController {
                 $this->User->id = $authUser['User']['id'];
                 $this->User->saveField('active', true);
                 $this->Ticket->del($hash);
-                $this->redirect( '/' ); 
+                $this->redirect(array('controller'=>'Users', 'action'=>'Login')); 
     		}
     		$this->Ticket->del($hash);	
 		} 
