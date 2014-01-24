@@ -115,5 +115,10 @@ class AppController extends Controller {
 		$this->disableCache();
 		$this->IsPremiumUser();
 		$this->Auth->allow();
+		
+		// Detectors
+		$this->request->addDetector('mobile', array(
+			'env' => 'HTTP_USER_AGENT', 'pattern' => '/iPhone|Android|Windows Phone/i'
+		));
 	}
 }

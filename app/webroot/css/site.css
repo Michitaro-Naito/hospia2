@@ -236,6 +236,11 @@ table.search button.search{
 	border-top: solid 4px #742954;
 }
 
+.navbar .container .navbar-header{
+	margin-right: -5px;
+	margin-left: -5px;
+}
+
 .navbar .navbar-brand{
 	padding: 25px 15px;
 }
