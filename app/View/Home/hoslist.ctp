@@ -6,6 +6,7 @@ var getZonesUrl = '<?php echo Router::url('/ajax/getZones.json'); ?>';
 var getHospitalsUrl = '<?php echo Router::url('/ajax/getHospitals.json'); ?>';
 var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
 var displayTypesOriginal = JSON.parse('<?php echo json_encode($displayTypes); ?>');
+var isMobile = <?php echo $this->request->is('mobile')? 'true': 'false' ?>;
 
 function Item(id, name){
 	this.id = id;
@@ -143,10 +144,14 @@ function AppModel(){
 				s.hospitals.push(new Hospital(s, data.hospitals[n]));
 			}
 			s.hospitalCount(data.count);
-			s.barInitialized(false);
-			setTimeout(function(){
+			if(isMobile){
 				s.barInitialized(true);
-			}, 1000);
+			}else{
+				s.barInitialized(false);
+				setTimeout(function(){
+					s.barInitialized(true);
+				}, 1000);
+			}
 		});
 		
 		s.nextPage++;
