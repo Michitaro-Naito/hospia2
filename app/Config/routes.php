@@ -48,6 +48,8 @@
 	Router::connect('/wp/:action/*', array('controller'=>'post'));
 	Router::connect('/malady/aboutwidget.php', array('controller'=>'Widget', 'action'=>'About'));
 	Router::connect('/widget/maladywidget.php', array('controller'=>'Widget', 'action'=>'Script'));
+	Router::connect('/LineChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByYear'));
+	Router::connect('/BubbleChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByBubbles'));
 	
 /**
  * ...and connect the rest of 'Pages' controller's urls.

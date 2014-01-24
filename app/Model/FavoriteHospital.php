@@ -17,10 +17,10 @@ class FavoriteHospital extends AppModel {
 	);
 	
 	public $validate = array(
-        'user_id' => array(
+        /*'user_id' => array(
             'rule'    => array('limitGroups', 10),
             'message' => 'You are only allowed 10 groups.'
-        )
+        )*/
     );
 	
 	public function limitGroups($check, $limit) {
@@ -39,7 +39,7 @@ class FavoriteHospital extends AppModel {
     			'SELECT count(favorite_hospital_id) from favorite_hospitals_hospital where favorite_hospital_id = ?',
     			array($gid)
 		);
-    	if($fh_count[0][0]['count(favorite_hospital_id)'] < 10){	
+    	if($fh_count[0][0]['count(favorite_hospital_id)'] < 15){	
     		//$existing_association = $this->query("SELECT count(*) FROM favorite_hospitals_hospital WHERE favorite_hospital_id = ".$gid." AND hospital_id = ".$hid.";");
     		$existing_association = $db->fetchAll(
     						'SELECT count(*) from favorite_hospitals_hospital where favorite_hospital_id = ? and hospital_id = ?',

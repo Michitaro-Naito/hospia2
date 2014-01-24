@@ -15,7 +15,11 @@ var urls = {
 	addFavoriteGroup: '<?php echo h(Router::url('/FavoriteHospitals/AddFavoriteGroup.json')); ?>',
 	renameFavoriteGroup: '<?php echo h(Router::url('/FavoriteHospitals/RenameFavoriteGroup.json')); ?>',
 	addHospital: '<?php echo h(Router::url('/FavoriteHospitals/AddHospitalToFavoriteGroup.json')); ?>',
-	removeHospital: '<?php echo h(Router::url('/FavoriteHospitals/RemoveHospitalFromFavoriteGroup.json')); ?>'
+	removeHospital: '<?php echo h(Router::url('/FavoriteHospitals/RemoveHospitalFromFavoriteGroup.json')); ?>',
+	
+	detail: '<?php echo h(Router::url('/hosdetail')); ?>',
+	lineChart: '<?php echo h(Router::url('/LineChart')); ?>',
+	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>',
 };
 var wamId = null;
 <?php if(isset($wamId)): ?>
@@ -23,6 +27,16 @@ var wamId = null;
 <?php endif; ?>
 
 
+
+function Message(level, body){
+	var s = this;
+	s.level = level;
+	s.body = body;
+	
+	s.FmLevel = ko.computed(function(){
+		return 'alert-' + s.level;
+	});
+}
 
 // Represents a Hospital
 function Hospital(parent, data){
@@ -32,6 +46,9 @@ function Hospital(parent, data){
 	s.RemoveFromParent = function(){
 		s.parent.Remove(s);
 	}
+	s.DetailUrl = ko.computed(function(){
+		return urls.detail + '/' + s.data.wam_id;
+	});
 }
 
 // Represents a FavoriteGroup (a set of hospitals)
@@ -69,14 +86,39 @@ function AppModel(){
 	s.favoriteGroups = ko.observableArray();		// 取得したお気に入りグループの一覧
 	s.selectedFavoriteGroup = ko.observable();	// 選択中のお気に入りグループ
 	s.newName = ko.observable('');							// 新しいグループ名
+	s.messages = ko.observableArray([]);				// 画面に表示されているメッセージの一覧
 	
-	s.selectedFavoriteGroup.subscribe(function(newValue){
+	/*s.selectedFavoriteGroup.subscribe(function(newValue){
 		s.newName(newValue.name);
+	});*/
+	
+	s.LineChartUrl = ko.computed(function(){
+		var g = s.selectedFavoriteGroup();
+		if(typeof g == 'undefined')
+			return null;
+		return urls.lineChart + '/' + g.id;
+	});
+	
+	s.BubbleChartUrl = ko.computed(function(){
+		var g = s.selectedFavoriteGroup();
+		if(typeof g == 'undefined')
+			return null;
+		return urls.bubbleChart + '/' + g.id;
 	});
 	
 	// 画面にメッセージを表示する
 	s.ShowMessage = function(message){
 		console.info(message);
+		s.messages.push(new Message('warning', message));
+	}
+	s.ShowSuccess = function(message){
+		s.messages.push(new Message('success', message));
+	}
+	s.ShowWarn = function(message){
+		s.messages.push(new Message('warning', message));
+	}
+	s.ShowError = function(message){
+		s.messages.push(new Message('danger', message));
 	}
 	
 	// お気に入りグループ一覧を(再)取得する
@@ -110,6 +152,7 @@ function AppModel(){
 	// お気に入りグループを追加する
 	s.Add = function(){
 		var newName = s.newName();
+		s.newName('');
 		$.postJSON({
 			url: urls.addFavoriteGroup,
 			data: {
@@ -117,6 +160,12 @@ function AppModel(){
 			}
 		}).done(function(data){
 			s.GetFavoriteGroups(data.dat.groupId);
+			if(data.dat.result == true)
+				s.ShowSuccess('お気に入りグループを追加しました。');
+			else
+				s.ShowError('お気に入りグループの追加に失敗しました。');
+		}).fail(function(){
+			s.ShowError('お気に入りグループの追加に失敗しました。');
 		});
 	}
 	
@@ -124,6 +173,7 @@ function AppModel(){
 	s.Rename = function(){
 		var group = s.selectedFavoriteGroup();
 		var newName = s.newName();
+		s.newName('');
 		$.postJSON({
 			url: urls.renameFavoriteGroup,
 			data: {
@@ -132,6 +182,12 @@ function AppModel(){
 			}
 		}).done(function(data){
 			s.GetFavoriteGroups();
+			if(data.dat.result == true)
+				s.ShowSuccess('名称を変更しました。');
+			else
+				s.ShowError('名称の変更に失敗しました。');
+		}).fail(function(){
+			s.ShowError('名称の変更に失敗しました。');
 		});
 	}
 	
@@ -144,11 +200,10 @@ function AppModel(){
 		
 		var group = s.selectedFavoriteGroup();
 		if(group.HasWamId(s.wamId)){
-			s.ShowMessage('Already added to this group.');
+			s.ShowWarn('既に登録されています。');
 			return;
 		}
 		
-		s.ShowMessage('Adding...');
 		$.postJSON({
 			url: urls.addHospital,
 			data: {
@@ -157,6 +212,12 @@ function AppModel(){
 			}
 		}).done(function(data){
 			s.GetFavoriteGroups();
+			if(data.dat.result == true)
+				s.ShowSuccess('登録しました。');
+			else
+				s.ShowError('登録に失敗しました。');
+		}).fail(function(){
+			s.ShowError('登録に失敗しました。');
 		});
 	}
 	
@@ -170,6 +231,12 @@ function AppModel(){
 			}
 		}).done(function(data){
 			s.GetFavoriteGroups();
+			if(data.dat.result == true)
+				s.ShowSuccess('登録を解除しました。');
+			else
+				s.ShowError('登録の解除に失敗しました。');
+		}).fail(function(){
+			s.ShowError('登録の解除に失敗しました。');
 		});
 	}
 	
@@ -185,27 +252,106 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 
 
 
+<!-- お気に入り管理(ログインしている場合) -->
 <div id="<?php echo h($uid); ?>">
-	<!-- お気に入りグループ一覧(ログインしている場合) -->
-	<div data-bind="if: loggedIn()">
-		<div data-bind="text: wamId"></div>
-		<select data-bind="options: favoriteGroups, optionsText: 'name', value: selectedFavoriteGroup"></select>
-		<div data-bind="if: selectedFavoriteGroup()">
-			<ul data-bind="foreach: selectedFavoriteGroup().hospitals">
-				<li>
-					<span data-bind="text: data.wam_id"></span>
-					<span data-bind="text: data.name"></span>
-					<button type="button" data-bind="click: RemoveFromParent">Remove</button>
-				</li>
-			</ul>
-			<button type="button" data-bind="click: Rename">Rename</button>
-			<button type="button" data-bind="click: AddHospital">AddHospital</button>
+	<div class="box">
+		<h2>お気に入り管理</h2>
+		
+		<!-- ログインしている場合 -->
+		<div data-bind="if: loggedIn(), visible: loggedIn()" class="content">
+				
+			<!-- メッセージ -->
+			<div data-bind="foreach: messages" class="messages">
+				<div data-bind="attr:{class: 'alert alert-dismissable ' + FmLevel()}">
+				  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				  <span data-bind="text: body"></span>
+				</div>
+			</div>
+			
+			<table>
+				<tr>
+					<td>
+						<!-- グループ操作 -->
+						<div class="btn-group">
+						  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						    操作 <span class="caret"></span>
+						  </button>
+						  <ul class="dropdown-menu" role="menu">
+						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" data-target="#AddGroupModal">お気に入りグループを作成する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" data-target="#RenameGroupModal">グループ名を変更する</a></li>
+						    <li data-bind="visible: selectedFavoriteGroup()? (selectedFavoriteGroup().hospitals.length < 15 && wamId): false"><a data-bind="click: AddHospital">閲覧中の病院を登録する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup(), attr:{href:LineChartUrl}" target="_blank">折れ線グラフで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup(), attr:{href:BubbleChartUrl}" target="_blank">バブルチャートで比較する</a></li>
+						  </ul>
+						</div>
+					</td>
+					<td>
+						<!-- グループ選択 -->
+						<select data-bind="visible: favoriteGroups().length > 0, options: favoriteGroups, optionsText: 'name', value: selectedFavoriteGroup" class="form-control"></select>
+					</td>
+				</tr>
+			</table>	
+			
+			<!-- モーダル(新しいグループ) -->
+			<div class="modal fade" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="myModalLabel">お気に入りグループを作成する</h4>
+			      </div>
+			      <div class="modal-body">
+							<input type="text" data-bind="value: newName" class="form-control" placeholder="新しいグループ名" maxlength="12" />
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+			        <button type="button" data-bind="click: Add" class="btn btn-primary" data-dismiss="modal">作成する</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+			<!-- モーダル(名称変更) -->
+			<div class="modal fade" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="myModalLabel">グループ名を変更する</h4>
+			      </div>
+			      <div class="modal-body">
+			      	<span data-bind="if: selectedFavoriteGroup()">現在のグループ名：<span data-bind="text: selectedFavoriteGroup().name"></span></span>
+							<input type="text" data-bind="value: newName" class="form-control" placeholder="新しいグループ名" maxlength="12" />
+			      </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">閉じる</button>
+			        <button type="button" data-bind="click: Rename" class="btn btn-primary" data-dismiss="modal">保存する</button>
+			      </div>
+			    </div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
+			
+			<!-- このグループの病院 -->
+			<div data-bind="with: selectedFavoriteGroup()">
+				<ul data-bind="foreach: hospitals" class="items-half">
+					<li>
+						<table>
+							<tr>
+								<td><a data-bind="text: data.name, attr:{href:DetailUrl}"></a></td>
+								<td style="width: 80px;"><button type="button" data-bind="click: RemoveFromParent">解除する</button></td>
+							</tr>
+						</table>
+					</li>
+				</ul>
+				<span data-bind="text: hospitals.length"></span>/15
+				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
+			</div>
+			
 		</div>
-		<input type="text" data-bind="value: newName" />
-		<button type="button" data-bind="click: Add">Add</button>
-	</div>
-	<!-- ログインを促すメッセージ(ログインしていない場合) -->
-	<div data-bind="if: !loggedIn()">
-		この病院をお気に入りに登録するにはログインして下さい。
+		
+		<!-- ログインを促すメッセージ(ログインしていない場合) -->
+		<div data-bind="if: !loggedIn()" class="content">
+			この病院をお気に入りに登録するには<?php echo $this->Html->link('ログインして下さい。', array('controller'=>'Users', 'action'=>'Login')); ?>
+		</div>
 	</div>
 </div>

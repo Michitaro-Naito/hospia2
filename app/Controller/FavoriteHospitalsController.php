@@ -37,6 +37,12 @@ class FavoriteHospitalsController extends AppController {
 			$this->loadModel('FavoriteHospital');
 			$this->FavoriteHospital->data['FavoriteHospital']['user_id'] = $userId;
 			$this->FavoriteHospital->data['FavoriteHospital']['name'] = $newName;
+			$this->FavoriteHospital->validator()->add('user_id', array(
+				array(
+          'rule'    => array('limitGroups', 10),
+          'message' => 'You are only allowed 10 groups.'
+      	)
+			));
 			if($this->FavoriteHospital->save()){
 				$result = true;
 				$groupId = $this->FavoriteHospital->id;
@@ -52,6 +58,7 @@ class FavoriteHospitalsController extends AppController {
 	
 	public function RenameFavoriteGroup(){
 		$result = false;
+		$messages = array();
 		
 		if($this->Auth->loggedIn()){
 			$userId = $this->Auth->user('id');
@@ -65,10 +72,17 @@ class FavoriteHospitalsController extends AppController {
 				$this->FavoriteHospital->data['FavoriteHospital']['name'] = $newName;
 				if($this->FavoriteHospital->save())
 					$result = true;
+				else
+					array_push($messages, '保存中にエラーが発生しました。' . print_r($this->FavoriteHospital->validationErrors, true));
 			}
+		}else{
+			array_push($messages, 'ログインしていません。');
 		}
 		
-		$this->set('dat', array('result'=>$result));
+		$this->set('dat', array(
+			'result'=>$result,
+			'messages'=>$messages
+		));
 		$this->set('_serialize', array('dat'));
 	}
 	
