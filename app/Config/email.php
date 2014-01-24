@@ -61,12 +61,12 @@ class EmailConfig {
 	
 	public $smtp = array(
 		'transport' => 'Smtp',
-		'from' => array('do-not-reply@hospia.com' => 'Hospia'),
-		'host' => 'ssl://smtp.lolipop.jp',
-		'port' => 465,
+		'from' => array('info@hospia.jp' => '病院情報局'),
+		'host' => 'hospia.jp',
+		'port' => 587,
 		'timeout' => 30,
-		'username' => 'hospia-debug@amlitek.com',
-		'password' => 'Qom72demean',
+		'username' => 'info@hospia.jp',
+		'password' => 'mgr57553830',
 		'client' => null,
 		'log' => false,
 	);
