@@ -6,6 +6,9 @@
 class TipController extends AppController{
 	
 	public function Index(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		$this->request->data['VM'] = $this->request->query;
 		$cond = array();
 		if(!empty($this->request->data['VM']['name']))
@@ -20,6 +23,9 @@ class TipController extends AppController{
 	}
 	
 	public function Edit($id = null){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		if(empty($this->data)){
 			$this->data = $this->Tip->findById($id);
 		}else{
@@ -31,6 +37,9 @@ class TipController extends AppController{
 	}
 	
 	public function Delete($id = null){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		if($this->request->isPost()){
 			$this->Tip->delete($id, false);
 			return $this->redirect(array('action'=>'Index'));

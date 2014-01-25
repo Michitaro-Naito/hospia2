@@ -7,6 +7,9 @@
 class FileController extends AppController{
 	
 	public function Index(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		$this->paginate = array(
 			'File'=>array(
 				'order'=>array('File.id'=>'desc'),
@@ -18,6 +21,9 @@ class FileController extends AppController{
 	}
 	
 	public function Upload(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		if(!empty($_FILES) && !empty($_FILES['upfile'])){
 			$upfile = $_FILES['upfile'];
 			if($upfile['error']===0 && $upfile['size']>0){

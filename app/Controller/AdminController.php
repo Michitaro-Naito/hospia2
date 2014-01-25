@@ -11,11 +11,16 @@ class AdminController extends AppController{
 	public $components = array('RequestHandler', 'Auth');
 	
 	public function index(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
 		
 	}
 	
 	// Coordinates -> Distance
 	public function distance(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		
 	}
 	

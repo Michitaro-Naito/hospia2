@@ -7,6 +7,9 @@ class PostController extends AppController {
 	 * Admin only.
 	 */
 	public function Index() {
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		$this->request->data['VM'] = $this->request->query;
 		$cond = array();
 		if(!empty($this->request->data['VM']['title']))
@@ -26,6 +29,9 @@ class PostController extends AppController {
 	 * Admin only.
 	 */
 	public function Edit($id = null){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		if(empty($this->data)){
 			$this->data = $this->Post->findById($id);
 		}else{
@@ -41,6 +47,9 @@ class PostController extends AppController {
 	 * Disables a post. Admin only.
 	 */
 	public function Disable($id = null){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
 		if($this->request->isPost()){
 			$this->Post->delete($id, false);
 			return $this->redirect('/Post');

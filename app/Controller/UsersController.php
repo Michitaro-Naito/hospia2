@@ -12,6 +12,9 @@ class UsersController extends AppController {
 		 * List of Users. Admin only.
 		 */
     public function Index() {
+		 	if(!$this->IsAdmin())
+				return $this->redirect('/');
+			
 				$this->request->data['VM'] = $this->request->query;
 				$cond = array();
 				if(!empty($this->request->data['VM']['username']))
