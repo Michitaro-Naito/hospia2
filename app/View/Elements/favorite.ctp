@@ -353,6 +353,11 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
 			</div>
 			
+			<!-- プレミアム会員権管理(ログインしていてプレミアム会員である場合) -->
+			<p data-bind="visible: isPremium">
+				<?php echo $this->Html->link('プレミアム会員権管理', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
+			</p>
+			
 			<!-- 課金を促すメッセージ(ログインしていてプレミアムでない場合) -->
 			<p data-bind="visible: !isPremium">
 				<?php echo $this->Html->link('毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>

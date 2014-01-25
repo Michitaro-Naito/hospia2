@@ -44,7 +44,7 @@ function purchase(){
 				プレミアム機能をご利用いただき誠にありがとうございます。
 				会費のお支払いを停止なさりたい場合は、<?php echo $this->Html->link('こちらのページ', 'https://wallet.google.com', array('target'=>'_blank')); ?>の
 				「もっと見る」→「定期購入」から、「病院情報局 - プレミアム会費」をご解約ください。
-				ご解約なさいますと、すぐにプレミアム機能は使えなくなってしまいます。何卒ご了承ください。<br/>
+				ご解約なさいますとプレミアム機能は使えなくなってしまいます。何卒ご了承ください。<br/>
 				<?php echo $this->Html->link('Google Wallet', 'https://wallet.google.com', array('target'=>'_blank')); ?>
 			</p>
 			<?php if(count($dat['user']['Subscription']) > 1): ?>

@@ -1,5 +1,9 @@
 <?php
-	echo $this->Form->create();
+	echo $this->Form->create('User', array(
+		'inputDefaults'=>array(
+			'class'=>'form-control'
+		)
+	));
 	echo $this->Form->hidden('id');
 ?>
 <?php
@@ -17,4 +21,9 @@
 	if(!empty($this->data['User']['modified']))
 		echo $this->Form->input('modified', array('type'=>'text', 'disabled'=>'disabled'));
 ?>
-<?php echo $this->Form->end('Save'); ?>
+<?php
+	echo $this->Form->submit('保存する', array('class'=>'btn btn-default'));
+	echo $this->Form->end();
+?>
+
+<?php echo $this->Html->link('一覧に戻る', array('controller'=>'Users', 'action'=>'Index')); ?>

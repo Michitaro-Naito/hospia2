@@ -5,11 +5,13 @@ tinymce.init({
 	language: 'ja',
 	selector: "textarea",
 	plugins: [
-		"advlist autolink lists link image charmap print preview anchor",
-		"searchreplace visualblocks code fullscreen",
-		"insertdatetime media table contextmenu paste"
+    "advlist autolink lists link image charmap print preview hr anchor pagebreak",
+    "searchreplace wordcount visualblocks visualchars code fullscreen",
+    "insertdatetime media nonbreaking save table contextmenu directionality",
+    "emoticons template paste textcolor"
 	],
-	toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+  toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+  toolbar2: "print preview media | forecolor backcolor emoticons",
 	autosave_ask_before_unload: false
 });
 
@@ -27,7 +29,7 @@ $(document).ready(function(){
 <?php $this->end(); ?>
 
 <?php
-	echo $this->Form->create('Tip');
+	echo $this->Form->create('Tip', array('inputDefaults'=>array('class'=>'form-control')));
 	echo $this->Form->hidden('id');
 ?>
 
@@ -38,6 +40,9 @@ $(document).ready(function(){
 	));
 ?>
 <button type="button" id="uploader">ファイルアップロード</button>
-<?php echo $this->Form->end('Save'); ?>
+<?php
+	echo $this->Form->submit('保存する', array('class'=>'btn btn-default'));
+	echo $this->Form->end();
+?>
 
-<?php echo $this->Html->link('一覧', array('controller'=>'Tip', 'action'=>'Index')); ?>
+<?php echo $this->Html->link('一覧に戻る', array('controller'=>'Tip', 'action'=>'Index')); ?>

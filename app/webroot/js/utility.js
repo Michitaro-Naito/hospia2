@@ -33,7 +33,20 @@
 			var e = $(Element);
 			var key = e.data('tipkey');
 			e.balloon({
-				url: urlToTipView + '/' + key
+				url: urlToTipView + '/' + key,
+				css: {
+				  minWidth: "20px",
+				  maxWidth: '150px',
+				  padding: "5px",
+				  borderRadius: "6px",
+				  border: "solid 1px #777",
+				  boxShadow: "4px 4px 4px #555",
+				  color: "#666",
+				  backgroundColor: "#efefef",
+				  opacity: "0.85",
+				  zIndex: "32767",
+				  textAlign: "left",
+				}
 			});
 		});
 	};

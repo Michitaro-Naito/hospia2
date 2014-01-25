@@ -13,31 +13,44 @@ function Disable(id){
 
 <!-- Simple user index for testing. -->
 <div class="page-header">
-    <h1>Users</h1>
+    <h1>ユーザー管理</h1>
 </div>
-<?php echo $this->Html->link('Add', '/Users/Edit/'); ?>
+<?php echo $this->Html->link('新しいユーザーを作成する', '/Users/Edit/'); ?>
 
 <!-- Form to Search -->
 <?php
 	echo $this->Form->create('VM', array('type' => 'get'));
-	echo $this->Form->text('username');
-	echo $this->Form->end('Search');
+	echo $this->Form->text('username', array('class'=>'form-control'));
+	echo $this->Form->submit('登録されているユーザーを検索する', array('class'=>'btn btn-default'));
+	echo $this->Form->end();
 ?>
 
 <!-- Data -->
-<ul>
-	<?php foreach($users as $u): ?>
-		<li>
-			<?php echo h($u['User']['id']); ?>
-			<?php echo h($u['User']['username']); ?>
-			<?php echo $this->Html->link('編集', array('controller'=>'Users', 'action'=>'Edit', $u['User']['id'])); ?>
-			<button type="button" onclick="Disable(<?php echo h($u['User']['id']); ?>);">無効化</button>
-		</li>
-	<?php endforeach; ?>
-	<?php
-	    echo $this->Paginator->prev('« Previous ', null, null, array('class' => 'disabled'));
-	    echo $this->Paginator->next(' Next »', null, null, array('class' => 'disabled'));
-	?>
-</ul>
+<table class="table table-striped">
+	<thead>
+		<tr>
+			<th>ID</th>
+			<th>ユーザー名</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach($users as $u): ?>
+			<tr>
+				<td><?php echo h($u['User']['id']); ?></td>
+				<td><?php echo h($u['User']['username']); ?></td>
+				<td>
+					<?php echo $this->Html->link('編集する', array('controller'=>'Users', 'action'=>'Edit', $u['User']['id'])); ?>
+					<button type="button" onclick="Disable(<?php echo h($u['User']['id']); ?>);" class="btn btn-default">無効化する</button>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	</tbody>
+</table>
+
+<?php
+    echo $this->Paginator->prev('« 前へ ', null, null, array('class' => 'disabled'));
+    echo $this->Paginator->next(' 次へ »', null, null, array('class' => 'disabled'));
+?>
 
 <form method="post" action="" id="form0"></form>
