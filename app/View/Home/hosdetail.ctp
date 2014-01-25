@@ -113,12 +113,12 @@ model.search();
 		<div class="col-sm-6">
 			<table class="hosdetail-head">
 				<tr>
-					<th class="">診断分類</th>
-					<th class="ave_month">月平均患者数</th>
-					<th class="zone_share">医療圏シェア</th>
-					<th class="ave_in">平均在院日数</th>
-					<th class="complex">患者構成指標</th>
-					<th class="efficiency">在院日数指標</th>
+					<th class="">診断分類<?php echo $this->My->tip('診療実績-診断分類'); ?></th>
+					<th class="ave_month">月平均患者数<?php echo $this->My->tip('診療実績-月平均患者数'); ?></th>
+					<th class="zone_share">医療圏シェア<?php echo $this->My->tip('診療実績-医療圏シェア'); ?></th>
+					<th class="ave_in">平均在院日数<?php echo $this->My->tip('診療実績-平均在院日数'); ?></th>
+					<th class="complex">患者構成指標<?php echo $this->My->tip('診療実績-患者構成指標'); ?></th>
+					<th class="efficiency">在院日数指標<?php echo $this->My->tip('診療実績-在院日数指標'); ?></th>
 				</tr>
 			</table>
 		</div>
@@ -127,6 +127,7 @@ model.search();
 				<tr>
 					<th>
 						<select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+						<?php echo $this->My->tip('グラフ表示'); ?>
 					</th>
 				</tr>
 			</table>

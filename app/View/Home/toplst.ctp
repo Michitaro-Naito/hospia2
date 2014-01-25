@@ -144,7 +144,7 @@ model.setDefaultValues();
 						<select data-bind="options: mdcs, optionsValue: 'id', optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
 					</td>
 					<td>
-						<span id="h01">　　都道府県&nbsp;<img src="http://hospia.jp/img/helplink2.jpg" alt="" />&nbsp;</span>
+						都道府県<?php echo $this->My->tip('患者数ランキング-都道府県'); ?>
 						<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
 					</td>
 				</tr>
@@ -155,7 +155,7 @@ model.setDefaultValues();
 
 <!-- Head -->
 <div class="row">
-	<div class="col-sm-6">病院名　都道府県</div>
+	<div class="col-sm-6">病院名<?php echo $this->My->tip('病院名'); ?>　都道府県</div>
 	<div class="col-sm-6">
 		グラフ表示
 		<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>

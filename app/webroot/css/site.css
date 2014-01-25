@@ -154,6 +154,13 @@ body{
 	color: rgb(116, 41, 84);
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
+.box h2:after{
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
 
 .box .content{
 	padding: 12px 12px;
@@ -535,6 +542,11 @@ ul.items.hosdetail li .left table tr td.efficiency{
 #hosinfo ul.hospitals-nearby{
 	list-style: none;
 	padding: 0;
+}
+#hosinfo h3{
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0 0 10px 0;
 }
 
 /* Chart */

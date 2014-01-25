@@ -145,8 +145,8 @@ ko.applyBindings(model);
 <div class="box">
 	<h2>傷病別統計データ</h2>
 	<div class="content">
-		診断分類：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-		傷病名：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc"></select>
+		診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+		傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc"></select>
 		<button data-bind="click: search">検索</button>
 	</div>
 </div>
@@ -158,9 +158,9 @@ ko.applyBindings(model);
 <table class="dpc">
 	<thead>
 		<tr>
-			<th>手術情報</th>
-			<th colspan="3">患者数および割合</th>
-			<th colspan="2">平均在院日数</th>
+			<th>手術情報<?php echo $this->My->tip('DPC-手術情報'); ?></th>
+			<th colspan="3">患者数および割合<?php echo $this->My->tip('DPC-患者数および割合'); ?></th>
+			<th colspan="2">平均在院日数<?php echo $this->My->tip('DPC-平均在院日数'); ?></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: wounds().concat(Total())">
@@ -189,9 +189,9 @@ ko.applyBindings(model);
 
 <!-- Menu 2 -->
 <div class="box">
-	<h2>手術情報別病院ランキング</h2>
+	<h2>手術情報別病院ランキング<?php echo $this->My->tip('DPC-手術情報別病院ランキング', array('image'=>true)); ?></h2>
 	<div class="content">
-		都道府県：<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
+		都道府県<?php echo $this->My->tip('DPC-都道府県'); ?>：<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
 	</div>
 </div>
 

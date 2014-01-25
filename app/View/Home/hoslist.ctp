@@ -221,17 +221,17 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 		<div class="box">
 			<h2>
 				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				表示切替
+				表示切替<?php echo $this->My->tip('病院検索-表示切替', array('image'=>true)); ?>
 			</h2>
 			<div class="content">
 				<div>
 					<label>
 						<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
-						基本項目
+						基本項目<?php echo $this->My->tip('病院検索-基本項目'); ?>
 					</label>
 					<label>
 						<input type="radio" name="displayTypeGroup" value="1" data-bind="checked: displayTypeGroup" />
-						診断分類別患者数
+						診断分類別患者数<?php echo $this->My->tip('病院検索-診断分類別患者数'); ?>
 					</label>
 				</div>
 				<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
@@ -243,7 +243,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 
 <!-- Head -->
 <div class="row">
-	<div class="col-sm-6">病院名　所在地</div>
+	<div class="col-sm-6">病院名<?php echo $this->My->tip('病院名'); ?>　所在地</div>
 	<div class="col-sm-6" data-bind="visible: currentDisplayType, with: currentDisplayType">
 		<span data-bind="text: name"></span>
 	</div>

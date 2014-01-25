@@ -62,7 +62,9 @@ google.maps.event.addDomListener(window, 'load', function(){
 					<div class="url"><?php echo $this->Html->link('病院ホームページ', $h['Hospital']['url']); ?></div>
 				<?php endif; ?>
 				<?php if(!empty($h['Jcqhc']['url'])): ?>
-					<div class="jcqhc"><?php echo $this->Html->link('関連ページ', $h['Jcqhc']['url']); ?></div>
+					関連サイト<br/>
+					都道府県 医療機能情報サイト<?php echo $this->My->tip('基本情報-都道府県医療機能情報サイト'); ?>
+					<div class="jcqhc"><?php echo $this->Html->link('医療機能評価機構 審査結果', $h['Jcqhc']['url']); ?><?php echo $this->My->tip('基本情報-医療機能評価機構審査結果'); ?></div>
 				<?php endif; ?>
 			</div>
 			
@@ -70,33 +72,33 @@ google.maps.event.addDomListener(window, 'load', function(){
 				<table>
 					<tr>
 						<td rowspan="2">病床数</td>
-						<td>総病床数</td>
+						<td>総病床数<?php echo $this->My->tip('総病床数'); ?></td>
 						<td><?php echo h($h['Hospital']['bed']); ?>床</td>
 					</tr>
 					<tr>
-						<td>うち一般病床数</td>
+						<td>うち一般病床数<?php echo $this->My->tip('一般病床数'); ?></td>
 						<td><?php echo h($h['Hospital']['general']); ?>床</td>
 					</tr>
 					<tr>
 						<td rowspan="2">職員数</td>
-						<td>医師数</td>
+						<td>医師数<?php echo $this->My->tip('医師数'); ?></td>
 						<td><?php echo h($h['Hospital']['doctor']); ?>人</td>
 					</tr>
 					<tr>
-						<td>看護師数</td>
+						<td>看護師数<?php echo $this->My->tip('看護師数'); ?></td>
 						<td><?php echo h($h['Hospital']['nurse']); ?>人</td>
 					</tr>
 					<tr>
 						<td rowspan="2">1日平均患者数</td>
-						<td>入院患者数(一般病床)</td>
+						<td>入院患者数(一般病床)<?php echo $this->My->tip('入院患者数(一般病床)'); ?></td>
 						<td><?php echo h($h['Hospital']['patient']); ?>人</td>
 					</tr>
 					<tr>
-						<td>外来患者数</td>
+						<td>外来患者数<?php echo $this->My->tip('外来患者数'); ?></td>
 						<td><?php echo h($h['Hospital']['outpatient']); ?>人</td>
 					</tr>
 					<tr>
-						<td rowspan="2">病院機能評価</td>
+						<td rowspan="2">病院機能評価<?php echo $this->My->tip('基本情報-病院機能評価'); ?></td>
 						<td>当初認定日</td>
 						<td><?php
 							if(!empty($h['Jcqhc']['first_rd'])){
@@ -121,6 +123,7 @@ google.maps.event.addDomListener(window, 'load', function(){
 	
 	<div class="row">
 		<div class="col-sm-3 left">
+			<h3>周辺の急性期病院<?php echo $this->My->tip('基本情報-周辺の急性期病院'); ?></h3>
 			<ul class="hospitals-nearby">
 				<?php foreach($dat['hospitalsNearby'] as $key => $h): ?>
 					<li><?php echo h($key+1 . ' '); echo $this->Html->link($h['Hospital']['name'], '/hosdetail/' . $h['Hospital']['wam_id']); ?></li>

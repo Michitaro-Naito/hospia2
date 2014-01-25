@@ -114,8 +114,11 @@ model.search();
 	<div class="box">
 		<h2 data-bind="">他病院比較</h2>
 		<div class="content">
+			比較区分<?php echo $this->My->tip('他病院比較-比較区分'); ?>：
 			<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
+			診断分類<?php echo $this->My->tip('他病院比較-診断分類'); ?>：
 			<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+			比較リスト<?php echo $this->My->tip('他病院比較-比較リスト'); ?>：
 			<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
 			<button data-bind="click: search">検索</button>
 		</div>
@@ -126,7 +129,7 @@ model.search();
 		<div class="col-sm-6">
 			<table class="hoscmp-head">
 				<tr>
-					<th class="name">病院名</th>
+					<th class="name">病院名<?php echo $this->My->tip('病院名'); ?></th>
 					<th class="address">所在地</th>
 					<th data-bind="text: NameForSelection" class="value"></th>
 				</tr>
@@ -136,11 +139,11 @@ model.search();
 			<table class="hoscmp-head">
 				<tr>
 					<th class="display">
-						グラフ表示
+						グラフ表示<?php echo $this->My->tip('グラフ表示'); ?>
 						<select data-bind="visible: currentComparisonCategory().id == 'basic', options: displayTypesForBasic, optionsText: 'name', value: selectedDisplayTypeForBasic"></select>
 						<select data-bind="visible: currentComparisonCategory().id == 'dpc', options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
 					</th>
-					<th class="distance">距離(km)</th>
+					<th class="distance">距離(km)<?php echo $this->My->tip('距離'); ?></th>
 				</tr>
 			</table>
 		</div>

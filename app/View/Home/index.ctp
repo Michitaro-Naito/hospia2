@@ -138,7 +138,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
   			<div class="box">
 	  			<h2>
 						<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-	  				最近チェックした病院
+	  				最近チェックした病院<?php echo $this->My->tip('最近チェックした病院', array('image'=>true)); ?>
 	  			</h2>
 	  			<div class="content">
 		  			<ul class="basic">
@@ -154,7 +154,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
   			<div class="box">
 	  			<h2>
 						<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-	  				閲覧数の多い病院
+	  				閲覧数の多い病院<?php echo $this->My->tip('閲覧数の多い病院', array('image'=>true)); ?>
 	  			</h2>
 	  			<div class="content">
 		  			<ul class="basic">
@@ -180,9 +180,9 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 		
 		<!-- 疾患別メニュー -->
 		<div class="box">
-			<h2>
+			<h2 style="font-size:12px;">
 				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				主な疾患別患者数ランキング
+				主な疾患別患者数ランキング<?php echo $this->My->tip('主な疾患別患者数ランキング', array('image'=>true)); ?>
 			</h2>
 			<div class="content">
 				<ul class="basic">
@@ -195,9 +195,9 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 		
 		<!-- 診断分類別メニュー -->
 		<div class="box">
-			<h2>
+			<h2 style="font-size:12px;">
 				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				診断分類別患者数ランキング
+				診断分類別患者数ランキング<?php echo $this->My->tip('診断分類別患者数ランキング', array('image'=>true)); ?>
 			</h2>
 			<div class="content">
 				<ul class="basic">
