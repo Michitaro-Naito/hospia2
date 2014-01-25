@@ -168,15 +168,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 		</div>
 		
 		<!-- お気に入りグループ一覧 -->
-		<div class="box">
-			<h2>
-				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				お気に入りグループ一覧
-			</h2>
-			<div class="content">
-				<?php echo $this->element('favorite'); ?>
-			</div>
-		</div>
+		<?php echo $this->element('favorite'); ?>
 		
 		<!-- 広告ユニット(下部) -->
 		<?php echo $this->element('ad_bottom'); ?>

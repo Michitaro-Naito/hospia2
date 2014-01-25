@@ -127,7 +127,8 @@ class UsersController extends AppController {
 		}
 		
 		public function logout() {
-		    $this->redirect($this->Auth->logout());
+		    $this->Auth->logout();
+				$this->redirect('/');
 		}
 		
 		/**
@@ -135,6 +136,7 @@ class UsersController extends AppController {
 		 * User also can see active subscriptions here.
 		 */
 		public function Subscribe(){
+			$this->set('noAds', true);
 			$this->JWTData = $this->Components->load('JWTData');
 			
 			// Makes sure that Cache is cleared to view this page.

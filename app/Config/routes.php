@@ -48,6 +48,7 @@
 	Router::connect('/wp/:action/*', array('controller'=>'post'));
 	Router::connect('/malady/aboutwidget.php', array('controller'=>'Widget', 'action'=>'About'));
 	Router::connect('/widget/maladywidget.php', array('controller'=>'Widget', 'action'=>'Script'));
+	Router::connect('/Compare/*', array('controller'=>'Home', 'action'=>'CompareMdcsByYear'));
 	Router::connect('/LineChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByYear'));
 	Router::connect('/BubbleChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByBubbles'));
 	

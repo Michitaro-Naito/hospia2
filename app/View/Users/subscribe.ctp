@@ -4,6 +4,7 @@
 //Success handler
 var successHandler = function(purchaseAction){
 	console.info('Success!');
+	location.reload();
 }
 
 //Failure handler
@@ -24,21 +25,71 @@ function purchase(){
 
 
 
-<h2>Active Subscriptions</h2>
-<ul>
-	<?php foreach($dat['user']['Subscription'] as $s): ?>
-		<li>
-			<span><?php echo h($s['order_id']); ?></span>
-			<span><?php echo h($s['product_id']); ?></span>
-		</li>
-	<?php endforeach; ?>
-</ul>
+<div class="box">
+	<h2>プレミアム会員権管理</h2>
+	<div class="content">
+		<?php if(empty($dat['user']['Subscription'])): ?>
+			<div class="alert">現在は通常会員です。</div>
+			<p>毎月の会費をお支払いいただくと、以下のようなプレミアム機能にもアクセスできるようになります。</p>
+			<p>また、会費のお支払いはいつでも停止が可能です。</p>
+			<button class="buy-button btn btn-default"
+			  id="buybutton1" name="buy" type="button"
+			  onClick="purchase()">
+			  プレミアム会員になる
+			</button>
+		<?php else: ?>
+			<div class="alert alert-success">現在はプレミアム会員です。</div>
+			<p>各プレミアム機能は病院詳細ページ等のお気に入り管理画面からご利用いただけます。</p>
+			<p>
+				プレミアム機能をご利用いただき誠にありがとうございます。
+				会費のお支払いを停止なさりたい場合は、<?php echo $this->Html->link('こちらのページ', 'https://wallet.google.com', array('target'=>'_blank')); ?>の
+				「もっと見る」→「定期購入」から、「病院情報局 - プレミアム会費」をご解約ください。
+				ご解約なさいますと、すぐにプレミアム機能は使えなくなってしまいます。何卒ご了承ください。<br/>
+				<?php echo $this->Html->link('Google Wallet', 'https://wallet.google.com', array('target'=>'_blank')); ?>
+			</p>
+			<?php if(count($dat['user']['Subscription']) > 1): ?>
+				<div class="alert alert-danger">
+					複数のプレミアム会員契約があります。誤って何度もお支払いになってしまいましたか？
+					プレミアム会員権はひとつあれば全ての機能をご利用いただけますので、
+					<?php echo $this->Html->link('こちらのページから不要なものをご解約なさってください。', 'https://wallet.google.com', array('target'=>'_blank', 'class'=>'alert-link')); ?>
+				</div>
+			<?php endif; ?>
+		<?php endif; ?>
+	</div>
+</div>
 
-<h2>Subscribe</h2>
-<button class="buy-button"
-  id="buybutton1" name="buy" type="button"
-  onClick="purchase()">
-  Buy
-</button>
-
-<?php debug($dat); ?>
+<div class="box">
+	<h2>プレミアム機能一覧</h2>
+	<div class="content">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>機能名</th>
+					<th>詳細</th>
+					<th>お試しページ</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>過年度比較</td>
+					<td>ひとつの医療機関について、その診療実績を7年度分まとめて折れ線グラフで比較できます。</td>
+					<td><?php echo $this->Html->link('順天堂大学医学部附属　順天堂医院', '/Home/CompareMdcsByYear/1130514836', array('target'=>'_blank')); ?></td>
+				</tr>
+				<tr>
+					<td>お気に入りグループ内比較(折れ線グラフ)</td>
+					<td>お気に入りグループに登録された最大15の医療機関を折れ線グラフで比較できます。</td>
+					<td><?php echo $this->Html->link('東京都中央区周辺', '/LineChart/1', array('target'=>'_blank')); ?></td>
+				</tr>
+				<tr>
+					<td>お気に入りグループ内比較(バブルチャート)</td>
+					<td>お気に入りグループに登録された最大15の医療機関をバブルチャートで比較できます。</td>
+					<td><?php echo $this->Html->link('東京都中央区周辺', '/BubbleChart/1', array('target'=>'_blank')); ?></td>
+				</tr>
+				<tr>
+					<td>広告非表示</td>
+					<td>サイトの閲覧時に広告が表示されなくなります。</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

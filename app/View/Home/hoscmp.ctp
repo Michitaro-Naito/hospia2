@@ -106,10 +106,9 @@ model.search();
 
 
 
-<?php echo $this->element('additional_information'); ?>
-
 <div id="hoscmp">
 	<?php echo $this->element('hosdetail_menu'); ?>
+	<?php echo $this->element('additional_information'); ?>
 	
 	<!-- Menu -->
 	<div class="box">

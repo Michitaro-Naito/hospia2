@@ -540,7 +540,7 @@ ul.items.hosdetail li .left table tr td.efficiency{
 /* Chart */
 #chartdiv{
 	width: 100%;
-	height: 362px;
+	height: 500px;
 }
 @media (max-width: 767px){
 	#chartdiv{
@@ -549,7 +549,7 @@ ul.items.hosdetail li .left table tr td.efficiency{
 }
 @media (max-width: 320px){
 	#chartdiv{
-		height: 1000px;
+		height: 850px;
 	}
 	#chartdiv.bubbles{
 		height: 700px;

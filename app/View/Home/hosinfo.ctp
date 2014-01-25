@@ -45,11 +45,10 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 
 
-<?php echo $this->element('additional_information'); ?>
-
 <!-- Data -->
 <div id="hosinfo">
 	<?php echo $this->element('hosdetail_menu'); ?>
+	<?php echo $this->element('additional_information'); ?>
 	
 	<?php
 		$h = $dat['hospital'];

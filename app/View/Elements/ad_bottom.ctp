@@ -12,7 +12,7 @@
 			</script>
 		</div>
 	<?php else: ?>
-		<div class="row">
+		<div class="">
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!-- hospia_rectangle_large -->
 		<ins class="adsbygoogle"

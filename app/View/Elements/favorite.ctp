@@ -18,6 +18,7 @@ var urls = {
 	removeHospital: '<?php echo h(Router::url('/FavoriteHospitals/RemoveHospitalFromFavoriteGroup.json')); ?>',
 	
 	detail: '<?php echo h(Router::url('/hosdetail')); ?>',
+	compare: '<?php echo h(Router::url('/Compare')); ?>',
 	lineChart: '<?php echo h(Router::url('/LineChart')); ?>',
 	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>',
 };
@@ -25,6 +26,7 @@ var wamId = null;
 <?php if(isset($wamId)): ?>
 	wamId = '<?php echo h($wamId); ?>';
 <?php endif; ?>
+var isPremiumUser = <?php echo $isPremiumUser? 'true': 'false'; ?>;
 
 
 
@@ -48,6 +50,9 @@ function Hospital(parent, data){
 	}
 	s.DetailUrl = ko.computed(function(){
 		return urls.detail + '/' + s.data.wam_id;
+	});
+	s.CompareUrl = ko.computed(function(){
+		return urls.compare + '/' + s.data.wam_id;
 	});
 }
 
@@ -87,10 +92,7 @@ function AppModel(){
 	s.selectedFavoriteGroup = ko.observable();	// 選択中のお気に入りグループ
 	s.newName = ko.observable('');							// 新しいグループ名
 	s.messages = ko.observableArray([]);				// 画面に表示されているメッセージの一覧
-	
-	/*s.selectedFavoriteGroup.subscribe(function(newValue){
-		s.newName(newValue.name);
-	});*/
+	s.isPremium = isPremiumUser;								// プレミアムユーザーか
 	
 	s.LineChartUrl = ko.computed(function(){
 		var g = s.selectedFavoriteGroup();
@@ -255,7 +257,10 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 <!-- お気に入り管理(ログインしている場合) -->
 <div id="<?php echo h($uid); ?>">
 	<div class="box">
-		<h2>お気に入り管理</h2>
+		<h2>
+			<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
+			お気に入り管理
+		</h2>
 		
 		<!-- ログインしている場合 -->
 		<div data-bind="if: loggedIn(), visible: loggedIn()" class="content">
@@ -280,8 +285,8 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" data-target="#AddGroupModal">お気に入りグループを作成する</a></li>
 						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" data-target="#RenameGroupModal">グループ名を変更する</a></li>
 						    <li data-bind="visible: selectedFavoriteGroup()? (selectedFavoriteGroup().hospitals.length < 15 && wamId): false"><a data-bind="click: AddHospital">閲覧中の病院を登録する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup(), attr:{href:LineChartUrl}" target="_blank">折れ線グラフで比較する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup(), attr:{href:BubbleChartUrl}" target="_blank">バブルチャートで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}" target="_blank">折れ線グラフで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}" target="_blank">バブルチャートで比較する</a></li>
 						  </ul>
 						</div>
 					</td>
@@ -338,6 +343,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						<table>
 							<tr>
 								<td><a data-bind="text: data.name, attr:{href:DetailUrl}"></a></td>
+								<td data-bind="visible: $root.isPremium" style="width: 80px;"><a data-bind="attr:{href:CompareUrl}" target="_blank">過年度比較</a></td>
 								<td style="width: 80px;"><button type="button" data-bind="click: RemoveFromParent">解除する</button></td>
 							</tr>
 						</table>
@@ -347,11 +353,16 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
 			</div>
 			
+			<!-- 課金を促すメッセージ(ログインしていてプレミアムでない場合) -->
+			<p data-bind="visible: !isPremium">
+				<?php echo $this->Html->link('毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
+			</p>
+			
 		</div>
 		
 		<!-- ログインを促すメッセージ(ログインしていない場合) -->
 		<div data-bind="if: !loggedIn()" class="content">
-			この病院をお気に入りに登録するには<?php echo $this->Html->link('ログインして下さい。', array('controller'=>'Users', 'action'=>'Login')); ?>
+			<?php echo $this->Html->link('ログインするとお気に入りを管理できます。', array('controller'=>'Users', 'action'=>'Login')); ?>
 		</div>
 	</div>
 </div>
