@@ -136,8 +136,32 @@ ko.applyBindings(model);
 
 <div data-bind="text: group.FavoriteHospital.name"></div>
 <div id="chartdiv" class="bubbles"></div>
-<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-<select data-bind="options: years, optionsText: 'name', value: selectedYear"></select>
-<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeX"></select>
-<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeY"></select>
-<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeValue"></select>
+<div class="box">
+	<h2>表示切替</h2>
+	<div class="content">
+		<table class="table">
+			<tbody>
+				<tr>
+					<th>診断分類</th>
+					<td><select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select></td>
+				</tr>
+				<tr>
+					<th>会計年度</th>
+					<td><select data-bind="options: years, optionsText: 'name', value: selectedYear"></select></td>
+				</tr>
+				<tr>
+					<th>X軸</th>
+					<td><select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeX"></select></td>
+				</tr>
+				<tr>
+					<th>Y軸</th>
+					<td><select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeY"></select></td>
+				</tr>
+				<tr>
+					<th>Z軸</th>
+					<td><select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeValue"></select></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

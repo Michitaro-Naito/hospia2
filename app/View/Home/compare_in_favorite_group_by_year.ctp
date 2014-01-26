@@ -110,5 +110,10 @@ ko.applyBindings(model);
 
 <div data-bind="text: group.FavoriteHospital.name"></div>
 <div id="chartdiv"></div>
-<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
+<div class="box">
+	<h2>表示切替</h2>
+	<div class="content">
+		<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+		<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
+	</div>
+</div>
