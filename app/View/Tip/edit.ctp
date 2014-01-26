@@ -20,6 +20,11 @@ function InsertLink(link){
 	alert('リンクが挿入されました。');
 }
 
+function InsertImage(link){
+	tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<img src="<?php echo Router::url('/files'); ?>/'+link+'"/>');
+	alert('画像が挿入されました。');
+}
+
 $(document).ready(function(){
 	$('#uploader').click(function(){
 		window.open('<?php echo Router::url('/File') ?>', 'UploaderWindow');
