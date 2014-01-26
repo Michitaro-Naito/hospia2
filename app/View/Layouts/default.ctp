@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Starter Template for Bootstrap</title>
+    <title>病院情報局</title>
 
     <?php
 			echo $this->Html->meta('icon');
