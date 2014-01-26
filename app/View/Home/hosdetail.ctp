@@ -21,6 +21,13 @@ function Dpc(root, data){
 		var id = root.selectedDisplayTypeForDpc().id;
 		return 'width: ' + 100 * s.Dpc[id] / s.root.MaxValue() + '%';
 	});
+	s.GetColStyle = function(field){
+		return ko.computed(function(){
+			if(field==root.sortField())
+				return 'background: #CCC;';
+			return '';
+		});
+	}
 }
 
 function AppModel(){
@@ -34,6 +41,7 @@ function AppModel(){
 	s.selectedFiscalYear = ko.observable();					// 選択された会計年度
 	s.selectedDisplayTypeForDpc = ko.observable();	// 選択された表示方法
 	s.barInitialized = ko.observable(false);
+	s.sortField = ko.observable('ave_month');	// ソート方法
 	
 	s.MaxValue = ko.computed(function(){
 		var display = s.selectedDisplayTypeForDpc();
@@ -49,12 +57,12 @@ function AppModel(){
 		return max;
 	});
 	
-	s.selectedDisplayTypeForDpc.subscribe(function(newValue){
+	s.sortField.subscribe(function(newValue){
 		s.sort();
 	});
 	
-	s.sort = function(key){
-		var key = s.selectedDisplayTypeForDpc().id;
+	s.sort = function(){
+		var key = s.sortField();
 		var dpcs = s.dpcs();
 		dpcs.sort(function(a, b){
 			return Number(b.Dpc[key]) - Number(a.Dpc[key]);
@@ -114,11 +122,11 @@ model.search();
 			<table class="hosdetail-head">
 				<tr>
 					<th class="">診断分類<?php echo $this->My->tip('診療実績-診断分類'); ?></th>
-					<th class="ave_month">月平均患者数<?php echo $this->My->tip('診療実績-月平均患者数'); ?></th>
-					<th class="zone_share">医療圏シェア<?php echo $this->My->tip('診療実績-医療圏シェア'); ?></th>
-					<th class="ave_in">平均在院日数<?php echo $this->My->tip('診療実績-平均在院日数'); ?></th>
-					<th class="complex">患者構成指標<?php echo $this->My->tip('診療実績-患者構成指標'); ?></th>
-					<th class="efficiency">在院日数指標<?php echo $this->My->tip('診療実績-在院日数指標'); ?></th>
+					<th data-bind="click: function(){sortField('ave_month')}" class="ave_month">月平均患者数<?php echo $this->My->tip('診療実績-月平均患者数'); ?></th>
+					<th data-bind="click: function(){sortField('zone_share')}" class="zone_share">医療圏シェア<?php echo $this->My->tip('診療実績-医療圏シェア'); ?></th>
+					<th data-bind="click: function(){sortField('ave_in')}" class="ave_in">平均在院日数<?php echo $this->My->tip('診療実績-平均在院日数'); ?></th>
+					<th data-bind="click: function(){sortField('complex')}" class="complex">患者構成指標<?php echo $this->My->tip('診療実績-患者構成指標'); ?></th>
+					<th data-bind="click: function(){sortField('efficiency')}" class="efficiency">在院日数指標<?php echo $this->My->tip('診療実績-在院日数指標'); ?></th>
 				</tr>
 			</table>
 		</div>
@@ -141,11 +149,11 @@ model.search();
 				<table>
 					<tr>
 						<td data-bind="text: fmMdcName" class="mdc-name"></td>
-						<td data-bind="text: Number(Dpc.ave_month).toFixed(1)" class="ave_month"></td>
-						<td data-bind="text: Number(Dpc.zone_share).toFixed(1) + '%'" class="zone_share"></td>
-						<td data-bind="text: Number(Dpc.ave_in).toFixed(1)" class="ave_in"></td>
-						<td data-bind="text: Number(Dpc.complex).toFixed(2)" class="complex"></td>
-						<td data-bind="text: Number(Dpc.efficiency).toFixed(2)" class="efficiency"></td>
+						<td data-bind="text: Number(Dpc.ave_month).toFixed(1), attr:{style:GetColStyle('ave_month')}" class="ave_month"></td>
+						<td data-bind="text: Number(Dpc.zone_share).toFixed(1) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share"></td>
+						<td data-bind="text: Number(Dpc.ave_in).toFixed(1), attr:{style:GetColStyle('ave_in')}" class="ave_in"></td>
+						<td data-bind="text: Number(Dpc.complex).toFixed(2), attr:{style:GetColStyle('complex')}" class="complex"></td>
+						<td data-bind="text: Number(Dpc.efficiency).toFixed(2), attr:{style:GetColStyle('efficiency')}" class="efficiency"></td>
 					</tr>
 				</table>
 			</div>
