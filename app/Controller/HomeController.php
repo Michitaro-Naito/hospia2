@@ -154,6 +154,9 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareMdcsByYear($wamId){
+		if(!$this->isPremiumUser && $wamId != '1130514836')
+			throw new Exception('プレミアム会員になるとこの機能にアクセスできます。');
+		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
 		$chartData = array();
@@ -186,6 +189,9 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareInFavoriteGroupByYear($id){
+		if(!$this->isPremiumUser && $id != '1')
+			throw new Exception('プレミアム会員になるとこの機能にアクセスできます。');
+		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
 		$group = $this->FavoriteHospital->read(null, $id);
@@ -211,6 +217,9 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareInFavoriteGroupByBubbles($id){
+		if(!$this->isPremiumUser && $id != '1')
+			throw new Exception('プレミアム会員になるとこの機能にアクセスできます。');
+		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
 		$group = $this->FavoriteHospital->read(null, $id);
