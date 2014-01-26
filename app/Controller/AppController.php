@@ -84,20 +84,28 @@ class AppController extends Controller {
 				return $sessionValue['value'];
 		}
 		
-		// Desides from database
-		$this->User = ClassRegistry::init('User');
-		$this->User->bindModel(array(
-			'hasMany'=>array(
-				'Subscription'=>array()
-			)
-		));
-		$this->User->id = $this->Auth->user('id');
-		$user = $this->User->read();
-		$result = false;
-		foreach($user['Subscription'] as $s){
-			if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
-				$result = true;
-				break;
+		$result = null;
+		
+		// Premium if Admin
+		if($this->IsAdmin())
+			$result = true;
+		
+		if($result == null){
+			// Desides from database
+			$this->User = ClassRegistry::init('User');
+			$this->User->bindModel(array(
+				'hasMany'=>array(
+					'Subscription'=>array()
+				)
+			));
+			$this->User->id = $this->Auth->user('id');
+			$user = $this->User->read();
+			$result = false;
+			foreach($user['Subscription'] as $s){
+				if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
+					$result = true;
+					break;
+				}
 			}
 		}
 		
