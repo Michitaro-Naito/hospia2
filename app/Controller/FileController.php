@@ -47,7 +47,9 @@ class FileController extends AppController{
 				$this->File->create(array('File'=>array(
 					'name'=>$name
 				)));
-				$this->File->save();
+				if($this->File->save()){
+					$this->redirect(array('controller'=>'File', 'action'=>'Index'));
+				}
 			}
 		}
 	}

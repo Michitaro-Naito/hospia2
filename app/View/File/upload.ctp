@@ -1,8 +1,6 @@
-<h2>File/Upload</h2>
+<h2>新しいファイルをアップロードする</h2>
 
 <form method="post" enctype="multipart/form-data">
-	<input type="file" name="upfile" />
-	<input type="submit" value="Upload" />
+	<input type="file" name="upfile" class="form-control" />
+	<input type="submit" value="Upload" class="btn btn-default" />
 </form>
-<?php echo realpath('./files'); ?>
-<?php debug($_FILES); ?>
