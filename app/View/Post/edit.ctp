@@ -43,6 +43,7 @@ $(document).ready(function(){
 		'post_id'=>array('type'=>'text'),
 		'title'=>array('type'=>'text'),
 		'content',
+		'category',
 		'status',
 	));
 	if(!empty($this->data['Post']['created']))
