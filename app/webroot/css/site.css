@@ -558,12 +558,15 @@ ul.items.hosdetail li .left table tr td.efficiency{
 	#chartdiv{
 		height: 700px;
 	}
+	#chartdiv.bubbles{
+		height: 400px;
+	}
 }
 @media (max-width: 320px){
 	#chartdiv{
 		height: 850px;
 	}
 	#chartdiv.bubbles{
-		height: 700px;
+		height: 300px;
 	}
 }
