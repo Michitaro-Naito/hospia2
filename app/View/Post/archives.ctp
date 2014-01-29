@@ -2,6 +2,7 @@
 	$rootURL = $this->webroot;
 	$firstPost = $posts[0]['Post'];
 	$categoryDisp = Configure::read("categoryDisp");
+	$this->assign('title', $firstPost['title']);
 ?>
 
 <div id="wrapper">

@@ -1,3 +1,4 @@
+<?php $this->assign('title', 'DPC全国統計'); ?>
 <?php $this->start('script'); ?>
 <script>
 // Get initial values from server

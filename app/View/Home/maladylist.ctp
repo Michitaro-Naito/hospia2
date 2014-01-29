@@ -1,3 +1,4 @@
+<?php $this->assign('title', '主な疾患別患者数ランキング'); ?>
 <?php $this->start('script'); ?>
 <script>
 // Get initial variables from server

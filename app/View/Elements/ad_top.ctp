@@ -12,7 +12,7 @@
 		</script>
 		</div>
 	<?php else: ?>
-		<div class="row">
+		<div class="row" style="margin-top: 5px; margin-bottom: 10px;">
 		<script type="text/javascript"><!--
 		google_ad_client = "ca-pub-4974907436165676";
 		/* hospia_top_t */

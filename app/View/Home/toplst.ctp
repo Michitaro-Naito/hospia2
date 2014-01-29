@@ -1,3 +1,4 @@
+<?php $this->assign('title', '患者数ランキング'); ?>
 <?php $this->start('script'); ?>
 <script>
 

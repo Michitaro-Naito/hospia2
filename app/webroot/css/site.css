@@ -45,6 +45,10 @@ body {
 a{
 	color: #333;
 }
+a:hover,
+a:hover span{
+	color: #b49155;
+}
 span.muted{
 	color: #777;
 }
@@ -135,6 +139,11 @@ body{
 	font-size: 12px;
 }
 
+.fb-follow-container{
+	margin-bottom: 20px;
+	overflow: hidden;
+}
+
 .box{
 	margin-bottom: 10px;
 	border: solid 1px rgb(212, 190, 151);
@@ -177,9 +186,6 @@ ul.basic li{
 	background-position: 0px 6px;
 	line-height: 24px;
 }
-ul.basic li a{
-	color: #333;
-}
 ul.basic li.li2{
 	padding-left: 40px;
 	background-image: url('../img/icon/li2.png');
@@ -194,6 +200,9 @@ ul.news{
 ul.news li{
 	margin-bottom: 10px;
 }
+ul.news li a:hover{
+	text-decoration: none;
+}
 ul.news li a time{
 	padding: 4px;
 	background: #742954;
@@ -202,8 +211,10 @@ ul.news li a time{
 }
 ul.news li a span{
 	padding-left: 10px;
-	color: #333;
 	font-size: 12px;
+}
+ul.news li a:hover span{
+	text-decoration: underline;
 }
 
 table.search{
@@ -249,7 +260,7 @@ table.search button.search{
 }
 
 .navbar .navbar-brand{
-	padding: 25px 15px;
+	padding: 29px 15px;
 }
 
 .navbar .navbar-collapse ul.nav li a{
@@ -347,7 +358,40 @@ div#footer .credit{
 	font-size: 10px;
 }
 
+div.icon-like{
+	background: #742954;
+	color: white;
+	padding: 2px;
+	font-size: 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
 /* Page Specific */
+/* Table Haader */
+.thead{
+	border: solid 1px rgb(212, 190, 151);
+	border-top: solid 5px rgb(212, 190, 151);
+	background: rgb(250, 250, 240);
+	background: -webkit-gradient(linear, left top, left bottom, from(rgb(250, 250, 240)), to(rgb(241, 238, 223)));
+	border-bottom: solid 1px #DDD;
+	padding: 5px 0;
+}
+.thead table{
+	width: 100%;
+	height: 100%;
+}
+.thead table thead tr th{
+	text-align: center;
+}
+@media(min-width: 768px){
+	.thead .left,
+	.thead .right,
+	.thead table thead tr th{
+		height: 50px;
+	}
+}
 /* Home/Index */
 #IndexSearch{
 	padding: 34px 20px 0 20px;
@@ -372,6 +416,9 @@ div#footer .credit{
 	}
 }
 /* Home/Hoslist */
+div.row-search .content{
+	min-height: 130px;
+}
 ul.hoslist{
 	list-style: none;
 	padding: 0;
@@ -394,10 +441,16 @@ ul.hoslist li .right table{
 	width: 100%;
 	height: 100%;
 }
-ul.hoslist li .left td.address{
-	width: 86px;
+.thead .address,
+ul.hoslist li .address{
+	width: 47px;
 }
-ul.hoslist li .dpc,
+.thead .dpc,
+ul.hoslist li .dpc{
+	width: 80px;
+}
+.thead .jcqhc,
+.thead .training,
 ul.hoslist li .jcqhc,
 ul.hoslist li .training{
 	width: 47px;
@@ -409,9 +462,9 @@ ul.hoslist li .right table tr td .progress{
 	margin: 0;
 }
 @media (min-width: 768px){
-	ul.hoslist li .left td.name{
+	/*ul.hoslist li .left td.name{
 		width: 126px;
-	}
+	}*/
 }
 
 /* items, items-half */

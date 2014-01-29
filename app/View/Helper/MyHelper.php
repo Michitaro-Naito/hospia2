@@ -10,6 +10,7 @@ class MyHelper extends AppHelper{
 			if(!empty($options['image']))
 				return $this->Html->image('icon/question.png', array('style'=>array('padding:6px;float:right;'), 'class'=>'tip', 'data-tipkey'=>$key));
 		}
-		return $this->Html->tag('span', '?', array('class'=>'tip', 'data-tipkey'=>$key));
+		return $this->Html->image('icon/question.png', array('style'=>array('padding: 0 0 5px 0;'), 'class'=>'tip', 'data-tipkey'=>$key));
+		//return $this->Html->tag('span', '?', array('class'=>'tip', 'data-tipkey'=>$key));
 	}
 }

@@ -7,7 +7,17 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>病院情報局</title>
+    <title>
+    	<?php
+    		$viewTitle = $this->fetch('title');
+    		if(!empty($viewTitle))
+    			$title = $viewTitle;
+    		if(!empty($title))
+    			echo h($title . ' - 病院情報局');
+				else
+					echo h('病院情報局');
+    	?>
+    </title>
 
     <?php
 			echo $this->Html->meta('icon');

@@ -1,3 +1,4 @@
+<?php $this->assign('title', '病院検索'); ?>
 <?php $this->start('script'); ?>
 <script>
 // Get initial variables from server
@@ -59,7 +60,7 @@ function AppModel(){
 	s.selectedZone = ko.observable();						// 選択された医療圏
 	s.hospitalName = ko.observable('');					// 検索ボックス内の病院名
 	s.displayTypeGroup = ko.observable('0');		// 基本とDPCどちらの表示切替を表示するか
-	s.selectedDisplayType = ko.observable();		// 選択された表示項目
+	s.selectedDisplayType = ko.observable(s.displayTypes()[1]);		// 選択された表示項目
 	s.currentDisplayType = ko.observable();			// 現在の表示項目
 	
 	s.initialized = ko.observable(false);				// 初回の病院一覧の取得が完了しているか
@@ -183,7 +184,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 
 
 <!-- Menu -->
-<div class="row">
+<div class="row row-search">
 	<div class="col-sm-6">
 		<div class="box">
 			<h2>
@@ -224,7 +225,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 				表示切替<?php echo $this->My->tip('病院検索-表示切替', array('image'=>true)); ?>
 			</h2>
 			<div class="content">
-				<div>
+				<div style="margin-top: 20px;">
 					<label>
 						<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
 						基本項目<?php echo $this->My->tip('病院検索-基本項目'); ?>
@@ -242,10 +243,28 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 </div>
 
 <!-- Head -->
-<div class="row">
-	<div class="col-sm-6">病院名<?php echo $this->My->tip('病院名'); ?>　所在地</div>
-	<div class="col-sm-6" data-bind="visible: currentDisplayType, with: currentDisplayType">
-		<span data-bind="text: name"></span>
+<div class="row thead">
+	<div class="col-sm-6 left">
+		<table>
+			<thead>
+				<tr>
+					<th class="name">病院名<?php echo $this->My->tip('病院名'); ?></th>
+					<th class="address">所在地</th>
+					<th class="dpc">DPC<?php echo $this->My->tip('DPC'); ?></th>
+					<th class="jcqhc">機能評価<?php echo $this->My->tip('機能評価'); ?></th>
+					<th class="training">臨床研修<?php echo $this->My->tip('臨床研修'); ?></th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+	<div class="col-sm-6 right" data-bind="visible: currentDisplayType, with: currentDisplayType">
+		<table>
+			<thead>
+				<tr>
+					<th data-bind="text: name"></th>
+				</tr>
+			</thead>
+		</table>
 	</div>
 </div>
 
@@ -261,13 +280,16 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 					</td>
 					<td class="address" data-bind="text: Area.addr2"></td>
 					<td class="dpc">
-						<?php echo $this->Html->image('icon/mark1.jpg', array('data-bind'=>'visible: Hospital.dpc_id != 0')); ?>
+						<div data-bind="visible: Hospital.dpc_id != 0, text: Hospital.dpc_ct" class="icon-like"></div>
+						<?php //echo $this->Html->image('icon/mark1.jpg', array('data-bind'=>'visible: Hospital.dpc_id != 0', 'alt'=>'DPC')); ?>
 					</td>
 					<td class="jcqhc">
-						<?php echo $this->Html->image('icon/mark2.jpg', array('data-bind'=>"visible: typeof Jcqhc != 'undefined'")); ?>
+						<div data-bind="visible: typeof Jcqhc != 'undefined'" class="icon-like">機能評価</div>
+						<?php //echo $this->Html->image('icon/mark2.jpg', array('data-bind'=>"visible: typeof Jcqhc != 'undefined'", 'alt'=>'機能評価')); ?>
 					</td>
 					<td class="training">
-						<?php echo $this->Html->image('icon/mark3.jpg', array('data-bind'=>"visible: Hospital.training != 0")); ?>
+						<div data-bind="visible: Hospital.training != 0" class="icon-like">臨床研修</div>
+						<?php //echo $this->Html->image('icon/mark3.jpg', array('data-bind'=>"visible: Hospital.training != 0", 'alt'=>'臨床研修')); ?>
 					</td>
 				</tr>
 			</table>

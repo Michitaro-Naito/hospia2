@@ -122,6 +122,17 @@ class PostController extends AppController {
 		// 検索して取得した投稿記事のデータとカテゴリを遷移先のページに渡す
 		$this->set("posts", $posts);
 		$this->set("category", $category);
+		
+		// カテゴリに応じてtitleを設定する
+		$titles = array(
+			'topics'=>'情報活用の視点',
+			'info'=>'お知らせ',
+			'month'=>'特集',
+			'ranking'=>'ランキング',
+			'news'=>'病院ニュース'
+		);
+		if(array_key_exists($category, $titles))
+			$this->set('title', $titles[$category]);
 	}
 
 	/**
