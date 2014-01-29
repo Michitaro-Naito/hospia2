@@ -35,7 +35,7 @@ function Wound(root, data){
 		return s.Wound.days / root.MaxDays();
 	});
 	s.fmRate = ko.computed(function(){
-		return Number(100*s.Rate()).toFixed(1) + '%';
+		return addFigure(Number(100*s.Rate()).toFixed(1)) + '%';
 	});
 	s.GetStyle = ko.computed(function(){
 		return 'width: ' + 100*s.Rate() + '%';
@@ -99,8 +99,10 @@ function AppModel(){
 		for(var n=0; n<s.wounds().length; n++){
 			var w = s.wounds()[n];
 			total.Wound.count += parseInt(w.Wound.count);
-			total.Wound.days += parseFloat(w.Wound.days);
+			//total.Wound.days += parseFloat(w.Wound.days);
+			total.Wound.days += parseFloat(w.Wound.count) * parseFloat(w.Wound.days);
 		}
+		total.Wound.days /= total.Wound.count;
 		return new Wound(s, total);
 	});
 	s.MaxDays = ko.computed(function(){
@@ -156,7 +158,7 @@ ko.applyBindings(model);
 <h2 data-bind="if: currentDpc()" class="dpc">
 	<span data-bind="text: currentDpc().name"></span>
 </h2>
-<table class="dpc">
+<table class="dpc" border="1" bordercolor="#CCC">
 	<thead>
 		<tr>
 			<th>手術情報<?php echo $this->My->tip('DPC-手術情報'); ?></th>
@@ -167,16 +169,16 @@ ko.applyBindings(model);
 	<tbody data-bind="foreach: wounds().concat(Total())">
 		<tr>
 			<td data-bind="text: Wound.operation" class="operation"></td>
-			<td data-bind="text: Wound.count" class="count"></td>
-			<td data-bind="text: fmRate" class="rate"></td>
+			<td data-bind="text: addFigure(Wound.count)" class="count ar"></td>
+			<td data-bind="text: fmRate" class="rate ar"></td>
 			<td class="bar">
-				<div class="progress">
+				<div data-bind="visible: $index()!=3" class="progress">
 				  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
 				    <span class="sr-only">60% Complete</span>
 				  </div>
 				</div>
 			</td>
-			<td data-bind="text: Number(Wound.days).toFixed(2)" class="days"></td>
+			<td data-bind="text: addFigure(Number(Wound.days).toFixed(2))" class="days ar"></td>
 			<td class="bar">
 				<div class="progress">
 				  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyleDays}">
@@ -202,30 +204,32 @@ ko.applyBindings(model);
 	<div class="row">
 		<div class="col-sm-6">
 			<h3 class="dpc">患者数の多い病院</h3>
-			<table class="dpc-half">
-				<tr><th>病院名</th><th>患者数</th><th>日数</th></tr>
+			<table class="dpc-half" border="1" bordercolor="#CCC">
+				<thead>
+					<tr><th>病院名</th><th>患者数</th><th>日数</th></tr>
+				</thead>
 				<tbody data-bind="foreach: Details_Count">
 					<tr>
 						<td>
 							<a data-bind="text: Hospital.name, attr: { href: detailUrl + '/' + Hospital.wam_id }"></a>
 						</td>
-						<td data-bind="text: Detail.count"></td>
-						<td data-bind="text: Number(Detail.days).toFixed(2)"></td>
+						<td data-bind="text: addFigure(Detail.count)" class="ar"></td>
+						<td data-bind="text: addFigure(Number(Detail.days).toFixed(2))" class="ar"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div class="col-sm-6">
 			<h3 class="dpc">在院日数の短い病院</h3>
-			<table class="dpc-half">
+			<table class="dpc-half" border="1" bordercolor="#CCC">
 				<tr><th>病院名</th><th>患者数</th><th>日数</th></tr>
 				<tbody data-bind="foreach: Details_Days">
 					<tr>
 						<td>
 							<a data-bind="text: Hospital.name, attr: { href: detailUrl + '/' + Hospital.wam_id }"></a>
 						</td>
-						<td data-bind="text: Detail.count"></td>
-						<td data-bind="text: Number(Detail.days).toFixed(2)"></td>
+						<td data-bind="text: addFigure(Detail.count)" class="ar"></td>
+						<td data-bind="text: addFigure(Number(Detail.days).toFixed(2))" class="ar"></td>
 					</tr>
 				</tbody>
 			</table>

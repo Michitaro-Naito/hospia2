@@ -25,17 +25,22 @@ function Hospital(root, data){
 	
 	s.fmValue = ko.computed(function(){
 		var t = root.currentDisplayType().id;
-		if(typeof t == 'undefined') return '';
-		switch(t){
-			case 'bed':
-			case 'general':
-			case 'doctor':
-			case 'nurse':
-				return s.Hospital[t];
-			default:
-				if(s.Dpc == undefined) return '';
-				return s.Dpc.ave_month;
+		var v = '';
+		if(typeof t !== 'undefined'){
+			switch(t){
+				case 'bed':
+				case 'general':
+				case 'doctor':
+				case 'nurse':
+					v = s.Hospital[t];
+					break;
+				default:
+					if(typeof s.Dpc !== 'undefined')
+						v = s.Dpc.ave_month;
+					break;
+			}
 		}
+		return v;
 	});
 	s.GetStyle = ko.computed(function(){
 		if(!root.barInitialized()) return 'width: 0%';
@@ -297,7 +302,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 		<div class="col-sm-6 right">
 			<table>
 				<tr>
-					<td class="value"><span data-bind="text: fmValue"></span></td>
+					<td class="value"><span data-bind="text: addFigure(fmValue())"></span></td>
 					<td>
 						<div class="progress">
 						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">

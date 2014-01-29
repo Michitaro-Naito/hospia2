@@ -7,6 +7,7 @@ console.info(dat);
 
 function Hospital(root, data){
 	var s = this;
+	s.root = root;
 	s.Hospital = data.Hospital;
 	s.Area = data.Area;
 	s.Dpc = data.Dpc;
@@ -18,6 +19,13 @@ function Hospital(root, data){
 			value = s.Dpc[model.selectedDisplayTypeForDpc().id];
 		return Number(value);
 	}, this);
+	s.fmValueForSelection = ko.computed(function(){
+		var str = addFigure(s.valueForSelection().toFixed(1));
+		if(s.root.currentComparisonCategory().id == 'dpc' 
+			&& s.root.selectedDisplayTypeForDpc().id == 'zone_share')
+			str += '%';
+		return str;
+	});
 	s.GetStyle = ko.computed(function(){
 		if(!root.barInitialized())
 			return 'width: 0%';
@@ -125,7 +133,7 @@ model.search();
 	</div>
 	
 	<!-- Head -->
-	<div class="row">
+	<div class="row thead">
 		<div class="col-sm-6">
 			<table class="hoscmp-head">
 				<tr>
@@ -156,10 +164,10 @@ model.search();
 				<table>
 					<tr>
 						<td class="name">
-							<a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a>
+							<a data-bind="text: Hospital.alias, attr: { href: DetailUrl }"></a>
 						</td>
 						<td data-bind="text: Area.addr1 + Area.addr2" class="address"></td>
-						<td data-bind="text: valueForSelection().toFixed(1)" class="value"></td>
+						<td data-bind="text: fmValueForSelection()" class="value ar"></td>
 					</tr>
 				</table>
 			</div>
@@ -174,7 +182,7 @@ model.search();
 							  </div>
 							</div>
 						</td>
-						<td data-bind="text: Number(Hospital.distance).toFixed(1)" class="distance"></td>
+						<td data-bind="text: addFigure(Number(Hospital.distance).toFixed(1))" class="distance ar"></td>
 					</tr>
 				</table>
 			</div>

@@ -49,6 +49,15 @@ a:hover,
 a:hover span{
 	color: #b49155;
 }
+blockquote{
+	margin: 10px 10px 20px 10px;
+}
+blockquote p{
+	font-size: 14px;
+}
+.ar{
+	text-align: right;
+}
 span.muted{
 	color: #777;
 }
@@ -252,6 +261,7 @@ table.search button.search{
 	height: 139px;
 	border: none;
 	border-top: solid 4px #742954;
+	margin-bottom: -20px;
 }
 
 .navbar .container .navbar-header{
@@ -382,8 +392,9 @@ div.icon-like{
 	width: 100%;
 	height: 100%;
 }
-.thead table thead tr th{
+.thead table tr th{
 	text-align: center;
+	height: 50px;
 }
 @media(min-width: 768px){
 	.thead .left,
@@ -457,6 +468,7 @@ ul.hoslist li .training{
 }
 ul.hoslist li .right table tr td.value{
 	width: 50px;
+	text-align: right;
 }
 ul.hoslist li .right table tr td .progress{
 	margin: 0;
@@ -498,6 +510,8 @@ ul.items-half li .progress{
 }
 
 /* Home/Toplst */
+.thead .address,
+.thead .ave_month,
 ul.items.toplst li .address,
 ul.items.toplst li .ave_month,
 ul.items.toplst li .value{
@@ -507,6 +521,7 @@ ul.items.toplst li .value{
 /* Home/Dpc */
 table.dpc{
 	width: 100%;
+	margin-bottom: 20px;
 }
 table.dpc tr td{
 	padding: 5px;
@@ -529,9 +544,13 @@ h3.dpc{
 	font-weight: bold;
 }
 table.dpc-half{
+	width: 100%;
 }
 table.dpc-half tr{
 	border-bottom: solid 1px #ccc;
+}
+table.dpc-half tr th{
+	text-align: center;
 }
 table.dpc-half tr td{
 	padding: 5px;
@@ -548,6 +567,10 @@ table.maladylist{
 }
 table.maladylist tr{
 	border-bottom: solid 1px #ccc;
+}
+table.maladylist tr th{
+	text-align: center;
+	background: #F9F8F3;
 }
 table.maladylist tr td{
 	padding: 5px;

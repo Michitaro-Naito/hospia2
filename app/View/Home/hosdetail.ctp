@@ -117,7 +117,7 @@ model.search();
 	</div>
 	
 	<!-- Head -->
-	<div class="row">
+	<div class="row thead">
 		<div class="col-sm-6">
 			<table class="hosdetail-head">
 				<tr>
@@ -149,11 +149,11 @@ model.search();
 				<table>
 					<tr>
 						<td data-bind="text: fmMdcName" class="mdc-name"></td>
-						<td data-bind="text: Number(Dpc.ave_month).toFixed(1), attr:{style:GetColStyle('ave_month')}" class="ave_month"></td>
-						<td data-bind="text: Number(Dpc.zone_share).toFixed(1) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share"></td>
-						<td data-bind="text: Number(Dpc.ave_in).toFixed(1), attr:{style:GetColStyle('ave_in')}" class="ave_in"></td>
-						<td data-bind="text: Number(Dpc.complex).toFixed(2), attr:{style:GetColStyle('complex')}" class="complex"></td>
-						<td data-bind="text: Number(Dpc.efficiency).toFixed(2), attr:{style:GetColStyle('efficiency')}" class="efficiency"></td>
+						<td data-bind="text: addFigure(Number(Dpc.ave_month).toFixed(1)), attr:{style:GetColStyle('ave_month')}" class="ave_month ar"></td>
+						<td data-bind="text: addFigure(Number(Dpc.zone_share).toFixed(1)) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share ar"></td>
+						<td data-bind="text: addFigure(Number(Dpc.ave_in).toFixed(1)), attr:{style:GetColStyle('ave_in')}" class="ave_in ar"></td>
+						<td data-bind="text: addFigure(Number(Dpc.complex).toFixed(2)), attr:{style:GetColStyle('complex')}" class="complex ar"></td>
+						<td data-bind="text: addFigure(Number(Dpc.efficiency).toFixed(2)), attr:{style:GetColStyle('efficiency')}" class="efficiency ar"></td>
 					</tr>
 				</table>
 			</div>

@@ -126,7 +126,7 @@ google.maps.event.addDomListener(window, 'load', function(){
 			<h3>周辺の急性期病院<?php echo $this->My->tip('基本情報-周辺の急性期病院'); ?></h3>
 			<ul class="hospitals-nearby">
 				<?php foreach($dat['hospitalsNearby'] as $key => $h): ?>
-					<li><?php echo h($key+1 . ' '); echo $this->Html->link($h['Hospital']['name'], '/hosdetail/' . $h['Hospital']['wam_id']); ?></li>
+					<li><?php echo h($key+1 . ' '); echo $this->Html->link($h['Hospital']['alias'], '/hosdetail/' . $h['Hospital']['wam_id']); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

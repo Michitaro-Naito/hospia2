@@ -155,11 +155,25 @@ model.setDefaultValues();
 </div>
 
 <!-- Head -->
-<div class="row">
-	<div class="col-sm-6">病院名<?php echo $this->My->tip('病院名'); ?>　都道府県</div>
+<div class="row thead">
 	<div class="col-sm-6">
-		グラフ表示
-		<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
+		<table>
+			<tr>
+				<th class="name">病院名<?php echo $this->My->tip('病院名'); ?></th>
+				<th class="address">都道府県</th>
+				<th class="ave_month">月平均患者数</th>
+			</tr>
+		</table>
+	</div>
+	<div class="col-sm-6">
+		<table>
+			<tr>
+				<th>
+					グラフ表示
+					<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
+				</th>
+			</tr>
+		</table>
 	</div>
 </div>
 
@@ -172,7 +186,7 @@ model.setDefaultValues();
 				<tr>
 					<td class="name"><a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a></td>
 					<td class="address"><span data-bind="text: Area.addr1"></span></td>
-					<td class="ave_month"><span data-bind="text: (Number(Dpc.ave_month)).toFixed(1)"></span></td>
+					<td class="ave_month"><span data-bind="text: addFigure((Number(Dpc.ave_month)).toFixed(1))" class="ar"></span></td>
 				</tr>
 			</table>
 		</div>
@@ -180,7 +194,7 @@ model.setDefaultValues();
 		<div class="col-sm-6 right">
 			<table>
 				<tr>
-					<td data-bind="text: fmValue" class="value"></td>
+					<td data-bind="text: addFigure(fmValue())" class="value"></td>
 					<td>
 						<div class="progress">
 						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">

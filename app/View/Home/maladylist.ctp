@@ -104,20 +104,30 @@ model.search();
 <!-- Head -->
 
 <!-- Data -->
-<table class="maladylist">
+<table class="maladylist" border="1" bordercolor="#CCC">
 	<thead>
 		<tr><th>順位</th><th>病院名</th><th>都道府県</th><th>市区町村</th><th>退院患者数</th><th>平均在院日数</th></tr>
 	</thead>
 	<tbody data-bind="foreach: hospitals">
 		<tr>
-			<td data-bind="text: $index()+1"></td>
+			<td data-bind="text: $index()+1" class="ar"></td>
 			<td>
 				<a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a>
 			</td>
 			<td data-bind="text: Area.addr1"></td>
 			<td data-bind="text: Area.addr2"></td>
-			<td data-bind="text: MaladyData.mcounts"></td>
-			<td data-bind="text: Number(MaladyData.mdays).toFixed(1)"></td>
+			<td data-bind="text: addFigure(MaladyData.mcounts)" class="ar"></td>
+			<td data-bind="text: addFigure(Number(MaladyData.mdays).toFixed(1))" class="ar"></td>
 		</tr>
 	</tbody>
 </table>
+
+<!-- Note -->
+<blockquote><p>
+【集計方法】<br>
+2013年9月20日開催の診療報酬調査専門組織・ＤＰＣ評価分科会において報告された、平成23年度「ＤＰＣ導入の影響評価に関する調査」資料より、該当するDPCコードの患者数および平均在院日数を当社で集計しました。<br>
+・元データ⇒ <a href="http://www.mhlw.go.jp/stf/shingi/0000023522.html" target="_brank">平成25年度 第7回 診療報酬調査専門組織・ＤＰＣ評価分科会 資料</a> （厚生労働省のサイトが開きます）</p>
+<p>【注意事項】<br>
+・患者数および平均在院日数は、2012年4月～2013年3月の12ヶ月間の集計値です。<br>
+・元データは手術方式や処置内容別に細分化され、各区分の患者数が10件未満の病院の情報が公開されていないため、各病院の実際の患者数とは異なる場合があります。
+</p></blockquote>

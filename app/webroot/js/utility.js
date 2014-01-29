@@ -1,3 +1,9 @@
+function addFigure(str) {
+	var num = new String(str).replace(/,/g, "");
+	while(num != (num = num.replace(/^(-?\d+)(\d{3})/, "$1,$2")));
+	return num;
+}
+
 (function(){
 	// Fix console.info,warn,error,log of IE7,8
 	if (typeof window.console === "undefined") {
