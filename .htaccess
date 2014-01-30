@@ -1,6 +1,7 @@
 # "Basic CakePHP mapping + wp/wp-content/uploads to app/webroot/old-files/"
 <IfModule mod_rewrite.c>
    RewriteEngine on
+   RewriteRule    ^wp/sitemap/ app/webroot/sitemap.xml [L]
    RewriteRule    ^wp/wp-content/uploads/(.*) app/webroot/old-files/$1 [L]
    RewriteRule    ^$ app/webroot/    [L]
    RewriteRule    (.*) app/webroot/$1 [L]

@@ -11,7 +11,7 @@ var map;
 google.maps.event.addDomListener(window, 'load', function(){
 	// Creates a map
 	var options = {
-		zoom: 8,
+		zoom: 12,
 		center: new google.maps.LatLng(dat.hospital.Coordinate.latitude, dat.hospital.Coordinate.longitude)
 	};
 	map = new google.maps.Map(document.getElementById('map-canvas'), options);
@@ -33,10 +33,10 @@ google.maps.event.addDomListener(window, 'load', function(){
 	}
 	
 	// Initializes a map
-	google.maps.event.addListener(marker, 'click', function(){
-		map.setZoom(8);
+	/*google.maps.event.addListener(marker, 'click', function(){
+		map.setZoom(12);
 		map.setCenter(marker.getPosition());
-	});
+	});*/
 });
 
 })();
@@ -56,7 +56,7 @@ google.maps.event.addDomListener(window, 'load', function(){
 	?>
 		<div class="row">
 			<div class="col-sm-6 left">
-				<div class="address"><?php echo h($h['Hospital']['addr3']); ?></div>
+				<div class="address"><?php echo h($h['Area']['addr1'].$h['Area']['addr2'].$h['Hospital']['addr3']); ?></div>
 				<div class="tel">TEL: <?php echo h($h['Hospital']['tel']); ?></div>
 				<?php if(!empty($h['Hospital']['url'])): ?>
 					<div class="url"><?php echo $this->Html->link('病院ホームページ', $h['Hospital']['url']); ?></div>

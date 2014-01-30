@@ -13,10 +13,10 @@ function Hospital(root, data){
 	s.Dpc = data.Dpc;
 	s.valueForSelection = ko.computed(function(){
 		var value = 0;
-		if(model.currentComparisonCategory().id == 'basic')
-			value = s.Hospital[model.selectedDisplayTypeForBasic().id];
-		if(model.currentComparisonCategory().id == 'dpc')
-			value = s.Dpc[model.selectedDisplayTypeForDpc().id];
+		if(s.root.currentComparisonCategory().id == 'basic')
+			value = s.Hospital[s.root.selectedDisplayTypeForBasic().id];
+		if(s.root.currentComparisonCategory().id == 'dpc')
+			value = s.Dpc[s.root.selectedDisplayTypeForDpc().id];
 		return Number(value);
 	}, this);
 	s.fmValueForSelection = ko.computed(function(){
@@ -25,6 +25,11 @@ function Hospital(root, data){
 			&& s.root.selectedDisplayTypeForDpc().id == 'zone_share')
 			str += '%';
 		return str;
+	});
+	s.fmDistance = ko.computed(function(){
+		if(!s.Hospital.distance)
+			return '0.0';
+		return addFigure(Number(s.Hospital.distance).toFixed(1));
 	});
 	s.GetStyle = ko.computed(function(){
 		if(!root.barInitialized())
@@ -75,6 +80,34 @@ function AppModel(){
 				max = value;
 		});
 		return max;
+	});
+	
+	s.Average = ko.computed(function(){
+		if(s.hospitals().length == 0)
+			return [];
+		var data = {
+			Dpc: {
+				
+			},
+			Hospital:{
+				wam_id: 'Average'
+			},
+			Area:{
+				
+			}
+		};
+		$.each(s.displayTypesForDpc, function(n, t){
+			data.Dpc[t.id] = 0.0;
+		});
+		$.each(s.hospitals(), function(n, h){
+			$.each(s.displayTypesForDpc, function(m, t){
+				data.Dpc[t.id] += Number(h.Dpc[t.id]);
+			});
+		});
+		$.each(s.displayTypesForDpc, function(n, t){
+			data.Dpc[t.id] /= s.hospitals().length;
+		});
+		return new Hospital(s, data);
 	});
 	
 	s.search = function(){
@@ -158,15 +191,19 @@ model.search();
 	</div>
 	
 	<!-- Data -->
-	<ul data-bind="foreach: hospitals" class="items">
+	<ul data-bind="foreach: hospitals().concat(Average())" class="items">
 		<li class="row">
 			<div class="col-sm-6 left">
 				<table>
 					<tr>
+						<td data-bind="visible: Hospital.wam_id == 'Average'">上記リスト平均</td>
 						<td class="name">
-							<a data-bind="text: Hospital.alias, attr: { href: DetailUrl }"></a>
+							<a data-bind="visible: Hospital.wam_id != $root.wamId, text: Hospital.alias, attr: { href: DetailUrl }"></a>
+							<span data-bind="visible: Hospital.wam_id == $root.wamId, text: Hospital.alias" class="muted"></span>
 						</td>
-						<td data-bind="text: Area.addr1 + Area.addr2" class="address"></td>
+						<td class="address">
+							<span data-bind="visible: Hospital.wam_id != 'Average', text: Area.addr1 + Area.addr2"></span>
+						</td>
 						<td data-bind="text: fmValueForSelection()" class="value ar"></td>
 					</tr>
 				</table>
@@ -182,7 +219,9 @@ model.search();
 							  </div>
 							</div>
 						</td>
-						<td data-bind="text: addFigure(Number(Hospital.distance).toFixed(1))" class="distance ar"></td>
+						<td class="distance ar">
+							<span data-bind="visible: Hospital.wam_id != 'Average', text: fmDistance"></span>
+						</td>
 					</tr>
 				</table>
 			</div>

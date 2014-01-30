@@ -212,6 +212,11 @@ class DataComponent extends Component {
 				'Jcqhc'=>array(
 					'foreignKey'=>'wam_id'
 				)
+			),
+			'belongsTo'=>array(
+				'Area'=>array(
+					'foreignKey'=>'addr2_cd'
+				)
 			)
 		));
 		$hospital = $this->Hospital->find('first', array(
@@ -518,6 +523,18 @@ class DataComponent extends Component {
 			'hasOne'=>array(
 				'Coordinate'=>array(
 					'foreignKey'=>'wam_id'
+				),
+				'Dpc'=>array(
+					'foreignKey'=>'wam_id',
+					'conditions'=>array(
+						'Dpc.mdc_cd'=>$mdcId,
+						'Dpc.fiscal_year'=>$fiscalYear
+					)
+				)
+			),
+			'belongsTo'=>array(
+				'Area'=>array(
+					'foreignKey'=>'addr2_cd'
 				)
 			)
 		));
@@ -589,6 +606,8 @@ class DataComponent extends Component {
 
 			// 比較区分が診療実績の場合は、診療実績を結合する。（パフォーマンスのため後から）
 			
+			// 現在の病院を先頭へ結合する
+			array_unshift($hospitals, $src);
 
 			return $hospitals;
 
@@ -630,6 +649,29 @@ class DataComponent extends Component {
 			// 患者数が多い順にソートする
 			// $ctgry == 'basic'の場合は既にソートされている。
 			if($ctgry == 'dpc') usort($hospitals, '_CompareHospitalsByDpcPatient');
+			
+			$ids = array();
+			foreach($hospitals as $h)
+				array_push($ids, $h['Hospital']['addr2_cd']);
+			
+			// Areaを結合する。（パフォーマンスのため後から）
+			$this->Area = ClassRegistry::init('Area');
+			$areas = $this->Area->find('all', array(
+				'conditions'=>array(
+					'Area.addr2_cd' => $ids
+				)
+			));
+			foreach($hospitals as &$h){
+				foreach($areas as $a){
+					if($a['Area']['addr2_cd']==$h['Hospital']['addr2_cd']){
+						$h['Area'] = $a['Area'];
+						break;
+					}
+				}
+			}
+
+			// 現在の病院を先頭へ結合する
+			array_unshift($hospitals, $src);
 
 			return $hospitals;
 		}

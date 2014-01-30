@@ -41,7 +41,7 @@ function AppModel(){
 	s.selectedFiscalYear = ko.observable();					// 選択された会計年度
 	s.selectedDisplayTypeForDpc = ko.observable();	// 選択された表示方法
 	s.barInitialized = ko.observable(false);
-	s.sortField = ko.observable('ave_month');	// ソート方法
+	s.sortField = ko.observable('mdc_cd');	// ソート方法
 	
 	s.MaxValue = ko.computed(function(){
 		var display = s.selectedDisplayTypeForDpc();
@@ -51,7 +51,7 @@ function AppModel(){
 		var max = 0;
 		$.each(s.dpcs(), function(index, dpc){
 			var value = Number(dpc.Dpc[key]);
-			if(value > max)
+			if(value > max && dpc.Dpc.mdc_cd != 0)// Exclude Total
 				max = value;
 		});
 		return max;
@@ -64,9 +64,23 @@ function AppModel(){
 	s.sort = function(){
 		var key = s.sortField();
 		var dpcs = s.dpcs();
-		dpcs.sort(function(a, b){
-			return Number(b.Dpc[key]) - Number(a.Dpc[key]);
-		});
+		if(key=='mdc_cd'){
+			dpcs.sort(function(a, b){
+				if(a.Dpc.mdc_cd == 0)
+					return 1;
+				if(b.Dpc.mdc_cd == 0)
+					return -1;
+				return Number(a.Dpc[key]) - Number(b.Dpc[key]);
+			});
+		}else{
+			dpcs.sort(function(a, b){
+				if(a.Dpc.mdc_cd == 0)
+					return 1;
+				if(b.Dpc.mdc_cd == 0)
+					return -1;
+				return Number(b.Dpc[key]) - Number(a.Dpc[key]);
+			});
+		}
 		s.dpcs(dpcs);
 		s.barInitialized(false);
 		setTimeout(function(){
@@ -121,7 +135,7 @@ model.search();
 		<div class="col-sm-6">
 			<table class="hosdetail-head">
 				<tr>
-					<th class="">診断分類<?php echo $this->My->tip('診療実績-診断分類'); ?></th>
+					<th data-bind="click: function(){sortField('mdc_cd')}" class="">診断分類<?php echo $this->My->tip('診療実績-診断分類'); ?></th>
 					<th data-bind="click: function(){sortField('ave_month')}" class="ave_month">月平均患者数<?php echo $this->My->tip('診療実績-月平均患者数'); ?></th>
 					<th data-bind="click: function(){sortField('zone_share')}" class="zone_share">医療圏シェア<?php echo $this->My->tip('診療実績-医療圏シェア'); ?></th>
 					<th data-bind="click: function(){sortField('ave_in')}" class="ave_in">平均在院日数<?php echo $this->My->tip('診療実績-平均在院日数'); ?></th>
@@ -148,7 +162,7 @@ model.search();
 			<div class="col-sm-6 left">
 				<table>
 					<tr>
-						<td data-bind="text: fmMdcName" class="mdc-name"></td>
+						<td data-bind="text: fmMdcName, attr:{style:GetColStyle('mdc_cd')}" class="mdc-name"></td>
 						<td data-bind="text: addFigure(Number(Dpc.ave_month).toFixed(1)), attr:{style:GetColStyle('ave_month')}" class="ave_month ar"></td>
 						<td data-bind="text: addFigure(Number(Dpc.zone_share).toFixed(1)) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share ar"></td>
 						<td data-bind="text: addFigure(Number(Dpc.ave_in).toFixed(1)), attr:{style:GetColStyle('ave_in')}" class="ave_in ar"></td>
@@ -161,7 +175,7 @@ model.search();
 				<table>
 					<tr>
 						<td>
-							<div class="progress">
+							<div data-bind="visible: Dpc.mdc_cd != 0" class="progress">
 							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
 							    <span class="sr-only">60% Complete</span>
 							  </div>
