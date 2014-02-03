@@ -123,9 +123,17 @@ margin: 7.5px -5px;
 }
 
 .container{
+	position: relative;
   padding-right: 5px;
   padding-left: 5px;
   width: 100%;
+}
+.welcome{
+	position: absolute;
+	right: 20px;
+	top: 8px;
+	font-size: 12px;
+	color: #333;
 }
 .nav li a{
 	padding: 0;
@@ -271,6 +279,7 @@ table.search button.search{
 
 .navbar .navbar-brand{
 	padding: 29px 15px;
+	margin-right: 20px;
 }
 
 .navbar .navbar-collapse ul.nav li a{

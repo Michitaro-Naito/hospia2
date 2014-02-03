@@ -123,10 +123,12 @@ model.search();
 
 
 
-<div id="hosdetail">
-	<?php echo $this->element('hosdetail_menu'); ?>
-	<?php echo $this->element('additional_information'); ?>
+
+<?php echo $this->element('hosdetail_menu'); ?>
+<?php echo $this->element('additional_information'); ?>
+<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'], 'compact'=>true)); ?>
 	
+<div id="hosdetail">
 	<!-- Menu -->
 	<div class="box">
 		<h2>診療実績</h2>
@@ -193,8 +195,6 @@ model.search();
 		</li>
 	</ul>
 </div>
-
-<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>
 
 <!-- Comments -->
 <?php

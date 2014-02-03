@@ -153,10 +153,11 @@ model.search();
 
 
 
+<?php echo $this->element('hosdetail_menu'); ?>
+<?php echo $this->element('additional_information'); ?>
+<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'], 'compact'=>true)); ?>
+
 <div id="hoscmp">
-	<?php echo $this->element('hosdetail_menu'); ?>
-	<?php echo $this->element('additional_information'); ?>
-	
 	<!-- Menu -->
 	<div class="box">
 		<h2 data-bind="">他病院比較</h2>
@@ -234,8 +235,6 @@ model.search();
 		</li>
 	</ul>
 </div>
-
-<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>
 
 <!-- Comments -->
 <?php

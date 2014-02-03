@@ -88,6 +88,7 @@ function AppModel(){
 	
 	s.wamId = wamId;														// 閲覧中の医療機関のID
 	s.loggedIn = ko.observable(false);					// ログイン中か
+	s.username = ko.observable('');							// ユーザー名(ログイン中)
 	s.favoriteGroups = ko.observableArray();		// 取得したお気に入りグループの一覧
 	s.selectedFavoriteGroup = ko.observable();	// 選択中のお気に入りグループ
 	s.newName = ko.observable('');							// 新しいグループ名
@@ -135,6 +136,7 @@ function AppModel(){
 			url: urls.getFavoriteGroups
 		}).done(function(data){
 			s.loggedIn(data.dat.loggedIn);
+			s.username(data.dat.username);
 			var groups = [];
 			for(var n=0; n<data.dat.favoriteGroups.length; n++){
 				var g = data.dat.favoriteGroups[n];
@@ -256,15 +258,19 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 
 <!-- お気に入り管理(ログインしている場合) -->
 <div id="<?php echo h($uid); ?>">
+	<?php if(empty($compact)): ?>
 	<div class="box">
 		<h2>
 			<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
 			お気に入り管理
 		</h2>
+	<?php else: ?>
+	<div>
+	<?php endif; ?>
 		
 		<!-- ログインしている場合 -->
 		<div data-bind="if: loggedIn(), visible: loggedIn()" class="content">
-				
+			
 			<!-- メッセージ -->
 			<div data-bind="foreach: messages" class="messages">
 				<div data-bind="attr:{class: 'alert alert-dismissable ' + FmLevel()}">
@@ -336,6 +342,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			  </div><!-- /.modal-dialog -->
 			</div><!-- /.modal -->
 			
+			<?php if(empty($compact)): ?>
 			<!-- このグループの病院 -->
 			<div data-bind="with: selectedFavoriteGroup()">
 				<ul data-bind="foreach: hospitals" class="items-half">
@@ -349,7 +356,8 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						</table>
 					</li>
 				</ul>
-				<span data-bind="text: hospitals.length"></span>/15
+				<span data-bind="text: hospitals.length"></span>件登録されています。
+				(あと<span data-bind="text: 15-hospitals.length"></span>件登録可)
 				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
 			</div>
 			
@@ -362,12 +370,15 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			<p data-bind="visible: !isPremium">
 				<?php echo $this->Html->link('毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
 			</p>
+			<?php endif; ?>
 			
 		</div>
 		
+		<?php if(empty($compact)): ?>
 		<!-- ログインを促すメッセージ(ログインしていない場合) -->
 		<div data-bind="if: !loggedIn()" class="content">
 			<?php echo $this->Html->link('ログインするとお気に入りを管理できます。', array('controller'=>'Users', 'action'=>'Login')); ?>
 		</div>
+		<?php endif; ?>
 	</div>
 </div>

@@ -41,6 +41,17 @@
   	<?php if(empty($bareLayout)): ?>
     <div class="navbar navbar-inverse" role="navigation">
       <div class="container">
+      	<?php if(!empty($loggedIn)): ?>
+      		<div class="welcome">
+      			ようこそ、<?php echo h($username); ?>さん！
+		      	<?php
+		      		if(!empty($isPremiumUser))
+								echo $this->Html->link('プレミアム会員', array('controller'=>'Users', 'action'=>'Subscribe'));
+							else
+								echo $this->Html->link('通常会員', array('controller'=>'Users', 'action'=>'Subscribe'));
+		      	?>
+      		</div>
+      	<?php endif; ?>
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>

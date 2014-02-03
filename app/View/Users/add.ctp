@@ -7,11 +7,11 @@
 			<?php echo $this->Session->flash(); ?>
 			<table>
 				<tr>
-					<td>ユーザー名</td>
+					<td>ユーザー名<small>(半角英数4文字以上)</small></td>
 					<td><?php echo $this->Form->input('username', array('label'=>false)); ?></td>
 				</tr>
 				<tr>
-					<td>表示名</td>
+					<td>表示名<small>(半角英数4文字以上)</small></td>
 					<td><?php echo $this->Form->input('displayname', array('label'=>false)); ?></td>
 				</tr>
 				<tr>
@@ -19,7 +19,7 @@
 					<td><?php echo $this->Form->input('email', array('label'=>false)); ?></td>
 				</tr>
 				<tr>
-					<td>パスワード</td>
+					<td>パスワード<small>(半角英数6文字以上)</small></td>
 					<td><?php echo $this->Form->input('password', array('label'=>false)); ?></td>
 				</tr>
 				<tr>

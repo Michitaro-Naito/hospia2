@@ -128,5 +128,8 @@ class AppController extends Controller {
 		$this->request->addDetector('mobile', array(
 			'env' => 'HTTP_USER_AGENT', 'pattern' => '/iPhone|Android|Windows Phone/i'
 		));
+		
+		$this->set('loggedIn', $this->Auth->loggedIn());
+		$this->set('username', $this->Auth->user('username'));
 	}
 }

@@ -51,11 +51,12 @@ google.maps.event.addDomListener(window, 'load', function(){
 
 
 
+
+<?php echo $this->element('hosdetail_menu'); ?>
+<?php echo $this->element('additional_information'); ?>
+<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'], 'compact'=>true)); ?>
 <!-- Data -->
 <div id="hosinfo">
-	<?php echo $this->element('hosdetail_menu'); ?>
-	<?php echo $this->element('additional_information'); ?>
-	
 	<?php
 		$h = $dat['hospital'];
 		if(!empty($h)):
@@ -142,8 +143,6 @@ google.maps.event.addDomListener(window, 'load', function(){
 		</div>
 	</div>
 </div>
-
-<?php echo $this->element('favorite', array('wamId'=>$dat['wamId'])); ?>
 
 <!-- Comments -->
 <?php

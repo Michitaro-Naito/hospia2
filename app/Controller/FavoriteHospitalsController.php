@@ -7,9 +7,11 @@ class FavoriteHospitalsController extends AppController {
 	 */
 	public function GetFavoriteGroups(){
 		$loggedIn = $this->Auth->loggedIn();
+		$username = '';
 		$groups = array();
 		if($loggedIn){
 			$userId = $this->Auth->user('id');
+			$username = $this->Auth->user('username');
 			$this->loadModel('FavoriteHospital');
 			$groups = $this->FavoriteHospital->find('all', array(
 				'conditions'=>array(
@@ -21,6 +23,7 @@ class FavoriteHospitalsController extends AppController {
 		
 		$this->set('dat', array(
 			'loggedIn'=>$loggedIn,
+			'username'=>$username,
 			'favoriteGroups'=>$groups
 		));
 		$this->set('_serialize', array('dat'));

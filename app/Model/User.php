@@ -14,7 +14,11 @@ class User extends AppModel {
             'unique' => array(
             	'rule' => 'isUnique',
             	'message' => '既に使用されています。他のユーザー名をお試しください。'
-            )
+            ),
+            'alphaNumeric4' => array(
+            	'rule' => '/^[a-zA-Z0-9]{4,}$/i',
+            	'message' => '半角英数字で4文字以上入力して下さい。'
+						)
         ),
         'displayname' => array(
             'required' => array(
@@ -24,13 +28,21 @@ class User extends AppModel {
             'unique' => array(
             	'rule' => 'isUnique',
             	'message' => '既に使用されています。他の表示名をお試しください。'
-            )
+            ),
+            'alphaNumeric4' => array(
+            	'rule' => '/^[a-zA-Z0-9]{4,}$/i',
+            	'message' => '半角英数字で4文字以上入力して下さい。'
+						)
         ),
         'password' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
                 'message' => '入力して下さい。'
-            )
+            ),
+            'alphaNumeric4' => array(
+            	'rule' => '/^[a-zA-Z0-9]{6,}$/i',
+            	'message' => '半角英数字で6文字以上入力して下さい。'
+						)
         ),
         'email' => array(
             'required' => array(
