@@ -14,12 +14,13 @@ function AppModel(){
 	s.mdcs = dat.mdcs;												// 選択可能なMDC一覧
 	s.years = dat.years;											// 選択可能な会計年度一覧
 	s.displayTypes = dat.displayTypesForDpc;	// 選択可能な表示方法一覧
+	s.displayTypesForValue = [{id:'none', name:'指定なし'}].concat(dat.displayTypesForDpc);
 	
-	s.selectedMdc = ko.observable();					// 選択されたMDC
-	s.selectedYear = ko.observable();					// 選択された会計年度
-	s.selectedDisplayTypeX = ko.observable();	// 選択された表示方法(X軸)
-	s.selectedDisplayTypeY = ko.observable();	// 選択された表示方法(Y軸)
-	s.selectedDisplayTypeValue = ko.observable();	// 選択された表示方法(大きさ)
+	s.selectedMdc = ko.observable(s.mdcs[0]);					// 選択されたMDC
+	s.selectedYear = ko.observable(s.years[0]);					// 選択された会計年度
+	s.selectedDisplayTypeX = ko.observable(s.displayTypes[0]);	// 選択された表示方法(X軸)
+	s.selectedDisplayTypeY = ko.observable(s.displayTypes[2]);	// 選択された表示方法(Y軸)
+	s.selectedDisplayTypeValue = ko.observable(s.displayTypesForValue[0]);	// 選択された表示方法(大きさ)
 	
 	s.chartData = ko.observableArray();				// 7年分のデータ
 	
@@ -86,7 +87,10 @@ function AppModel(){
 			}
 			row.x = dataOfYear[id + '.' + s.selectedDisplayTypeX().id];
 			row.y = dataOfYear[id + '.' + s.selectedDisplayTypeY().id];
-			row.value = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
+			if(s.selectedDisplayTypeValue().id == 'none')
+				row.value = 1;
+			else
+				row.value = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
 			//console.info(row);
 			chartData.push(row);
 		}
@@ -100,14 +104,14 @@ function AppModel(){
 		// AXES
 		// X
 		var xAxis = new AmCharts.ValueAxis();
-		xAxis.title = "X Axis";
+		xAxis.title = s.selectedDisplayTypeX().name;
 		xAxis.position = "bottom";
 		xAxis.autoGridCount = true;
 		chart.addValueAxis(xAxis);
 		
 		// Y
 		var yAxis = new AmCharts.ValueAxis();
-		yAxis.title = "Y Axis";
+		yAxis.title = s.selectedDisplayTypeY().name;
 		yAxis.position = "left";
 		yAxis.autoGridCount = true;
 		chart.addValueAxis(yAxis);
@@ -129,12 +133,21 @@ function AppModel(){
 
 var model = new AppModel();
 ko.applyBindings(model);
+model.GetData();
 </script>
 <?php $this->end(); ?>
 
 
 
-<div data-bind="text: group.FavoriteHospital.name"></div>
+<h2>
+	グループ名：
+	<span data-bind="text: group.FavoriteHospital.name"></span>
+</h2>
+<p>
+	<span data-bind="text: selectedMdc().name"></span>
+	・<span data-bind="text: selectedYear().name"></span>
+	大きさ：<span data-bind="text: selectedDisplayTypeValue().name"></span>
+</p>
 <div id="chartdiv" class="bubbles"></div>
 <div class="box">
 	<h2>表示切替</h2>
@@ -146,7 +159,7 @@ ko.applyBindings(model);
 					<td><select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select></td>
 				</tr>
 				<tr>
-					<th>会計年度</th>
+					<th>年度</th>
 					<td><select data-bind="options: years, optionsText: 'name', value: selectedYear"></select></td>
 				</tr>
 				<tr>
@@ -158,8 +171,8 @@ ko.applyBindings(model);
 					<td><select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeY"></select></td>
 				</tr>
 				<tr>
-					<th>Z軸</th>
-					<td><select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayTypeValue"></select></td>
+					<th>大きさ</th>
+					<td><select data-bind="options: displayTypesForValue, optionsText: 'name', value: selectedDisplayTypeValue"></select></td>
 				</tr>
 			</tbody>
 		</table>

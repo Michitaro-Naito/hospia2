@@ -172,11 +172,11 @@ class HomeController extends AppController {
 			}
 		}
 		
-		$this->set('bareLayout', true);
+		//$this->set('bareLayout', true);
 		$this->set('dat', array(
 			'wamId'=>$wamId,
 			'chartData'=>$chartData,
-			//'hospital'=>$hospital,
+			'hospital'=>$hospital,
 			'mdcs'=>$this->Data->GetMdcs(),
 			'displayTypesForDpc'=>$displayTypesForDpc,
 		));

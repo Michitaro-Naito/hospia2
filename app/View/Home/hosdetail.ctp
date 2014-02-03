@@ -1,3 +1,9 @@
+<?php
+	$title = '診療実績';
+	if(!empty($dat['hospital']['Hospital']['name']))
+		$title = $dat['hospital']['Hospital']['name'];
+	$this->assign('title', $title);
+?>
 <?php $this->start('script'); ?>
 <script>
 // Get initial variables from server
@@ -164,7 +170,7 @@ model.search();
 					<tr>
 						<td data-bind="text: fmMdcName, attr:{style:GetColStyle('mdc_cd')}" class="mdc-name"></td>
 						<td data-bind="text: addFigure(Number(Dpc.ave_month).toFixed(1)), attr:{style:GetColStyle('ave_month')}" class="ave_month ar"></td>
-						<td data-bind="text: addFigure(Number(Dpc.zone_share).toFixed(1)) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share ar"></td>
+						<td data-bind="text: addFigure((100.0*Number(Dpc.zone_share)).toFixed(1)) + '%', attr:{style:GetColStyle('zone_share')}" class="zone_share ar"></td>
 						<td data-bind="text: addFigure(Number(Dpc.ave_in).toFixed(1)), attr:{style:GetColStyle('ave_in')}" class="ave_in ar"></td>
 						<td data-bind="text: addFigure(Number(Dpc.complex).toFixed(2)), attr:{style:GetColStyle('complex')}" class="complex ar"></td>
 						<td data-bind="text: addFigure(Number(Dpc.efficiency).toFixed(2)), attr:{style:GetColStyle('efficiency')}" class="efficiency ar"></td>
@@ -175,7 +181,7 @@ model.search();
 				<table>
 					<tr>
 						<td>
-							<div data-bind="visible: Dpc.mdc_cd != 0" class="progress">
+							<div data-bind="visible: !(Dpc.mdc_cd == 0 && $root.selectedDisplayTypeForDpc().id == 'ave_month')" class="progress">
 							  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
 							    <span class="sr-only">60% Complete</span>
 							  </div>

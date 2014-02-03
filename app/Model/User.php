@@ -9,41 +9,41 @@ class User extends AppModel {
         'username' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'You forgot a Username.'
+                'message' => '入力して下さい。'
             ),
             'unique' => array(
             	'rule' => 'isUnique',
-            	'message' => 'Username already taken.'
+            	'message' => '既に使用されています。他のユーザー名をお試しください。'
             )
         ),
         'displayname' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'Please choose a Display Name.'
+                'message' => '入力して下さい。'
             ),
             'unique' => array(
             	'rule' => 'isUnique',
-            	'message' => 'Display Name already taken.'
+            	'message' => '既に使用されています。他の表示名をお試しください。'
             )
         ),
         'password' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'You forgot your password.'
+                'message' => '入力して下さい。'
             )
         ),
         'email' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
-                'message' => 'Email is mandatory for registration.'
+                'message' => '入力して下さい。'
             ),
             'email' => array(
             	'rule' => array('email', true),
-            	'message' => 'Please enter a valid email address.'
+            	'message' => 'aaa@bbb.ccc形式で正しいメールアドレスを入力して下さい。'
             ),
             'unique' => array(
             	'rule' => 'isUnique',
-            	'message' => 'Account with that email already exists.'
+            	'message' => '既に使用されています。他のメールアドレスをご利用ください。'
             )
         ),
         'role' => array(

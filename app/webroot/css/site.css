@@ -43,7 +43,7 @@ body {
 
 /* bootstrap override */
 a{
-	color: #333;
+	color: rgb(156, 81, 124);
 }
 a:hover,
 a:hover span{
@@ -169,8 +169,7 @@ body{
 	background: rgb(250, 250, 240);
 	background: -webkit-gradient(linear, left top, left bottom, from(rgb(250, 250, 240)), to(rgb(241, 238, 223)));
 	font-size: 15px;
-	/*color: rgb(116, 41, 84);*/
-	color: rgb(156, 81, 124);
+	color: #333;
 	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
 .box h2:after{
@@ -382,11 +381,12 @@ div.icon-like{
 /* Page Specific */
 /* Table Haader */
 .thead{
-	border: solid 1px rgb(212, 190, 151);
+	/*border: solid 1px rgb(212, 190, 151);
 	border-top: solid 5px rgb(212, 190, 151);
 	background: rgb(250, 250, 240);
 	background: -webkit-gradient(linear, left top, left bottom, from(rgb(250, 250, 240)), to(rgb(241, 238, 223)));
-	border-bottom: solid 1px #DDD;
+	border-bottom: solid 1px #DDD;*/
+	background: #CCC;
 	padding: 5px 0;
 }
 .thead table{
@@ -692,11 +692,18 @@ h2.posttitle{
 	font-size: 16px;
 	padding: 5px;
 	border: solid 1px #CCC;
-	border-bottom: solid 4px #78325A;
+	/*border-bottom: solid 4px #78325A;*/
+	border-bottom: solid 4px rgb(212, 190, 151);
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
 h2.posttitle a{
 	color: #454545;
+}
+
+/* Cake */
+.message,
+.error-message{
+	color: red;
 }

@@ -161,9 +161,9 @@ ko.applyBindings(model);
 <table class="dpc" border="1" bordercolor="#CCC">
 	<thead>
 		<tr>
-			<th>手術情報<?php echo $this->My->tip('DPC-手術情報'); ?></th>
-			<th colspan="3">患者数および割合<?php echo $this->My->tip('DPC-患者数および割合'); ?></th>
-			<th colspan="2">平均在院日数<?php echo $this->My->tip('DPC-平均在院日数'); ?></th>
+			<th class="text-center">手術情報<?php echo $this->My->tip('DPC-手術情報'); ?></th>
+			<th class="text-center" colspan="3">患者数および割合<?php echo $this->My->tip('DPC-患者数および割合'); ?></th>
+			<th class="text-center" colspan="2">平均在院日数<?php echo $this->My->tip('DPC-平均在院日数'); ?></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: wounds().concat(Total())">
@@ -178,7 +178,7 @@ ko.applyBindings(model);
 				  </div>
 				</div>
 			</td>
-			<td data-bind="text: addFigure(Number(Wound.days).toFixed(2))" class="days ar"></td>
+			<td data-bind="text: addFigure(Number(Wound.days).toFixed(1))" class="days ar"></td>
 			<td class="bar">
 				<div class="progress">
 				  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyleDays}">
@@ -214,7 +214,7 @@ ko.applyBindings(model);
 							<a data-bind="text: Hospital.name, attr: { href: detailUrl + '/' + Hospital.wam_id }"></a>
 						</td>
 						<td data-bind="text: addFigure(Detail.count)" class="ar"></td>
-						<td data-bind="text: addFigure(Number(Detail.days).toFixed(2))" class="ar"></td>
+						<td data-bind="text: addFigure(Number(Detail.days).toFixed(1))" class="ar"></td>
 					</tr>
 				</tbody>
 			</table>
@@ -229,7 +229,7 @@ ko.applyBindings(model);
 							<a data-bind="text: Hospital.name, attr: { href: detailUrl + '/' + Hospital.wam_id }"></a>
 						</td>
 						<td data-bind="text: addFigure(Detail.count)" class="ar"></td>
-						<td data-bind="text: addFigure(Number(Detail.days).toFixed(2))" class="ar"></td>
+						<td data-bind="text: addFigure(Number(Detail.days).toFixed(1))" class="ar"></td>
 					</tr>
 				</tbody>
 			</table>

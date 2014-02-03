@@ -285,8 +285,8 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" data-target="#AddGroupModal">お気に入りグループを作成する</a></li>
 						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" data-target="#RenameGroupModal">グループ名を変更する</a></li>
 						    <li data-bind="visible: selectedFavoriteGroup()? (selectedFavoriteGroup().hospitals.length < 15 && wamId): false"><a data-bind="click: AddHospital">閲覧中の病院を登録する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}" target="_blank">折れ線グラフで比較する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}" target="_blank">バブルチャートで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}">折れ線グラフで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}">バブルチャートで比較する</a></li>
 						  </ul>
 						</div>
 					</td>
@@ -343,7 +343,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						<table>
 							<tr>
 								<td><a data-bind="text: data.name, attr:{href:DetailUrl}"></a></td>
-								<td data-bind="visible: $root.isPremium" style="width: 80px;"><a data-bind="attr:{href:CompareUrl}" target="_blank">過年度比較</a></td>
+								<td data-bind="visible: $root.isPremium" style="width: 80px;"><a data-bind="attr:{href:CompareUrl}">過年度比較</a></td>
 								<td style="width: 80px;"><button type="button" data-bind="click: RemoveFromParent">解除する</button></td>
 							</tr>
 						</table>

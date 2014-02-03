@@ -77,7 +77,8 @@ function AppModel(){
 	self.mdcs = mdcs;											// 診断分類一覧
 	self.prefectures = prefectures;								// 都道府県一覧
 	self.cmplst = cmplst;										// 比較指数一覧
-	self.selectedMdc = ko.observable(defMdc);					// 選択された診断分類
+	//self.selectedMdc = ko.observable(defMdc);					// 選択された診断分類
+	self.selectedMdc = ko.observable(self.mdcs[defMdc]);
 	self.selectedPrefecture = ko.observable(defPrefecture);		// 選択された都道府県
 	self.selectedCmp = ko.observable();					// 選択された比較指数
 	self.barInitialized = ko.observable(false);
@@ -133,16 +134,19 @@ model.setDefaultValues();
 <!-- メニュー -->
 <div class="box">
 	<form action="<?php echo $this->webroot.'toplst'; ?>" method="POST" id="menuForm">
-		<h2>神経系患者数ランキング</h2>
+		<h2>
+			<span data-bind="text: selectedMdc().name"></span>
+			患者数ランキング
+		</h2>
 		<div class="content">
-			<input type="hidden" name="valueMdc" data-bind="value: selectedMdc"/>
+			<input type="hidden" name="valueMdc" data-bind="value: selectedMdc().id"/>
 			<input type="hidden" name="valuePrefecture" data-bind="value: selectedPrefecture"/>
 			<input type="hidden" name="valueCmp" data-bind="value: selectedCmp"/>
 			<table>
 				<tr>
 					<td>
 						　診断分類　
-						<select data-bind="options: mdcs, optionsValue: 'id', optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
+						<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
 					</td>
 					<td>
 						都道府県<?php echo $this->My->tip('患者数ランキング-都道府県'); ?>

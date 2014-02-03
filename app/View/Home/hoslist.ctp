@@ -36,10 +36,12 @@ function Hospital(root, data){
 					break;
 				default:
 					if(typeof s.Dpc !== 'undefined')
-						v = s.Dpc.ave_month;
+						v = Number(s.Dpc.ave_month).toFixed(0);
 					break;
 			}
 		}
+		if(v===null)
+			return '';
 		return v;
 	});
 	s.GetStyle = ko.computed(function(){

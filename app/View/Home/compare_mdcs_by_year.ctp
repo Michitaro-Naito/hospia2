@@ -8,6 +8,7 @@ console.info(dat);
 function AppModel(){
 	var s = this;
 	
+	s.hospital = dat.hospital;
 	s.displayTypes = dat.displayTypesForDpc;
 	s.selectedDisplayType = ko.observable();
 	
@@ -83,10 +84,12 @@ ko.applyBindings(model);
 
 
 
+<?php echo $this->element('hosdetail_menu'); ?>
 <div id="chartdiv"></div>
 <div class="box">
 	<h2>表示切替</h2>
 	<div class="content">
 		<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
+		<p>グラフの診断分類名をクリックすると、表示の有無も切り替えられます。</p>
 	</div>
 </div>
