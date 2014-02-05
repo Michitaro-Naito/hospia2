@@ -199,5 +199,5 @@ model.search();
 <!-- Comments -->
 <?php
 	echo $this->element('fb_root');
-	echo $this->element('fb_comments', array('commentUrl'=>Router::url(null, true)));
+	echo $this->element('fb_comments', array('commentUrl'=>Router::url('/hosinfo/' . $dat['hospital']['Hospital']['wam_id'], true)));
 ?>

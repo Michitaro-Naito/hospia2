@@ -282,29 +282,36 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			<table>
 				<tr>
 					<td>
+						<!-- グループ選択 -->
+						<select data-bind="visible: favoriteGroups().length > 0, options: favoriteGroups, optionsText: 'name', value: selectedFavoriteGroup" class="form-control"></select>
+					</td>
+					<?php if(empty($compact)): ?>
+					<td>
 						<!-- グループ操作 -->
 						<div class="btn-group">
 						  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 						    操作 <span class="caret"></span>
 						  </button>
 						  <ul class="dropdown-menu" role="menu">
-						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" data-target="#AddGroupModal">お気に入りグループを作成する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" data-target="#RenameGroupModal">グループ名を変更する</a></li>
+						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" onclick="$('#AddGroupModal').modal('show');">お気に入りグループを作成する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" onclick="$('#RenameGroupModal').modal('show');">グループ名を変更する</a></li>
 						    <li data-bind="visible: selectedFavoriteGroup()? (selectedFavoriteGroup().hospitals.length < 15 && wamId): false"><a data-bind="click: AddHospital">閲覧中の病院を登録する</a></li>
 						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}">折れ線グラフで比較する</a></li>
 						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}">バブルチャートで比較する</a></li>
 						  </ul>
 						</div>
 					</td>
+					<?php else: ?>
+					<!-- リストに追加(コンパクト版) -->
 					<td>
-						<!-- グループ選択 -->
-						<select data-bind="visible: favoriteGroups().length > 0, options: favoriteGroups, optionsText: 'name', value: selectedFavoriteGroup" class="form-control"></select>
+						<button type="button" class="btn btn-default" data-bind="click: AddHospital">この病院をお気に入りに登録</button>
 					</td>
+					<?php endif; ?>
 				</tr>
-			</table>	
+			</table>
 			
 			<!-- モーダル(新しいグループ) -->
-			<div class="modal" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -323,7 +330,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			</div><!-- /.modal -->
 			
 			<!-- モーダル(名称変更) -->
-			<div class="modal" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal fade" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -357,7 +364,9 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 					</li>
 				</ul>
 				<span data-bind="text: hospitals.length"></span>件登録されています。
-				(あと<span data-bind="text: 15-hospitals.length"></span>件登録可)
+				(あと<span data-bind="text: 15-hospitals.length"></span>件登録可)<br/>
+				<span data-bind="text: $root.favoriteGroups().length"></span>グループ登録されています。
+				(あと<span data-bind="text: 10-$root.favoriteGroups().length"></span>グループ登録可)
 				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
 			</div>
 			
@@ -377,7 +386,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 		<?php if(empty($compact)): ?>
 		<!-- ログインを促すメッセージ(ログインしていない場合) -->
 		<div data-bind="if: !loggedIn()" class="content">
-			<?php echo $this->Html->link('ログインするとお気に入りを管理できます。', array('controller'=>'Users', 'action'=>'Login')); ?>
+			<?php echo $this->Html->link('無料会員登録をしていただくと、お気に入りグループ登録などの機能をご利用いただけます。', array('controller'=>'Users', 'action'=>'Login')); ?>
 		</div>
 		<?php endif; ?>
 	</div>

@@ -139,7 +139,11 @@ google.maps.event.addDomListener(window, 'load', function(){
 		</div>
 		
 		<div class="col-sm-9 right">
-			<div id="map-canvas" style="width: 100%; height: 500px; border: 1px solid black;">Loading...</div>
+			<?php if($this->request->is('mobile')): ?>
+				<div id="map-canvas" style="width: 100%; height: 200px; border: 1px solid black;">Loading...</div>
+			<?php else: ?>
+				<div id="map-canvas" style="width: 100%; height: 500px; border: 1px solid black;">Loading...</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>
@@ -147,5 +151,5 @@ google.maps.event.addDomListener(window, 'load', function(){
 <!-- Comments -->
 <?php
 	echo $this->element('fb_root');
-	echo $this->element('fb_comments', array('commentUrl'=>Router::url(null, true)));
+	echo $this->element('fb_comments', array('commentUrl'=>Router::url('/hosinfo/' . $dat['hospital']['Hospital']['wam_id'], true)));
 ?>

@@ -108,10 +108,12 @@ ko.applyBindings(model);
 
 
 
-<h2>
-	グループ名：
-	<span data-bind="text: group.FavoriteHospital.name"></span>
-</h2>
+<div class="box">
+	<h2>
+		グループ名：
+		<span data-bind="text: group.FavoriteHospital.name"></span>
+	</h2>
+</div>
 <div id="chartdiv"></div>
 <div class="box">
 	<h2>表示切替</h2>

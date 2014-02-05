@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta property="og:image" content="<?php echo Router::url('/img/logo.png', true); ?>" />
+    <meta property="og:image:type" content="image/png">
 
     <title>
     	<?php
@@ -38,7 +40,6 @@
 
   <body>
   	
-  	<?php if(empty($bareLayout)): ?>
     <div class="navbar navbar-inverse" role="navigation">
       <div class="container">
       	<?php if(!empty($loggedIn)): ?>
@@ -95,7 +96,6 @@
         </div><!--/.nav-collapse -->
       </div>
     </div>
-    <?php endif; ?>
     
     
     <div id="wrap">
@@ -128,7 +128,6 @@
     </div><!-- /.container -->
     
     
-    <?php if(empty($bareLayout)): ?>
     <div id="footer">
       <div class="container">
       	<div class="nav">
@@ -146,7 +145,6 @@
 				<p class="credit">Copyright(C) Care Review, Inc., All rights reserved. </p>
       </div>
     </div>
-    <?php endif; ?>
 
 
     <!-- Bootstrap core JavaScript

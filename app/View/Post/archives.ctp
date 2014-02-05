@@ -17,6 +17,8 @@
 		$strCategory = "";
 		for($index = 0, $size = count($posts); $index < $size; $index++){
 			$strCategory = $posts[$index]['Post']['category'];
+			if($strCategory == 'news')
+				continue;
 			$strHref = $rootURL."wp/archives/category/".$strCategory."/";
 			echo " ";
 			echo "<a href=\"".$strHref."\" title=\"".$categoryDisp[$strCategory]." の投稿をすべて表示\" rel=\"category tag\">";
@@ -25,8 +27,8 @@
 			if ($index < $size - 1) {
 				echo ",";
 			}
+			echo " &gt;";
 		}
-		echo " &gt;";
 		// パンくずの最後の記事のタイトルを出力
 		echo " ";
 		echo $firstPost['title'];

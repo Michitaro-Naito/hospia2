@@ -1,6 +1,6 @@
 <?php if(!$isPremiumUser && empty($noAds)): ?>
 	<?php if($this->request->is('mobile')): ?>
-		<div class="row">
+		<div class="row" style="text-align: center;">
 		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 		<!-- hospia_mobile -->
 		<ins class="adsbygoogle"

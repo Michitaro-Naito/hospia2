@@ -148,9 +148,11 @@ ko.applyBindings(model);
 <div class="box">
 	<h2>傷病別統計データ</h2>
 	<div class="content">
-		診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-		傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc"></select>
-		<button data-bind="click: search">検索</button>
+		<ul class="elements">
+			<li>診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select></li>
+			<li>傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc" style="max-width: 200px;"></select></li>
+			<li><button data-bind="click: search">検索</button></li>
+		</ul>
 	</div>
 </div>
 

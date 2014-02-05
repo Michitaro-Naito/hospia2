@@ -117,10 +117,16 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 							$utcDate = new DateTime($p['Post']['created'], new DateTimeZone('UTC'));
 							$utcDate->setTimezone(new DateTimeZone('Asia/Tokyo'));
 						?>
-						<time datetime="<?php echo h($utcDate->format('Y-m-d H:i:s')); ?>"><?php echo h($utcDate->format('Y.m.d')); ?></time>
 						<span><?php echo h($p['Post']['title']); ?></span>
 						<?php $element = ob_get_clean(); ?>
-						<li><?php echo $this->Html->link($element, "/wp/archives/{$p['Post']['post_id']}", array('escape'=>false)); ?></li>
+						<li>
+							<table>
+								<tr>
+									<td><time datetime="<?php echo h($utcDate->format('Y-m-d H:i:s')); ?>"><?php echo h($utcDate->format('Y.m.d')); ?></time></td>
+									<td><?php echo $this->Html->link($element, "/wp/archives/{$p['Post']['post_id']}", array('escape'=>false)); ?></td>
+								</tr>
+							</table>
+						</li>
 					<?php endforeach; ?>
 				</ul>
 			</div>

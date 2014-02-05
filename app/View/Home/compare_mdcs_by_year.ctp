@@ -11,12 +11,25 @@ function AppModel(){
 	s.hospital = dat.hospital;
 	s.displayTypes = dat.displayTypesForDpc;
 	s.selectedDisplayType = ko.observable();
+	s.mdcs = ko.observableArray(dat.mdcs);
+	s.chart = ko.observable();
 	
 	s.selectedDisplayType.subscribe(function(){
 		s.DrawChart();
 	}, this);
 	
 	s.DrawChart = function(){
+		// Remember current settings
+		var currentChart = s.chart();
+		var hiddenFlags = []
+		if(currentChart){
+			for(var n=0; n<currentChart.graphs.length && n<s.mdcs().length; n++){
+				var g = currentChart.graphs[n];
+				var mdc = s.mdcs()[n];
+				mdc.hidden = g.hidden;
+			}
+		}
+		
 	  // SERIAL CHART
 	  var chart = new AmCharts.AmSerialChart();
 	  chart.dataProvider = dat.chartData;	//chartData;
@@ -48,12 +61,12 @@ function AppModel(){
 	  chart.addValueAxis(valueAxis);
 	  
 	  // GRAPHS
-	  for(var n=0; n<dat.mdcs.length; n++){
+	  for(var n=0; n<s.mdcs().length; n++){
 	  	var mdc = dat.mdcs[n];
 	  	var graph = new AmCharts.AmGraph();
 		  graph.title = mdc.name;
 		  graph.valueField = n + '.' + s.selectedDisplayType().id;	//'.ave_in';
-		  //graph.hidden = true; // this line makes the graph initially hidden           
+		  graph.hidden = mdc.hidden;
 		  graph.balloonText = dat.mdcs[n].name + " [[category]]: [[value]]";
 		  graph.lineAlpha = 1;
 		  graph.bullet = "round";
@@ -74,6 +87,16 @@ function AppModel(){
 	  
 	  // WRITE
 	  chart.write("chartdiv");
+	  
+	  s.chart(chart);
+	}
+	
+	// Default values
+	for(var n=0; n<s.mdcs().length; n++){
+		var mdc = s.mdcs()[n];
+		mdc.hidden = true;
+		if(n==0)
+			mdc.hidden = false;
 	}
 }
 

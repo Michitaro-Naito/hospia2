@@ -78,10 +78,12 @@ function AppModel(){
 			var id = s.ids[n];
 			var row = {};
 			row.name = '';
+			row.alias = '';
 			for(var m=0; m<s.group.Hospital.length; m++){
 				var h = s.group.Hospital[m];
 				if(h.wam_id==id){
 					row.name = h.name;
+					row.alias = h.alias;
 					break;
 				}
 			}
@@ -123,7 +125,8 @@ function AppModel(){
 		graph.yField = "y";
 		graph.lineAlpha = 0;
 		graph.bullet = "bubble";
-		graph.balloonText = "[[name]]</br>x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[value]]</b>"
+		graph.balloonText = "[[name]]</br>x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[value]]</b>";
+		graph.labelText = "[[alias]]";
 		chart.addGraph(graph);
 		
 		// WRITE                                
@@ -139,15 +142,17 @@ model.GetData();
 
 
 
-<h2>
-	グループ名：
-	<span data-bind="text: group.FavoriteHospital.name"></span>
-</h2>
-<p>
-	<span data-bind="text: selectedMdc().name"></span>
-	・<span data-bind="text: selectedYear().name"></span>
-	大きさ：<span data-bind="text: selectedDisplayTypeValue().name"></span>
-</p>
+<div class="box">
+	<h2>
+		グループ名：
+		<span data-bind="text: group.FavoriteHospital.name"></span>
+	</h2>
+	<div class="content">
+		<span data-bind="text: selectedMdc().name"></span>
+		・<span data-bind="text: selectedYear().name"></span>
+		大きさ：<span data-bind="text: selectedDisplayTypeValue().name"></span>
+	</div>
+</div>
 <div id="chartdiv" class="bubbles"></div>
 <div class="box">
 	<h2>表示切替</h2>

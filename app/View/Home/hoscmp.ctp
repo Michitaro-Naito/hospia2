@@ -162,13 +162,21 @@ model.search();
 	<div class="box">
 		<h2 data-bind="">他病院比較</h2>
 		<div class="content">
-			比較区分<?php echo $this->My->tip('他病院比較-比較区分'); ?>：
-			<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
-			診断分類<?php echo $this->My->tip('他病院比較-診断分類'); ?>：
-			<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
-			比較リスト<?php echo $this->My->tip('他病院比較-比較リスト'); ?>：
-			<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
-			<button data-bind="click: search">検索</button>
+			<ul class="elements clearfix">
+				<li>
+					比較区分<?php echo $this->My->tip('他病院比較-比較区分'); ?>：
+					<select data-bind="options: comparisonCategories, optionsText: 'name', value: selectedComparisonCategory"></select>
+				</li>
+				<li>
+					診断分類<?php echo $this->My->tip('他病院比較-診断分類'); ?>：
+					<select data-bind="visible: selectedComparisonCategory().id=='dpc', options: mdcs, optionsText: 'name', value: selectedMdc"></select>
+				</li>
+				<li>
+					比較リスト<?php echo $this->My->tip('他病院比較-比較リスト'); ?>：
+					<select data-bind="options: displayTypesForHoscmp, optionsText: 'name', value: selectedDisplayTypeForHoscmp"></select>
+				</li>
+				<li><button data-bind="click: search">検索</button></li>
+			</ul>
 		</div>
 	</div>
 	
@@ -239,5 +247,5 @@ model.search();
 <!-- Comments -->
 <?php
 	echo $this->element('fb_root');
-	echo $this->element('fb_comments', array('commentUrl'=>Router::url(null, true)));
+	echo $this->element('fb_comments', array('commentUrl'=>Router::url('/hosinfo/' . $dat['hospital']['Hospital']['wam_id'], true)));
 ?>

@@ -308,7 +308,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 				</tr>
 			</table>
 		</div>
-		<div class="col-sm-6 right">
+		<div class="col-sm-6 right" <?php if(!empty($_GET['nobar'])){echo 'style="display: none;"';} ?>>
 			<table>
 				<tr>
 					<td class="value"><span data-bind="text: addFigure(fmValue())"></span></td>
