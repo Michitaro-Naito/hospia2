@@ -42,7 +42,17 @@ function Hospital(root, data){
 		}
 		if(v===null)
 			return '';
+		if(v==0)
+			return '';
 		return v;
+	});
+	s.fmDpcCondition = ko.computed(function(){
+		//Hospital.dpc_ct
+		var str = s.Hospital.dpc_ct;
+		//平成24年度新規DPC準備病院
+		str = str.replace(/平成([0-9]*)年度DPC参加病院/, '$1年<br>参加');
+		str = str.replace(/平成([0-9]*)年度新規DPC準備病院/, '$1年<br>準備');
+		return str;
 	});
 	s.GetStyle = ko.computed(function(){
 		if(!root.barInitialized()) return 'width: 0%';
@@ -287,16 +297,13 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 					</td>
 					<td class="address" data-bind="text: Area.addr2"></td>
 					<td class="dpc">
-						<div data-bind="visible: Hospital.dpc_id != 0, text: Hospital.dpc_ct" class="icon-like"></div>
-						<?php //echo $this->Html->image('icon/mark1.jpg', array('data-bind'=>'visible: Hospital.dpc_id != 0', 'alt'=>'DPC')); ?>
+						<div data-bind="visible: Hospital.dpc_id != 0, html: fmDpcCondition" class="icon-like"></div>
 					</td>
 					<td class="jcqhc">
-						<div data-bind="visible: typeof Jcqhc != 'undefined'" class="icon-like">機能評価</div>
-						<?php //echo $this->Html->image('icon/mark2.jpg', array('data-bind'=>"visible: typeof Jcqhc != 'undefined'", 'alt'=>'機能評価')); ?>
+						<div data-bind="visible: typeof Jcqhc != 'undefined'" class="icon-like">機能<br/>評価</div>
 					</td>
 					<td class="training">
-						<div data-bind="visible: Hospital.training != 0" class="icon-like">臨床研修</div>
-						<?php //echo $this->Html->image('icon/mark3.jpg', array('data-bind'=>"visible: Hospital.training != 0", 'alt'=>'臨床研修')); ?>
+						<div data-bind="visible: Hospital.training != 0" class="icon-like">臨床<br/>研修</div>
 					</td>
 				</tr>
 			</table>

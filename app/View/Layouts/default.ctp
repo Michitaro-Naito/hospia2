@@ -137,7 +137,7 @@
 		      	echo $this->Html->link('ご利用ガイド', '/wp/gu/'); 
 		      	echo $this->Html->link('サイトポリシー', '/wp/policy/'); 
 		      	echo $this->Html->link('運営会社', '/wp/company/'); 
-		      	echo $this->Html->link('サイトマップ', '/wp/sitemap/'); 
+		      	echo $this->Html->link('サイトマップ', '/sitemap.xml'); 
 		      	echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); 
 		      	echo $this->Html->link('広告掲載', '/wp/ad/'); 
 		      	echo $this->Html->link('お問い合わせ', '/wp/inquiry/');

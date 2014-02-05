@@ -30,7 +30,7 @@ function Dpc(root, data){
 	s.GetColStyle = function(field){
 		return ko.computed(function(){
 			if(field==root.sortField())
-				return 'background: #CCC;';
+				return 'background: rgb(250, 250, 240);';
 			return '';
 		});
 	}
