@@ -304,7 +304,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			</table>	
 			
 			<!-- モーダル(新しいグループ) -->
-			<div class="modal fade" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
@@ -323,7 +323,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			</div><!-- /.modal -->
 			
 			<!-- モーダル(名称変更) -->
-			<div class="modal fade" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal" id="RenameGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
