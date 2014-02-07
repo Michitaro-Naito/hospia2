@@ -8,7 +8,6 @@
 <script>
 // Get initial variables from server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-console.info(dat);
 
 function Dpc(root, data){
 	var s = this;
@@ -95,7 +94,6 @@ function AppModel(){
 	}
 	
 	s.search = function(){
-		console.info('search');
 		$.postJSON({
 			url: dat.getDpcsUrl,
 			data: {
@@ -103,7 +101,6 @@ function AppModel(){
 				fiscalYear: s.selectedFiscalYear().id
 			}
 		}).done(function(data){
-			console.info(data);
 			var dpcs = [];
 			for(var n=0; n<data.dpcs.length; n++){
 				var dpc = data.dpcs[n];

@@ -70,7 +70,6 @@ function AppModel(){
 				mdcId: newValue.id
 			}
 		}).done(function(data){
-			console.info(data);
 			s.dpcs([]);
 			for(var n=0; n<data.dpcs.length; n++){
 				s.dpcs.push(new Dpc(data.dpcs[n]));
@@ -125,7 +124,6 @@ function AppModel(){
 				prefectureId: s.selectedPrefecture().id
 			}
 		}).done(function(data){
-			//console.info(data);
 			s.currentDpc(s.selectedDpc());
 			s.wounds([]);
 			for(var n=0; n<data.wounds.length; n++){

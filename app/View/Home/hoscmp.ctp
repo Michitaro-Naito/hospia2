@@ -9,7 +9,6 @@
 (function(){
 
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-console.info(dat);
 
 function Hospital(root, data){
 	var s = this;
@@ -123,12 +122,10 @@ function AppModel(){
 			mdcId: s.selectedMdc().id,
 			clst: s.selectedDisplayTypeForHoscmp().id
 		};
-		console.info(sendData);
 		$.postJSON({
 			url: dat.searchUrl,
 			data: sendData
 		}).done(function(data){
-			console.info(data);
 			s.currentComparisonCategory(s.selectedComparisonCategory());
 			//s.hospitals(data.hospitals);
 			s.hospitals([]);

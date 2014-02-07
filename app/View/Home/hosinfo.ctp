@@ -10,7 +10,6 @@
 (function(){
 // Gets Data from Server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-console.info(dat);
 
 // Google Maps v3
 var map;

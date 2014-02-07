@@ -9,7 +9,6 @@
 <script>
 // Get initial variables from server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-console.info(dat);
 
 function AppModel(){
 	var s = this;

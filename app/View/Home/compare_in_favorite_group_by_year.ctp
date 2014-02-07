@@ -3,7 +3,6 @@
 <?php echo $this->Html->script('amcharts/serial'); ?>
 <script>
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-//console.info(dat);
 
 function AppModel(){
 	var s = this;

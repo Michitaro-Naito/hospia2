@@ -3,7 +3,6 @@
 <?php echo $this->Html->script('amcharts/xy'); ?>
 <script>
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
-//console.info(dat);
 
 function AppModel(){
 	var s = this;
@@ -68,7 +67,6 @@ function AppModel(){
 				break;
 			}
 		}
-		//console.info(dataOfYear);
 		if(typeof dataOfYear === 'undefined'){
 			return;
 		}
@@ -93,7 +91,6 @@ function AppModel(){
 				row.value = 1;
 			else
 				row.value = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
-			//console.info(row);
 			chartData.push(row);
 		}
 		
