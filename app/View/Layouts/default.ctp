@@ -8,6 +8,8 @@
     <meta name="author" content="">
     <meta property="og:image" content="<?php echo Router::url('/img/logo.png', true); ?>" />
     <meta property="og:image:type" content="image/png">
+		<meta property="og:image:width" content="230" />
+		<meta property="og:image:height" content="56" />
 
     <title>
     	<?php
@@ -62,7 +64,7 @@
           </button>
           <?php //echo $this->Html->link('病院情報局', '/', array('class'=>'navbar-brand')); ?>
           <div class="navbar-brand">
-          	<?php echo $this->Html->link($this->Html->image('logo.png'), '/', array('escape'=>false)); ?>
+          	<?php echo $this->Html->link($this->Html->image('logo_original.png'), '/', array('escape'=>false)); ?>
           </div>
         </div>
         <div class="collapse navbar-collapse">
@@ -136,7 +138,7 @@
 		      	echo $this->Html->link('ご利用ガイド', '/wp/gu/'); 
 		      	echo $this->Html->link('サイトポリシー', '/wp/policy/'); 
 		      	echo $this->Html->link('運営会社', '/wp/company/'); 
-		      	echo $this->Html->link('サイトマップ', '/sitemap.xml'); 
+		      	echo $this->Html->link('サイトマップ', '/Sitemap'); 
 		      	echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); 
 		      	echo $this->Html->link('広告掲載', '/wp/ad/'); 
 		      	echo $this->Html->link('お問い合わせ', '/wp/inquiry/');

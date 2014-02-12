@@ -19,7 +19,7 @@
 <div id="innerbox">
 <div class="pagebox">
 
-<h2>サイトポリシー</h2>
+<h2 class="posttitle">サイトポリシー</h2>
 
 <?php echo $firstPost['content']; ?>
 
