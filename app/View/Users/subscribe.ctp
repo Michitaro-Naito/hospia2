@@ -93,3 +93,5 @@ function purchase(){
 		</table>
 	</div>
 </div>
+
+<?php echo $this->element('favorite'); ?>
