@@ -6,8 +6,8 @@ class Post extends AppModel{
 	public $validate = array(
 		'title'=>array(
 			'between'=>array(
-				'rule'=>array('between', 1, 20),
-				'message' => 'Between 5 to 20 characters',
+				'rule'=>array('between', 1, 100),
+				'message' => '1から100文字で入力して下さい。',
 			)
 		)
 	);
