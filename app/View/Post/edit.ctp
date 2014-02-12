@@ -45,11 +45,13 @@ $(document).ready(function(){
 		'content',
 		'category',
 		'status',
+		'created' => array('type'=>'text'),
+		'modified' => array('type'=>'text')
 	));
-	if(!empty($this->data['Post']['created']))
+	/*if(!empty($this->data['Post']['created']))
 		echo $this->Form->input('created', array('type'=>'text', 'disabled'=>'disabled'));
 	if(!empty($this->data['Post']['modified']))
-		echo $this->Form->input('modified', array('type'=>'text', 'disabled'=>'disabled'));
+		echo $this->Form->input('modified', array('type'=>'text', 'disabled'=>'disabled'));*/
 ?>
 <button type="button" id="uploader">ファイルアップロード</button>
 <?php
