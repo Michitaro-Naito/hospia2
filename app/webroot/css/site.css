@@ -75,7 +75,7 @@ blockquote p{
 .ar{
 	text-align: right;
 }
-span.muted{
+.muted{
 	color: #777;
 }
 .row {

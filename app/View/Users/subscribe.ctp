@@ -91,6 +91,7 @@ function purchase(){
 				</tr>
 			</tbody>
 		</table>
+		<p class="muted">Androidをお使いの場合はバージョン4以上をご利用ください。</p>
 	</div>
 </div>
 
