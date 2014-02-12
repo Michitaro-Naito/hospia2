@@ -7,6 +7,7 @@
 ?>
 <?php $this->start('script'); ?>
 <script>
+try{
 // Get initial variables from server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
 
@@ -46,6 +47,9 @@ function AppModel(){
 
 var model = new AppModel();
 ko.applyBindings(model, document.getElementById('IndexSearch'));
+}catch(e){
+	alert(e);
+}
 </script>
 <?php $this->end(); ?>
 

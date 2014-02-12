@@ -1,6 +1,7 @@
 <?php $this->assign('title', '病院検索'); ?>
 <?php $this->start('script'); ?>
 <script>
+try{
 // Get initial variables from server
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
 var getZonesUrl = '<?php echo Router::url('/ajax/getZones.json'); ?>';
@@ -195,6 +196,9 @@ var model = new AppModel();
 ko.applyBindings(model);
 
 if(model.selectedPrefecture().id == null) model.getHospitals();
+}catch(e){
+	alert(e);
+}
 </script>
 <?php $this->end(); ?>
 
