@@ -79,3 +79,10 @@ create table tip(
 ) comment 'ユーザーへ表示する短い説明文';
 
 alter table viewcnt add favorite_count int(11) not null default 0;
+
+alter table users drop displayname;
+alter table users add sei varchar(6) not null comment '姓' default '';
+alter table users add mei varchar(6) not null comment '名' default '';
+alter table users add sei_kana varchar(12) not null comment 'せい' default '';
+alter table users add mei_kana varchar(12) not null comment 'めい' default '';
+alter table users add job varchar(30) not null comment '職業(選択)' default '';
