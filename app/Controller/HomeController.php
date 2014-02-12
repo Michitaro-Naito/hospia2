@@ -245,6 +245,51 @@ class HomeController extends AppController {
 		));
 	}
 	
+	public function Sitemap($page = null){
+		if($page===null)
+			$page = 1;
+		
+		// Gets Posts
+		$this->loadModel('Post');
+		$this->paginate = array(
+			'fields'=>array(
+				'id', 'created', 'post_id', 'status', 'category', 'title'
+			),
+			'conditions'=>array(
+				'status' => 'publish'
+			),
+			'order'=>array(
+				'category' => 'asc',
+				//'created' => 'desc',
+				//'post_id' => 'desc'
+			),
+			'limit' => 100,
+			'page' => $page
+		);
+		$posts = $this->paginate('Post');
+		
+		// Groups Posts
+		$categories = array(
+			'info' => 'お知らせ',
+			//'poll' => 'クイックアンケート',
+			'ranking' => '各種ランキング',
+			'topics' => '情報活用の視点',
+			'month' => '特集',
+			'news' => '病院ニュース',
+			'list' => '病院リスト'
+		);
+		$groups = array();
+		foreach($categories as $ckey => $cval){
+			$groups[$ckey] = array();
+			foreach($posts as $p){
+				if($p['Post']['category']===$ckey)
+					array_push($groups[$ckey], $p);
+			}
+		}
+		$this->set('groups', $groups);
+		$this->set('posts', $posts);
+	}
+	
 	/**
 	 * Gets additional information for registered User.
 	 */
