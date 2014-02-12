@@ -13,7 +13,8 @@
 		'new_password'=>array('type'=>'text'),
 		'role',
 		'email',
-		'displayname',
+		//'displayname',
+		'sei', 'mei', 'sei_kana', 'mei_kana', 'job',
 		'active'
 	));
 	if(!empty($this->data['User']['created']))
