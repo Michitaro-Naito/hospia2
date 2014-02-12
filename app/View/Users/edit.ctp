@@ -14,7 +14,8 @@
 		'role',
 		'email',
 		//'displayname',
-		'sei', 'mei', 'sei_kana', 'mei_kana', 'job',
+		'sei', 'mei', 'sei_kana', 'mei_kana',
+		'job' => array('options'=>Configure::read('jobs'), 'empty'=>'選択して下さい'),
 		'active'
 	));
 	if(!empty($this->data['User']['created']))

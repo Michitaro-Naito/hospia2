@@ -4,7 +4,9 @@ class User extends AppModel {
 	
 	//Act as Soft Deletable...
 	public $actsAs = array('CakeSoftDelete.SoftDeletable');
-	
+	public $virtualFields = array(
+		'displayname' => 'CONCAT(User.sei, " ", User.mei, " ", User.sei_kana, " ", User.mei_kana)'
+	);
     public $validate = array(
         'username' => array(
             'required' => array(
@@ -44,6 +46,13 @@ class User extends AppModel {
             	'message' => '半角英数字で6文字以上入力して下さい。'
 						)
         ),
+        'new_password' => array(
+            'alphaNumeric4' => array(
+            	'rule' => '/^[a-zA-Z0-9]{6,}$/i',
+            	'message' => '半角英数字で6文字以上入力して下さい。',
+            	'allowEmpty' => true
+						)
+        ),
         'email' => array(
             'required' => array(
                 'rule' => array('notEmpty'),
@@ -79,13 +88,13 @@ class User extends AppModel {
 				),
         'sei_kana' => array(
         	'between' => array(
-            'rule' => '/^[あ-ん]{1,12}$/i',
+            'rule' => '/^[あ-ん]{1,12}$/u',
         		'message' => '12文字以内のひらがなで入力して下さい。'
 					)
 				),
         'mei_kana' => array(
         	'between' => array(
-            'rule' => '/^[あ-ん]{1,12}$/i',
+            'rule' => '/^[あ-ん]{1,12}$/u',
         		'message' => '12文字以内のひらがなで入力して下さい。'
 					)
 				),

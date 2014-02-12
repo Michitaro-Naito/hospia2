@@ -86,3 +86,16 @@ alter table users add mei varchar(6) not null comment '名' default '';
 alter table users add sei_kana varchar(12) not null comment 'せい' default '';
 alter table users add mei_kana varchar(12) not null comment 'めい' default '';
 alter table users add job varchar(30) not null comment '職業(選択)' default '';
+
+create table email_change(
+  id int primary key auto_increment,
+  user_id int not null comment 'ユーザーID',
+  new_email varchar(255) not null comment '新しいメールアドレス',
+  hash varchar(255) not null comment '確認用MD5ハッシュ'
+) comment 'メールアドレス変更手続きの状態';
+
+create table password_reset(
+  id int primary key auto_increment,
+  user_id int not null comment 'ユーザーID',
+  hash varchar(255) not null comment '確認用MD5ハッシュ'
+) comment 'パスワード再設定手続きの状態';

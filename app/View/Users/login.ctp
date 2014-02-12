@@ -21,5 +21,7 @@
 	</div>
 <?php echo $this->Form->end(); ?>
 <span>アカウントがありませんか？</span>
-<?php echo $this->Html->link('こちらから登録できます。<span class="glyphicon glyphicon-pencil"></span>', array('controller' => 'users', 'action' => 'add'), array('escape'=>false)); ?>
+<?php echo $this->Html->link('こちらから登録できます。<span class="glyphicon glyphicon-pencil"></span>', array('controller' => 'users', 'action' => 'add'), array('escape'=>false)); ?><br/>
+<span>パスワードをお忘れですか？</span>
+<?php echo $this->Html->link('こちらから再設定できます。', array('controller'=>'Users', 'action'=>'ResetPassword')); ?>
 </div>

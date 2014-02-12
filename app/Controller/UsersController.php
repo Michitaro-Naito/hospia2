@@ -134,6 +134,151 @@ class UsersController extends AppController {
 				$this->redirect('/');
 		}
 		
+		public function EditMe(){
+			$id = $this->Auth->user('id');
+			if(empty($this->request->data)){
+				$this->request->data = $this->User->findById($id);
+			}else{
+				if ($this->request->is('post') || $this->request->is('put')){
+					// Try to save
+					if(!empty($this->request->data['User']['new_password'])){
+						$this->request->data['User']['password'] = $this->request->data['User']['new_password'];
+					}
+					$this->User->id = $id;
+					if($this->User->save($this->request->data, true, array('password', 'new_password', 'sei', 'mei', 'sei_kana', 'mei_kana', 'job'))){
+						return $this->redirect(array('controller'=>'Users', 'action'=>'Subscribe'));
+					}
+				}
+			}
+		}
+		
+		public function EditEmail(){
+			$id = $this->Auth->user('id');
+			$this->User->id = $id;
+			$user = $this->User->read();
+			if(!empty($this->request->data)){
+				$this->loadModel('EditEmailVM');
+				$this->EditEmailVM->create($this->request->data);
+				if($this->EditEmailVM->validates()){
+					$this->loadModel('EmailChange');
+					// Valid email. Goes to Email Authentication.
+					$dat = array('EmailChange'=>array(
+						'user_id' => $user['User']['id'],
+						'new_email' => $this->request->data['EditEmailVM']['new_email'],
+						'hash' => Security::hash($user['User']['id'].'-'.$this->request->data['EditEmailVM']['new_email'])
+					));
+					if($this->EmailChange->save($dat)){
+          	$email = new CakeEmail('smtp');
+          	$email->to($this->request->data['EditEmailVM']['new_email']);
+          	$email->subject('病院情報局メールアドレス変更確認メール');
+						$url = Router::url('/Users/EditEmailConfirm/'.$dat['EmailChange']['hash'], true);
+          	$email->send("病院情報局でお使いのメールアドレスを {$user['User']['email']} から {$this->request->data['EditEmailVM']['new_email']} に変更するには以下のURLをクリックして下さい。\r\n{$url}");
+						$this->flash($this->request->data['EditEmailVM']['new_email'].'に確認メールを送信しました。', '/Users/Subscribe');
+					}else{
+						$this->flash('エラーによりメール変更手続きを開始できませんでした。', '/Users/Subscribe');
+					}
+				}
+			}
+			$this->set('user', $user);
+		}
+
+		public function EditEmailConfirm($hash = null){
+			// Is hash valid?
+			$this->loadModel('EmailChange');
+			$row = $this->EmailChange->find('first', array(
+				'conditions'=>array(
+					'EmailChange.hash' => $hash
+				)
+			));
+			if(empty($row))
+				// Invalid
+				throw new Exception("無効な確認URLです。誤ったURLにアクセスしたか、確認済みである可能性があります。");
+			
+			// Valid. Change email and delete row.
+			$this->User->id = $row['EmailChange']['user_id'];
+			$this->User->read();
+			$this->User->data['User']['email'] = $row['EmailChange']['new_email'];
+			if(!$this->User->save())
+				throw new Exception("不明なエラーにより会員情報の更新に失敗しました。");
+			$this->EmailChange->delete($row['EmailChange']['id']);
+			
+			$this->flash('お使いのメールアドレスを変更しました。', '/Users/Subscribe');
+		}
+		
+		/**
+		 * パスワード再設定
+		 */
+		public function ResetPassword(){
+			if(!empty($this->request->data)){
+				if(
+					empty($this->request->data['ResetPasswordVM']['email'])
+					|| empty($this->request->data['ResetPasswordVM']['sei'])
+					|| empty($this->request->data['ResetPasswordVM']['mei'])
+				){
+					$this->Session->setFlash('空欄にはできません。');
+					return;
+				}
+				
+				$user = $this->User->find('first', array(
+					'conditions'=>array(
+						'User.email' => $this->request->data['ResetPasswordVM']['email'],
+						'User.sei' => $this->request->data['ResetPasswordVM']['sei'],
+						'User.mei' => $this->request->data['ResetPasswordVM']['mei']
+					)
+				));
+				if(empty($user)){
+					$this->Session->setFlash('該当する会員情報がありません。');
+					return;
+				}
+				
+				// Valid user. Goes to Email Authentication...
+				$this->loadModel('PasswordReset');
+				$dat = array('PasswordReset'=>array(
+					'user_id'=>$user['User']['id'],
+					'hash'=>Security::hash($user['User']['id'] . '-' . time())
+				));
+				if($this->PasswordReset->save($dat)){
+        	$email = new CakeEmail('smtp');
+        	$email->to($user['User']['email']);
+        	$email->subject('病院情報局パスワード再設定確認メール');
+					$url = Router::url('/Users/ResetPasswordConfirm/'.$dat['PasswordReset']['hash'], true);
+        	$email->send("病院情報局でお使いのパスワードを再設定するには以下のURLをクリックして下さい。\r\n{$url}");
+					$this->flash('パスワード再設定用のURLを送信しました。メールボックスをご確認ください。', '/');
+				}else{
+					$this->flash('エラーによりパスワード変更手続きを開始できませんでした。', '/');
+				}
+			}
+		}
+		public function ResetPasswordConfirm($hash = null){
+			// Is hash valid?
+			$this->loadModel('PasswordReset');
+			$row = $this->PasswordReset->find('first', array(
+				'conditions'=>array(
+					'PasswordReset.hash' => $hash
+				)
+			));
+			if(empty($row))
+				// Invalid
+				throw new Exception("無効な確認URLです。誤ったURLにアクセスしたか、確認済みである可能性があります。");
+			
+			// Valid. Change password and delete row.
+			$password = $this->randomPassword();
+			$this->User->id = $row['PasswordReset']['user_id'];
+			$user = $this->User->read();
+			$this->User->data['User']['password'] = $password;
+			if(!$this->User->save())
+				throw new Exception("不明なエラーにより会員情報の更新に失敗しました。");
+			
+			// Notify by email
+    	$email = new CakeEmail('smtp');
+    	$email->to($user['User']['email']);
+    	$email->subject('病院情報局パスワード再設定のお知らせ');
+    	$email->send("病院情報局をご利用いただきありがとうございます。\r\n再設定されたアカウント情報を以下の通りお知らせいたします。\r\nID: {$user['User']['username']}\r\n再設定されたパスワード: {$password}");
+			$this->PasswordReset->delete($row['PasswordReset']['id']);
+			
+			$this->flash('再設定されたパスワードをメールで送信しました。', '/');
+		}
+		
 		/**
 		 * User can begin to subscribe (pay monthly) to access advanced features.
 		 * User also can see active subscriptions here.
@@ -155,7 +300,7 @@ class UsersController extends AppController {
 			$user = $this->User->read();
 			
 			// Get JWT (User uses it to begin to subscribe)
-			$jwt = $this->JWTData->GeneratePremiumSubscriptionJWT(intval($user['User']['id']), $user['User']['username'], $user['User']['displayname'], $user['User']['email']);
+			$jwt = $this->JWTData->GeneratePremiumSubscriptionJWT(intval($user['User']['id']), $user['User']['username'], $this->User->getVirtualField('displayname'), $user['User']['email']);
 			
 			// Pass data to View
 			$this->set('dat', array(
@@ -177,4 +322,15 @@ class UsersController extends AppController {
     		}
     		$this->Ticket->del($hash);	
 		} 
+		
+		function randomPassword() {
+	    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+	    $pass = array(); //remember to declare $pass as an array
+	    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+	    for ($i = 0; $i < 12; $i++) {
+	        $n = rand(0, $alphaLength);
+	        $pass[] = $alphabet[$n];
+	    }
+	    return implode($pass); //turn the array into a string
+	}
 }
