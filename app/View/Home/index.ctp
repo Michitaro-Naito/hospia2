@@ -25,9 +25,10 @@ function AppModel(){
 	// 選択された都道府県に合わせて医療圏を再読み込み
 	s.selectedPrefecture.subscribe(function(newValue){
 		try{
-		if(!newValue)
-			return;
-		if(newValue.id !== null){
+			if(!newValue)
+				return;
+			if(!newValue.id)
+				return;
 			$.postJSON({
 				url: dat.getZonesUrl,
 				data: {
@@ -36,7 +37,6 @@ function AppModel(){
 			}).done(function(data){
 				s.zones(data.zones);
 			});
-		}
 		}catch(e){
 			alert(e);
 		}

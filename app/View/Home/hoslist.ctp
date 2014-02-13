@@ -92,31 +92,33 @@ function AppModel(){
 	
 	// 選択された都道府県に合わせて医療圏を再読み込み
 	s.selectedPrefecture.subscribe(function(newValue){
-		if(newValue.id !== null){
-			$.ajax({
-				cache: false,
-				type: 'POST',
-				dataType: 'JSON',
-				url: getZonesUrl,
-				data: {
-					prefectureId: newValue.id
-				}
-			}).done(function(data){
-				s.zones(data.zones);
-				// GETパラメータでzoneIdが指定されている場合は、初期値として選択する。（選択中の都道府県に該当する医療圏が存在する場合のみ）
-				// また、病院一覧が未取得の場合は取得する。
-				if(!s.initialized()){
-					for(var n=0; n<s.zones().length; n++){
-						var z = s.zones()[n];
-						if(z.id == s.default.zoneId){
-							s.selectedZone(z);
-							break;
-						}
+		if(!newValue)
+			return;
+		if(!newValue.id)
+			return;
+		$.ajax({
+			cache: false,
+			type: 'POST',
+			dataType: 'JSON',
+			url: getZonesUrl,
+			data: {
+				prefectureId: newValue.id
+			}
+		}).done(function(data){
+			s.zones(data.zones);
+			// GETパラメータでzoneIdが指定されている場合は、初期値として選択する。（選択中の都道府県に該当する医療圏が存在する場合のみ）
+			// また、病院一覧が未取得の場合は取得する。
+			if(!s.initialized()){
+				for(var n=0; n<s.zones().length; n++){
+					var z = s.zones()[n];
+					if(z.id == s.default.zoneId){
+						s.selectedZone(z);
+						break;
 					}
-					s.getHospitals();
 				}
-			});
-		}
+				s.getHospitals();
+			}
+		});
 	});
 	
 	// 選択された表示切り替えに合わせて項目を変更
