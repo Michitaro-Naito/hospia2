@@ -249,6 +249,19 @@ class HomeController extends AppController {
 		if($page===null)
 			$page = 1;
 		
+		// Black List
+		$blacklist = array(
+			'病院ニュース',
+			'サイドナビ',
+			'ご利用ガイド（目次）',
+			'運営会社',
+			'サイトマップ',
+			'広告の募集について',
+			'お問い合わせ',
+			'投稿の募集について',
+			'サイドナビゲーションスペース(ワードプレスページ内)'
+		);
+		
 		// Gets Posts
 		$this->loadModel('Post');
 		$this->paginate = array(
@@ -256,7 +269,8 @@ class HomeController extends AppController {
 				'id', 'created', 'post_id', 'status', 'category', 'title'
 			),
 			'conditions'=>array(
-				'status' => 'publish'
+				'status' => 'publish',
+				'category !=' => 'news'
 			),
 			'order'=>array(
 				'category' => 'asc',

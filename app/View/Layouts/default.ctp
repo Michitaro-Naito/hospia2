@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <meta property="og:image" content="<?php echo Router::url('/img/logo.png', true); ?>" />
+    <meta property="og:image" content="<?php echo Router::url('/img/logo_fb.png', true); ?>" />
     <meta property="og:image:type" content="image/png">
-		<meta property="og:image:width" content="230" />
-		<meta property="og:image:height" content="56" />
+		<meta property="og:image:width" content="270" />
+		<meta property="og:image:height" content="270" />
 
     <title>
     	<?php
