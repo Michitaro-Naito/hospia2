@@ -131,7 +131,9 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 						<?php
 							$utcDate = new DateTime($p['Post']['created'], new DateTimeZone('UTC'));
 							$utcDate->setTimezone(new DateTimeZone('Asia/Tokyo'));
+							$cats = Configure::read('categoryDisp');
 						?>
+						<span>【<?php echo h($cats[$p['Post']['category']]); ?>】</span>
 						<span><?php echo h($p['Post']['title']); ?></span>
 						<?php $element = ob_get_clean(); ?>
 						<li>
