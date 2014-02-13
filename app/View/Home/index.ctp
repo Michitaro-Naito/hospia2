@@ -7,6 +7,7 @@
 ?>
 <?php $this->start('script'); ?>
 <script>
+(function(){
 try{
 // Get initial variables from server
 var dat = JSON.parse('<?php echo json_encode($dat); ?>');
@@ -23,6 +24,9 @@ function AppModel(){
 	
 	// 選択された都道府県に合わせて医療圏を再読み込み
 	s.selectedPrefecture.subscribe(function(newValue){
+		try{
+		if(!newValue)
+			return;
 		if(newValue.id !== null){
 			$.postJSON({
 				url: dat.getZonesUrl,
@@ -33,15 +37,22 @@ function AppModel(){
 				s.zones(data.zones);
 			});
 		}
+		}catch(e){
+			alert(e);
+		}
 	});
 	
 	// hoslstへページ移動する。その際、選択された都道府県・医療圏・病院名を渡す。
-	s.GotoHoslst = function(){
+	s.gotoHoslst = function(){
+		try{
 		var uri = new Uri(dat.hoslistUrl);
 		uri.replaceQueryParam('prefectureId', s.selectedPrefecture().id);
 		if(s.selectedZone()) uri.replaceQueryParam('zoneId', s.selectedZone().id);
 		uri.replaceQueryParam('hospitalName', s.hospitalName());
 		window.location.href = uri.toString();
+		}catch(e){
+			alert(e);
+		}
 	}
 }
 
@@ -50,6 +61,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 }catch(e){
 	alert(e);
 }
+})();
 </script>
 <?php $this->end(); ?>
 
@@ -82,7 +94,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 					</tr>
 					<tr>
 						<td colspan="2">
-							<button type="button" class="search" data-bind="click: GotoHoslst">
+							<button type="button" class="search" data-bind="click: gotoHoslst">
 								<?php echo $this->Html->image('icon/search.png', array('style'=>'padding-bottom:3px;')); ?>
 								検索
 							</button>
