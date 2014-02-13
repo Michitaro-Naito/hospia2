@@ -10,18 +10,19 @@ tinymce.init({
     "insertdatetime media nonbreaking save table contextmenu directionality",
     "emoticons template paste textcolor"
 	],
+	convert_urls: false,
   toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
   toolbar2: "print preview media | forecolor backcolor emoticons",
 	autosave_ask_before_unload: false
 });
 
 function InsertLink(link){
-	tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<a href="<?php echo Router::url('/files'); ?>/'+link+'">'+link+'</a>');
+	tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<a href="<?php echo Router::url('/files', true); ?>/'+link+'">'+link+'</a>');
 	alert('リンクが挿入されました。');
 }
 
 function InsertImage(link){
-	tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<img src="<?php echo Router::url('/files'); ?>/'+link+'"/>');
+	tinyMCE.activeEditor.execCommand('mceInsertContent', false, '<img src="<?php echo Router::url('/files', true); ?>/'+link+'"/>');
 	alert('画像が挿入されました。');
 }
 

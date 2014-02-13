@@ -17,6 +17,7 @@ function AppModel(){
 	s.selectedDisplayType = ko.observable();	// 選択された表示方法
 	
 	s.chartData = ko.observableArray();
+	s.chart = ko.observable();
 	
 	s.selectedMdc.subscribe(function(){
 		// MDCが再選択されたため、データをAJAXでダウンロードする。
@@ -41,6 +42,16 @@ function AppModel(){
 	}
 	
 	s.DrawChart = function(){
+		// Remember current settings
+		var currentChart = s.chart();
+		if(currentChart){
+			for(var n=0; n<currentChart.graphs.length && n<s.group.Hospital.length; n++){
+				var g = currentChart.graphs[n];
+				var h = s.group.Hospital[n];
+				h.hidden = g.hidden;
+			}
+		}
+		
 	  // SERIAL CHART
 	  var chart = new AmCharts.AmSerialChart();
 	  chart.dataProvider = s.chartData();	//dat.chartData;	//chartData;
@@ -77,6 +88,7 @@ function AppModel(){
 			var graph = new AmCharts.AmGraph();
 		  graph.title = h.alias;//.name;
 		  graph.valueField = h.wam_id + '.' + s.selectedDisplayType().id;
+		  graph.hidden = h.hidden;
 		  graph.balloonText = h.alias + " [[category]]: [[value]]";
 		  graph.lineAlpha = 1;
 		  graph.bullet = "round";
@@ -97,6 +109,8 @@ function AppModel(){
 	  
 	  // WRITE
 	  chart.write("chartdiv");
+	  
+	  s.chart(chart);
 	}
 }
 

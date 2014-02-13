@@ -379,6 +379,9 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			<p data-bind="visible: !isPremium">
 				<?php echo $this->Html->link('毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
 			</p>
+			
+			<!-- ヘルプ -->
+			<p class="muted">各病院の詳細ページからお気に入りへ登録できます。</p>
 			<?php endif; ?>
 			
 		</div>

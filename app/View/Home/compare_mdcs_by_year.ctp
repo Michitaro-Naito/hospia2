@@ -1,3 +1,9 @@
+<?php
+	$title = '診療実績';
+	if(!empty($dat['hospital']['Hospital']['name']))
+		$title = $dat['hospital']['Hospital']['name'];
+	$this->assign('title', $title);
+?>
 <?php $this->start('script'); ?>
 <?php echo $this->Html->script('amcharts/amcharts'); ?>
 <?php echo $this->Html->script('amcharts/serial'); ?>
@@ -20,7 +26,6 @@ function AppModel(){
 	s.DrawChart = function(){
 		// Remember current settings
 		var currentChart = s.chart();
-		var hiddenFlags = []
 		if(currentChart){
 			for(var n=0; n<currentChart.graphs.length && n<s.mdcs().length; n++){
 				var g = currentChart.graphs[n];
