@@ -55,8 +55,23 @@ class UsersController extends AppController {
             	//**Email Logic (This can be templated, just using simple solution for now)
             	$email = new CakeEmail('smtp');
             	$email->to($user_email);
-            	$email->subject('病院情報局登録確認メール');
-            	$email->send("病院情報局へご登録いただきありがとうございます。\r\n以下のリンクをクリックして登録を完了して下さい。\r\n" . $link . "\r\n\r\nこのメールにお心当たりがない場合は、どなたかが誤って貴方のメールアドレスを誤って入力してしまったと思われますので廃棄していただけますようよろしくお願いいたします。また、このメールは自動で送信されておりますので、ご返信いただいてもお返事申し上げる事ができません。何卒ご了承ください。 - 病院情報局 http://hospia.jp/");
+							$email->subject('［病院情報局］ユーザー登録の確認');
+							$body = 
+"病院情報局へのユーザー登録を受け付けました。
+
+以下のリンクをクリックして登録を完了して下さい。
+{$link}
+
+このメッセージに心当たりがない場合は、どなたかが貴方のメールアドレスを誤って入力したと思われますので、このメールを削除していただきますようお願いいたします。
+
+******************************
+病院情報局 http://hospia.jp/
+
+※このメールは自動で送信されておりますので、このメールには返信しないようお願いいたします。";
+							$body = str_replace("\n", "\r\n", $body);
+							$email->send($body);
+            	//$email->subject('病院情報局登録確認メール');
+            	//$email->send("病院情報局へご登録いただきありがとうございます。\r\n以下のリンクをクリックして登録を完了して下さい。\r\n" . $link . "\r\n\r\nこのメールにお心当たりがない場合は、どなたかが誤って貴方のメールアドレスを誤って入力してしまったと思われますので廃棄していただけますようよろしくお願いいたします。また、このメールは自動で送信されておりますので、ご返信いただいてもお返事申し上げる事ができません。何卒ご了承ください。 - 病院情報局 http://hospia.jp/");
             	//**Email Logic** End
             	//**Ticket Logic** End
             	
@@ -170,9 +185,24 @@ class UsersController extends AppController {
 					if($this->EmailChange->save($dat)){
           	$email = new CakeEmail('smtp');
           	$email->to($this->request->data['EditEmailVM']['new_email']);
-          	$email->subject('病院情報局メールアドレス変更確認メール');
+          	//$email->subject('病院情報局メールアドレス変更確認メール');
 						$url = Router::url('/Users/EditEmailConfirm/'.$dat['EmailChange']['hash'], true);
-          	$email->send("病院情報局でお使いのメールアドレスを {$user['User']['email']} から {$this->request->data['EditEmailVM']['new_email']} に変更するには以下のURLをクリックして下さい。\r\n{$url}");
+						$email->subject('［病院情報局］メールアドレス変更の確認');
+							$body = 
+"病院情報局へのメールアドレス変更申請を受け付けました。
+
+メールアドレスを {$user['User']['email']} から {$this->request->data['EditEmailVM']['new_email']} に変更するには、以下のURLをクリックして下さい。
+{$url}
+
+このメッセージに心当たりがない場合は、どなたかが貴方のメールアドレスを誤って入力したと思われますので、このメールを削除していただきますようお願いいたします。
+
+******************************
+病院情報局 http://hospia.jp/
+
+※このメールは自動で送信されておりますので、このメールには返信しないようお願いいたします。";
+							$body = str_replace("\n", "\r\n", $body);
+							$email->send($body);
+          	//$email->send("病院情報局でお使いのメールアドレスを {$user['User']['email']} から {$this->request->data['EditEmailVM']['new_email']} に変更するには以下のURLをクリックして下さい。\r\n{$url}");
 						$this->flash($this->request->data['EditEmailVM']['new_email'].'に確認メールを送信しました。', '/Users/Subscribe');
 					}else{
 						$this->flash('エラーによりメール変更手続きを開始できませんでした。', '/Users/Subscribe');
@@ -240,9 +270,25 @@ class UsersController extends AppController {
 				if($this->PasswordReset->save($dat)){
         	$email = new CakeEmail('smtp');
         	$email->to($user['User']['email']);
-        	$email->subject('病院情報局パスワード再設定確認メール');
+        	//$email->subject('病院情報局パスワード再設定確認メール');
 					$url = Router::url('/Users/ResetPasswordConfirm/'.$dat['PasswordReset']['hash'], true);
-        	$email->send("病院情報局でお使いのパスワードを再設定するには以下のURLをクリックして下さい。\r\n{$url}");
+        	//$email->send("病院情報局でお使いのパスワードを再設定するには以下のURLをクリックして下さい。\r\n{$url}");
+        	
+					$email->subject('［病院情報局］パスワード再設定の確認');
+					$body = 
+"病院情報局でお使いのパスワード再設定の申請を受け付けました。
+
+パスワード再設定するには、以下のURLをクリックして下さい。
+{$url}
+
+このメッセージに心当たりがない場合は、どなたかが貴方のメールアドレスを誤って入力したと思われますので、このメールを削除していただきますようお願いいたします。
+
+******************************
+病院情報局 http://hospia.jp/
+
+※このメールは自動で送信されておりますので、このメールには返信しないようお願いいたします。";
+					$body = str_replace("\n", "\r\n", $body);
+					$email->send($body);
 					$this->flash('パスワード再設定用のURLを送信しました。メールボックスをご確認ください。', '/');
 				}else{
 					$this->flash('エラーによりパスワード変更手続きを開始できませんでした。', '/');
@@ -272,8 +318,24 @@ class UsersController extends AppController {
 			// Notify by email
     	$email = new CakeEmail('smtp');
     	$email->to($user['User']['email']);
-    	$email->subject('病院情報局パスワード再設定のお知らせ');
-    	$email->send("病院情報局をご利用いただきありがとうございます。\r\n再設定されたアカウント情報を以下の通りお知らせいたします。\r\nID: {$user['User']['username']}\r\n再設定されたパスワード: {$password}");
+    	//$email->subject('病院情報局パスワード再設定のお知らせ');
+    	//$email->send("病院情報局をご利用いただきありがとうございます。\r\n再設定されたアカウント情報を以下の通りお知らせいたします。\r\nID: {$user['User']['username']}\r\n再設定されたパスワード: {$password}");
+    	$email->subject('［病院情報局］パスワードを変更しました');
+			$body = 
+"病院情報局のパスワードが変更されました。
+
+再設定されたアカウント情報を以下の通りお知らせいたします。
+ID: {$user['User']['username']}
+再設定されたパスワード: {$password}
+
+今後ともよろしくお願い申し上げます。
+
+******************************
+病院情報局 http://hospia.jp/
+
+※このメールは自動で送信されておりますので、このメールには返信しないようお願いいたします。";
+			$body = str_replace("\n", "\r\n", $body);
+			$email->send($body);
 			$this->PasswordReset->delete($row['PasswordReset']['id']);
 			
 			$this->flash('再設定されたパスワードをメールで送信しました。', '/');
