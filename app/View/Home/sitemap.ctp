@@ -18,10 +18,17 @@
 		);
 	?>
 	<ul class="basic">
+		<!-- 固定リンク -->
 		<?php foreach($links as $key => $value): ?>
 			<li><?php echo $this->Html->link($key, $value); ?></li>
 		<?php endforeach; ?>
 		
+		<!-- 疾患別ランキング -->
+		<?php foreach($maladyCategories as $key => $c): ?>
+			<li class="<?php if($c['id']>='m101'&&$c['id']<='m120') echo 'li2'; ?>"><?php echo $this->Html->link($c['name'], array('action'=>'Maladylist', 'controller'=>'Home', '?'=>array('mdata'=>$c['id']))); ?></li>
+		<?php endforeach; ?>
+		
+		<!-- 記事 -->
 		<?php
 			$categories = array(
 				'info' => 'お知らせ',

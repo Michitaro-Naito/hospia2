@@ -302,6 +302,7 @@ class HomeController extends AppController {
 		}
 		$this->set('groups', $groups);
 		$this->set('posts', $posts);
+		$this->set('maladyCategories', $this->Data->GetMaladyCategories());
 	}
 	
 	/**
