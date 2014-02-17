@@ -166,7 +166,7 @@
     	try{
     		$.initBalloons('<?php echo h(Router::url('/Tip/View')); ?>');
     	}catch(e){
-    		alert(e);
+    		alert(JSON.stringify(e));
     	}
     </script>
   </body>

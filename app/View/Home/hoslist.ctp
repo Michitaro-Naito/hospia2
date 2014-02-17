@@ -1,4 +1,5 @@
 <?php $this->assign('title', '病院検索'); ?>
+<?php echo $this->Html->script('hoslist'); ?>
 <?php $this->start('script'); ?>
 <script>
 try{
@@ -111,7 +112,7 @@ function AppModel(){
 			if(!s.initialized()){
 				for(var n=0; n<s.zones().length; n++){
 					var z = s.zones()[n];
-					if(z.id == s.default.zoneId){
+					if(z.id == s.def.zoneId){
 						s.selectedZone(z);
 						break;
 					}
@@ -180,18 +181,18 @@ function AppModel(){
 	
 	// GETパラメータに応じて初期値を設定する
 	var uri = new Uri(location.href);
-	s.default = {};
-	s.default.prefectureId = uri.getQueryParamValue('prefectureId');
-	s.default.zoneId = uri.getQueryParamValue('zoneId');
-	s.default.hospitalName = uri.getQueryParamValue('hospitalName');
+	s.def = {};
+	s.def.prefectureId = uri.getQueryParamValue('prefectureId');
+	s.def.zoneId = uri.getQueryParamValue('zoneId');
+	s.def.hospitalName = uri.getQueryParamValue('hospitalName');
 	for(var n=0; n<s.prefectures.length; n++){
 		var p = s.prefectures[n];
-		if(p.id == s.default.prefectureId){
+		if(p.id == s.def.prefectureId){
 			s.selectedPrefecture(p);
 			break;
 		}
 	}
-	if(s.default.hospitalName) s.hospitalName(decodeURI(s.default.hospitalName));
+	if(s.def.hospitalName) s.hospitalName(decodeURI(s.def.hospitalName));
 	
 }
 var model = new AppModel();
@@ -216,6 +217,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 			</h2>
 			<div class="content">
 				<table class="search">
+					<colgroup width="120"></colgroup>
 					<tr>
 						<td>都道府県</td>
 						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>

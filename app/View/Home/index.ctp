@@ -80,6 +80,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 			</h2>
 			<div class="content">
 				<table class="search">
+					<colgroup width="120"></colgroup>
 					<tr>
 						<td>都道府県</td>
 						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>

@@ -51,7 +51,7 @@ function addFigure(str) {
 				  backgroundColor: "#efefef",
 				  opacity: "0.85",
 				  zIndex: "32767",
-				  textAlign: "left",
+				  textAlign: "left"
 				}
 			});
 		});
