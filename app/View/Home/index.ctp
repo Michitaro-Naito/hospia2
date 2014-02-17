@@ -189,6 +189,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	  			</div>
   			</div>
   		</div>
+  		<div style="clear: both;"> </div>
 		</div>
 		
 		<!-- お気に入りグループ一覧 -->

@@ -8,7 +8,7 @@
 ?>
 <?php $this->append('script'); ?>
 <script>
-(function(){
+//(function(){
 // Get Data from Server
 var urls = {
 	getFavoriteGroups: '<?php echo h(Router::url('/FavoriteHospitals/GetFavoriteGroups.json')); ?>',
@@ -20,7 +20,7 @@ var urls = {
 	detail: '<?php echo h(Router::url('/hosdetail')); ?>',
 	compare: '<?php echo h(Router::url('/Compare')); ?>',
 	lineChart: '<?php echo h(Router::url('/LineChart')); ?>',
-	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>',
+	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>'
 };
 var wamId = null;
 <?php if(isset($wamId)): ?>
@@ -250,14 +250,15 @@ function AppModel(){
 
 var model = new AppModel();
 ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
-})();
+//})();
 </script>
 <?php $this->end(); ?>
 
 
 
 <!-- お気に入り管理(ログインしている場合) -->
-<div id="<?php echo h($uid); ?>">
+<div id="<?php echo h($uid); ?>" class="favorite">
+	<div data-bind="text: name"></div>
 	<?php if(empty($compact)): ?>
 	<div class="box">
 		<h2>

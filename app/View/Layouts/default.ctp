@@ -30,6 +30,10 @@
 			echo $this->fetch('meta');
 			echo $this->fetch('css');
     ?>
+    
+    <!--[if lt IE 8]>
+    	<?php echo $this->Html->css('ie7'); ?>
+    <![endif]-->
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>

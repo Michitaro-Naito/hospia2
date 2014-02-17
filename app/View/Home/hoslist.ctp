@@ -1,5 +1,4 @@
 <?php $this->assign('title', '病院検索'); ?>
-<?php echo $this->Html->script('hoslist'); ?>
 <?php $this->start('script'); ?>
 <script>
 try{
@@ -291,6 +290,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 			</thead>
 		</table>
 	</div>
+	<div style="clear: both;"> </div>
 </div>
 
 <!-- Data -->
@@ -330,6 +330,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 				</tr>
 			</table>
 		</div>
+		<div style="clear: both;"> </div>
 	</li>
 </ul>
 

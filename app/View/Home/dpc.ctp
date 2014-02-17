@@ -234,5 +234,6 @@ ko.applyBindings(model);
 				</tbody>
 			</table>
 		</div>
+		<div style="clear: both;"> </div>
 	</div>
 </div>

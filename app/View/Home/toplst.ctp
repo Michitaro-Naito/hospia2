@@ -179,6 +179,7 @@ model.setDefaultValues();
 			</tr>
 		</table>
 	</div>
+	<div style="clear: both;"> </div>
 </div>
 
 <!-- Data -->
@@ -209,5 +210,6 @@ model.setDefaultValues();
 				</tr>
 			</table>
 		</div>
+		<div style="clear: both;"> </div>
 	</li>
 </ul>
