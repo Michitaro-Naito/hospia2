@@ -153,6 +153,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <?php
+    	echo $this->Html->script('json2');
     	echo $this->Html->script('jquery-1.10.2.min');
     	echo $this->Html->script('bootstrap.min.js');
 			echo $this->Html->script('knockout-3.0.0');
@@ -162,7 +163,11 @@
 			echo $this->fetch('script');
     ?>
     <script>
-    	$.initBalloons('<?php echo h(Router::url('/Tip/View')); ?>');
+    	try{
+    		$.initBalloons('<?php echo h(Router::url('/Tip/View')); ?>');
+    	}catch(e){
+    		alert(e);
+    	}
     </script>
   </body>
 </html>
