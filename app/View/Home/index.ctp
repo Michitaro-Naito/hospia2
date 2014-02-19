@@ -119,43 +119,6 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 <div class="row" style="margin-top: 17px;">
 	<div class="col-sm-9">
 		
-		<!-- 新着情報 -->
-		<div class="box">
-			<h2>
-				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				新着情報
-			</h2>
-			<div class="content">
-				<ul class="news">
-					<?php foreach($recentPosts as $p): ?>
-						<?php ob_start(); ?>
-						<?php
-							$utcDate = new DateTime($p['Post']['created'], new DateTimeZone('UTC'));
-							$utcDate->setTimezone(new DateTimeZone('Asia/Tokyo'));
-							$cats = Configure::read('categoryDisp');
-						?>
-						<span>【<?php echo h($cats[$p['Post']['category']]); ?>】</span>
-						<span><?php echo h($p['Post']['title']); ?></span>
-						<?php $element = ob_get_clean(); ?>
-						<li>
-							<table>
-								<tr>
-									<td><time datetime="<?php echo h($utcDate->format('Y-m-d H:i:s')); ?>"><?php echo h($utcDate->format('Y.m.d')); ?></time></td>
-									<td><?php echo $this->Html->link($element, "/wp/archives/{$p['Post']['post_id']}", array('escape'=>false)); ?></td>
-								</tr>
-							</table>
-						</li>
-					<?php endforeach; ?>
-				</ul>
-			</div>
-		</div>
-		
-		<!-- ソーシャル連携 -->
-		<div class="">
-			<div><?php echo $this->element('twitter_follow'); ?></div>
-			<div><?php echo $this->element('fb_follow'); ?></div>
-		</div>
-		
 		<!-- 最近チェックした病院　と　閲覧数の多い病院 -->
 		<div class="row">
   		<div class="col-sm-6">
@@ -190,6 +153,43 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
   			</div>
   		</div>
   		<div style="clear: both;"> </div>
+		</div>
+		
+		<!-- ソーシャル連携 -->
+		<div class="">
+			<div><?php echo $this->element('twitter_follow'); ?></div>
+			<div><?php echo $this->element('fb_follow'); ?></div>
+		</div>
+		
+		<!-- 新着情報 -->
+		<div class="box">
+			<h2>
+				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
+				新着情報
+			</h2>
+			<div class="content">
+				<ul class="news">
+					<?php foreach($recentPosts as $p): ?>
+						<?php ob_start(); ?>
+						<?php
+							$utcDate = new DateTime($p['Post']['created'], new DateTimeZone('UTC'));
+							$utcDate->setTimezone(new DateTimeZone('Asia/Tokyo'));
+							$cats = Configure::read('categoryDisp');
+						?>
+						<span>【<?php echo h($cats[$p['Post']['category']]); ?>】</span>
+						<span><?php echo h($p['Post']['title']); ?></span>
+						<?php $element = ob_get_clean(); ?>
+						<li>
+							<table>
+								<tr>
+									<td><time datetime="<?php echo h($utcDate->format('Y-m-d H:i:s')); ?>"><?php echo h($utcDate->format('Y.m.d')); ?></time></td>
+									<td><?php echo $this->Html->link($element, "/wp/archives/{$p['Post']['post_id']}", array('escape'=>false)); ?></td>
+								</tr>
+							</table>
+						</li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 		</div>
 		
 		<!-- お気に入りグループ一覧 -->

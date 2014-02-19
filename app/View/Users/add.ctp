@@ -49,7 +49,10 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2"><?php echo $this->Form->submit('登録'); ?></td>
+					<td colspan="2">
+						<?php echo $this->Html->link('利用規約', '/wp/archives/217', array('target'=>'_blank')); ?>
+						<?php echo $this->Form->submit('利用規約に同意して登録する'); ?>
+					</td>
 				</tr>
 			</table>
 		</div>

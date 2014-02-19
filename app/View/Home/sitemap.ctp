@@ -14,7 +14,7 @@
 			'サイトマップ' => '/Sitemap',
 			'投稿募集' => '/wp/post',
 			'広告掲載' => '/wp/ad',
-			'お問い合わせ' => '/wp/contact'
+			'お問い合わせ' => '/wp/inquiry'
 		);
 	?>
 	<ul class="basic">
