@@ -139,12 +139,13 @@
       	<div class="nav">
 	      	<?php
 		      	echo $this->Html->link('ＴＯＰ', '/'); 
-		      	echo $this->Html->link('ご利用ガイド', '/wp/gu/'); 
+		      	echo $this->Html->link('ご利用ガイド(一般)', '/wp/archives/216');
+		      	echo $this->Html->link('ご利用ガイド(医療関係)', '/wp/gu/');
 		      	echo $this->Html->link('サイトポリシー', '/wp/policy/'); 
 		      	echo $this->Html->link('運営会社', '/wp/company/'); 
 		      	echo $this->Html->link('サイトマップ', '/Sitemap'); 
 		      	echo $this->Html->link('ウィジェット', '/malady/aboutwidget.php'); 
-		      	echo $this->Html->link('広告掲載', '/wp/ad/'); 
+		      	//echo $this->Html->link('広告掲載', '/wp/ad/'); 
 		      	echo $this->Html->link('お問い合わせ', '/wp/inquiry/');
 	      	?>
       	</div>

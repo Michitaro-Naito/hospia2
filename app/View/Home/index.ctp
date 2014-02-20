@@ -72,7 +72,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 <div class="row">
 	
 	<!-- 検索 -->
-	<div class="col-sm-5" id="IndexSearch">
+	<div class="col-sm-4" id="IndexSearch">
 		<div class="box">
 			<h2>
 				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
@@ -107,16 +107,12 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	</div>
 	
 	<!-- ご利用ガイド -->
-	<div class="col-sm-7">
-		<?php echo $this->Html->link($this->Html->image('main.png'), '/wp/gu/', array('escape'=>false, 'id'=>'main')); ?>
-		<div class="row">
-			<?php echo $this->Html->link($this->Html->image('sp_main.jpg'), '/wp/gu/', array('escape'=>false, 'id'=>'sp-main')); ?>
-		</div>
-	</div>
+	<div class="col-sm-4" style="margin-bottom:10px;"><?php echo $this->Html->link($this->Html->image('gu1.png'), '/wp/archives/216', array('escape'=>false)); ?></div>
+	<div class="col-sm-4" style="margin-bottom:10px;"><?php echo $this->Html->link($this->Html->image('gu2.png'), '/wp/gu/', array('escape'=>false)); ?></div>
 	
 </div>
 
-<div class="row" style="margin-top: 17px;">
+<div class="row">
 	<div class="col-sm-9">
 		
 		<!-- 最近チェックした病院　と　閲覧数の多い病院 -->
