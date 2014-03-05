@@ -27,6 +27,7 @@
 			echo $this->Html->meta('icon');
     	echo $this->Html->css('bootstrap.min');			// Bootstrap core CSS
 			echo $this->Html->css('site');
+			echo $this->Html->css('site2');
 			echo $this->fetch('meta');
 			echo $this->fetch('css');
     ?>
@@ -108,7 +109,7 @@
     	<div id="body" class="container">
   			<?php if(!empty($is_top) || !empty($bareLayout)): ?>
     			<?php
-    				//echo $this->element('ad_top');
+    				echo $this->element('ad_top');
     				echo $this->fetch('content');
     				//echo $this->element('ad_bottom');
     			?>

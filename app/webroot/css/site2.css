@@ -1,0 +1,19 @@
+/* 記事の背景色を赤色にする。 */
+.pagebox{
+	background: red;
+}
+
+/* 記事の本文のフォントサイズを24ピクセルにする。 */
+.pagebox p{
+	font-size: 24px;
+}
+
+/* 記事のテーブルのヘッダ部分を緑色にする。 */
+.pagebox table th{
+	background: green;
+}
+
+/* 記事のテーブルのセルを青色にする。 */
+.pagebox table td{
+	background: blue;
+}

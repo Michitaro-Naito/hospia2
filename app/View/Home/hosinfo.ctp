@@ -65,12 +65,12 @@ google.maps.event.addDomListener(window, 'load', function(){
 				<div class="address"><?php echo h($h['Area']['addr1'].$h['Area']['addr2'].$h['Hospital']['addr3']); ?></div>
 				<div class="tel">TEL: <?php echo h($h['Hospital']['tel']); ?></div>
 				<?php if(!empty($h['Hospital']['url'])): ?>
-					<div class="url"><?php echo $this->Html->link('病院ホームページ', $h['Hospital']['url']); ?></div>
+					<div class="url"><?php echo $this->Html->link('病院ホームページ', $h['Hospital']['url'], array('target'=>'_blank')); ?></div>
 				<?php endif; ?>
 				<?php if(!empty($h['Jcqhc']['url'])): ?>
 					関連サイト<br/>
 					都道府県 医療機能情報サイト<?php echo $this->My->tip('基本情報-都道府県医療機能情報サイト'); ?>
-					<div class="jcqhc"><?php echo $this->Html->link('医療機能評価機構 審査結果', $h['Jcqhc']['url']); ?><?php echo $this->My->tip('基本情報-医療機能評価機構審査結果'); ?></div>
+					<div class="jcqhc"><?php echo $this->Html->link('医療機能評価機構 審査結果', $h['Jcqhc']['url'], array('target'=>'_blank')); ?><?php echo $this->My->tip('基本情報-医療機能評価機構審査結果'); ?></div>
 				<?php endif; ?>
 			</div>
 			

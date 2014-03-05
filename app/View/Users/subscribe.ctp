@@ -30,7 +30,7 @@ function purchase(){
 <div class="box">
 	<h2>会員情報管理</h2>
 	<div class="content">
-		<?php echo $this->Html->link('会員情報修正', array('controller'=>'Users', 'action'=>'EditMe')); ?>
+		<?php echo $this->Html->link('会員情報修正', array('controller'=>'Users', 'action'=>'EditMe')); ?>&nbsp;&nbsp;&nbsp;&nbsp;
 		<?php echo $this->Html->link('メールアドレス変更', array('controller'=>'Users', 'action'=>'EditEmail')); ?>
 	</div>
 </div>

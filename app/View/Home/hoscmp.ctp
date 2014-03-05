@@ -211,7 +211,7 @@ model.search();
 						<td data-bind="visible: Hospital.wam_id == 'Average'">上記リスト平均</td>
 						<td class="name">
 							<a data-bind="visible: Hospital.wam_id != $root.wamId, text: Hospital.alias, attr: { href: DetailUrl }"></a>
-							<span data-bind="visible: Hospital.wam_id == $root.wamId, text: Hospital.alias" class="muted"></span>
+							<span data-bind="visible: Hospital.wam_id == $root.wamId, text: Hospital.alias" class=""></span>
 						</td>
 						<td class="address">
 							<span data-bind="visible: Hospital.wam_id != 'Average', text: Area.addr1 + Area.addr2"></span>
