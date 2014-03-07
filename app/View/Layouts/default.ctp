@@ -54,9 +54,9 @@
       			ようこそ、<?php echo h($username); ?>さん！
 		      	<?php
 		      		if(!empty($isPremiumUser))
-								echo $this->Html->link('プレミアム会員', array('controller'=>'Users', 'action'=>'Subscribe'));
+								echo $this->Html->link('プレミアム会員（会員情報・お気に入り管理画面へ）', array('controller'=>'Users', 'action'=>'Subscribe'));
 							else
-								echo $this->Html->link('通常会員', array('controller'=>'Users', 'action'=>'Subscribe'));
+								echo $this->Html->link('通常会員（会員情報・お気に入り管理画面へ）', array('controller'=>'Users', 'action'=>'Subscribe'));
 		      	?>
       		</div>
       	<?php endif; ?>

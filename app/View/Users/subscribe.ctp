@@ -40,23 +40,32 @@ function purchase(){
 	<div class="content">
 		<?php if(empty($dat['user']['Subscription'])): ?>
 			<div class="alert">現在は通常会員です。</div>
-			<p>毎月の会費をお支払いいただくと、以下のようなプレミアム機能にもアクセスできるようになります。</p>
-			<p>また、会費のお支払いはいつでも停止が可能です。</p>
+			<?php echo $this->Html->link('・プレミアム機能のご案内', '/wp/archives/225'); ?><br/>
+			<?php echo $this->Html->link('・プレミアム会員利用規約', '/wp/archives/233'); ?><br/>
+			<?php echo $this->Html->link('・病院情報局利用規約', '/wp/archives/217'); ?>
+			<p>
+				毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。<br/>
+				以下のボタンからGoogleウォレットへアクセスし、購入手続きが完了すると、直ちにプレミアム機能をご利用いただけます。<br/>
+				会費のお支払いはいつでも停止できますので、是非お気軽にご利用ください。
+			</p>
 			<button class="buy-button btn btn-default"
 			  id="buybutton1" name="buy" type="button"
 			  onClick="purchase()">
-			  プレミアム会員になる
+			  利用規約に同意してプレミアム会員になる
 			</button>
+			
 		<?php else: ?>
 			<div class="alert alert-success">現在はプレミアム会員です。</div>
-			<p>各プレミアム機能は病院詳細ページ等のお気に入り管理画面からご利用いただけます。</p>
+			<?php echo $this->Html->link('・プレミアム機能のご案内', '/wp/archives/225'); ?><br/>
+			<?php echo $this->Html->link('・プレミアム会員利用規約', '/wp/archives/233'); ?><br/>
+			<?php echo $this->Html->link('・病院情報局利用規約', '/wp/archives/217'); ?>
 			<p>
-				プレミアム機能をご利用いただき誠にありがとうございます。
-				会費のお支払いを停止なさりたい場合は、<?php echo $this->Html->link('こちらのページ', 'https://wallet.google.com', array('target'=>'_blank')); ?>の
-				「もっと見る」→「定期購入」から、「病院情報局 - プレミアム会費」をご解約ください。
-				ご解約なさいますとプレミアム機能は使えなくなってしまいます。何卒ご了承ください。<br/>
-				<?php echo $this->Html->link('Google Wallet', 'https://wallet.google.com', array('target'=>'_blank')); ?>
+				プレミアム機能をご利用いただき誠にありがとうございます。<br/>
+				会費の支払いを停止される場合は、以下のボタンからGoogleウォレットへアクセスし、「もっと見る」→「定期購入」から、「病院情報局 - プレミアム会費」をご解約ください。<br/>
+				いつでも解約手続きができますが、解約すると直ちにプレミアム機能をご利用いただけなくなりますので、あらかじめご了承ください。
 			</p>
+			<?php echo $this->Html->link('プレミアム会費の支払いを停止する', 'https://wallet.google.com', array('target'=>'_blank')); ?>
+			
 			<?php if(count($dat['user']['Subscription']) > 1): ?>
 				<div class="alert alert-danger">
 					複数のプレミアム会員契約があります。誤って何度もお支払いになってしまいましたか？
