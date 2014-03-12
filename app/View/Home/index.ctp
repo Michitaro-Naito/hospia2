@@ -141,9 +141,9 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	  			</h2>
 	  			<div class="content">
 		  			<ul class="basic">
-		  				<?php foreach($dat['hospitalsMostViewed'] as $h): ?>
+		  				<?php foreach($dat['hospitalsMostViewed'] as $h): if(isset($h['Hospital'])): ?>
 		  					<li><?php echo $this->Html->link($h['Hospital']['name'], '/hosdetail/'.$h['Hospital']['wam_id']); ?></li>
-		  				<?php endforeach; ?>
+		  				<?php endif; endforeach; ?>
 		  			</ul>
 	  			</div>
   			</div>
