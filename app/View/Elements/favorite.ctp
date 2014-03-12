@@ -305,7 +305,8 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 					<?php else: ?>
 					<!-- リストに追加(コンパクト版) -->
 					<td>
-						<button type="button" class="btn btn-default" data-bind="click: AddHospital">この病院をお気に入りに登録</button>
+						<div data-bind="if: selectedFavoriteGroup() != null"><button type="button" class="btn btn-default" data-bind="click: AddHospital">この病院をお気に入りに登録</button></div>
+						<div data-bind="if: selectedFavoriteGroup() == null"><?php echo $this->Html->link('お気に入り管理からリストを作成して下さい。', '/Users/Subscribe'); ?></div>
 					</td>
 					<?php endif; ?>
 				</tr>
