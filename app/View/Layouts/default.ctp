@@ -4,12 +4,13 @@
   	<?php echo $this->Html->charset(); ?>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
-    <meta name="description" content="">
+    <meta name="description" content="全国の急性期病院の診療実績（患者数、平均在院平均など）を比較">
     <meta name="author" content="">
     <meta property="og:image" content="<?php echo Router::url('/img/logo_fb.png', true); ?>" />
     <meta property="og:image:type" content="image/png">
 		<meta property="og:image:width" content="270" />
 		<meta property="og:image:height" content="270" />
+		<meta property="og:description" content="全国の急性期病院の診療実績（患者数、平均在院平均など）を比較" />
 
     <title>
     	<?php
@@ -53,10 +54,13 @@
       		<div class="welcome">
       			ようこそ、<?php echo h($username); ?>さん！
 		      	<?php
+		      		$suffix = '（会員情報・お気に入り管理画面へ）';
+		      		if($this->request->is('mobile'))
+								$suffix = '';
 		      		if(!empty($isPremiumUser))
-								echo $this->Html->link('プレミアム会員（会員情報・お気に入り管理画面へ）', array('controller'=>'Users', 'action'=>'Subscribe'));
+								echo $this->Html->link('プレミアム会員'.$suffix, array('controller'=>'Users', 'action'=>'Subscribe'));
 							else
-								echo $this->Html->link('通常会員（会員情報・お気に入り管理画面へ）', array('controller'=>'Users', 'action'=>'Subscribe'));
+								echo $this->Html->link('通常会員'.$suffix, array('controller'=>'Users', 'action'=>'Subscribe'));
 		      	?>
       		</div>
       	<?php endif; ?>
@@ -175,5 +179,21 @@
     		alert(JSON.stringify(e));
     	}
     </script>
+
+<!-- Yahooアクセス解析 -->
+<script type="text/javascript">
+  (function () {
+    var tagjs = document.createElement("script");
+    var s = document.getElementsByTagName("script")[0];
+    tagjs.async = true;
+    tagjs.src = "//s.yjtag.jp/tag.js#site=LZaFZD6";
+    s.parentNode.insertBefore(tagjs, s);
+  }());
+</script>
+<noscript>
+  <iframe src="//b.yjtag.jp/iframe?c=LZaFZD6" width="1" height="1" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+</noscript>
+<!-- /Yahooアクセス解析 -->
+
   </body>
 </html>
