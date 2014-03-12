@@ -932,6 +932,10 @@ class DataComponent extends Component {
 	 * ViewCountを1増やす。
 	 */
 	public function IncrementViewCount($wamId){
+		if(empty($wamId))
+			return;
+		if(strpos($wamId, 'W')!==FALSE)
+			return;
 		$this->ViewCount = ClassRegistry::init('ViewCount');
 		$now = new DateTime();
 		$nowString = $now->format('Y-m-d');
