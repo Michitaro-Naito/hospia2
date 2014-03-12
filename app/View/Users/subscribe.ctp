@@ -1,5 +1,5 @@
 <?php $this->start('script'); ?>
-<script src="https://sandbox.google.com/checkout/inapp/lib/buy.js"></script>
+<script src="<?php echo Configure::read('GoogleWallet_ScriptUrl'); ?>"></script>
 <script>
 //Success handler
 var successHandler = function(purchaseAction){
