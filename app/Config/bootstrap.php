@@ -179,8 +179,17 @@ Configure::write('cmplst', array(
 ));
 
 // Google Wallet
-Configure::write('GoogleWallet_SellerId', '04806629248295947480');
-Configure::write('GoogleWallet_SellerSecret', 'xzFzun3WgEG6nAc1x0rtOQ');
+if($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.168.100.2' || $_SERVER['SERVER_NAME'] == 'v157-7-208-129.myvps.jp'){
+	// テスト用アカウント
+	Configure::write('GoogleWallet_SellerId', '04806629248295947480');
+	Configure::write('GoogleWallet_SellerSecret', 'xzFzun3WgEG6nAc1x0rtOQ');
+	Configure::write('GoogleWallet_ScriptUrl', 'https://sandbox.google.com/checkout/inapp/lib/buy.js');
+}else{
+	// 本番用アカウント
+	Configure::write('GoogleWallet_SellerId', '08098458298793310506');
+	Configure::write('GoogleWallet_SellerSecret', '_2JSZL20XpIyKO9n6XJw0A');
+	Configure::write('GoogleWallet_ScriptUrl', 'https://wallet.google.com/inapp/lib/buy.js');
+}
 
 // Product ID
 Configure::write('ProductId_PremiumSubscription', 'jp.hospia.premium_subscription');
