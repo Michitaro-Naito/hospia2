@@ -25,6 +25,10 @@
 			<td>CoordinatesテーブルからDistanceテーブルを生成するためのツールです。</td>
 		</tr>
 		<tr>
+			<td><?php echo $this->Html->link('ユーザー集計ツール', '/Users/Statistics'); ?></td>
+			<td>通常会員とプレミアム会員をそれぞれ数え上げるためのツールです。</td>
+		</tr>
+		<tr>
 			<td><?php echo $this->Html->link('ログアウト', '/users/logout'); ?></td>
 			<td>hospia.jpからログアウトします。</td>
 		</tr>
