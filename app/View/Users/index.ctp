@@ -31,6 +31,9 @@ function Disable(id){
 		<tr>
 			<th>ID</th>
 			<th>ユーザー名</th>
+			<th>氏名</th>
+			<th>区分</th>
+			<th>職業</th>
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -39,6 +42,15 @@ function Disable(id){
 			<tr>
 				<td><?php echo h($u['User']['id']); ?></td>
 				<td><?php echo h($u['User']['username']); ?></td>
+				<td><?php echo h($u['User']['sei'] . $u['User']['mei']); ?></td>
+				<td>
+					<?php if(!empty($u['Subscription'])): ?>
+						プレミアム
+					<?php else: ?>
+						通常
+					<?php endif; ?>
+				</td>
+				<td><?php echo h($u['User']['job']); ?></td>
 				<td>
 					<?php echo $this->Html->link('編集する', array('controller'=>'Users', 'action'=>'Edit', $u['User']['id'])); ?>
 					<button type="button" onclick="Disable(<?php echo h($u['User']['id']); ?>);" class="btn btn-default">無効化する</button>

@@ -27,6 +27,27 @@ class UsersController extends AppController {
 					)
 				);
 				$users = $this->paginate('User', $cond);
+				
+				// User hasMany Subscriptions (Joins here because of performace reasons. I miss LINQ to SQL...)
+				$ids = array();
+				foreach($users as &$u){
+					array_push($ids, $u['User']['id']);
+					$u['Subscription'] = array();
+				}
+				$this->loadModel('Subscription');
+				$subscriptions = $this->Subscription->find('all', array(
+					'conditions'=>array(
+						'Subscription.user_id'=>$ids
+					)
+				));
+				foreach($subscriptions as $s){
+					foreach($users as &$u){
+						if($u['User']['id'] === $s['Subscription']['user_id']){
+							array_push($u['Subscription'], $s['Subscription']);
+						}
+					}
+				}
+				
 				$this->set('users', $users);
     }
 
@@ -126,6 +147,11 @@ class UsersController extends AppController {
 			
 			return $this->redirect(array('action'=>'Index'));
     }
+		
+		public function Statistics(){
+		 	if(!$this->IsAdmin())
+				return $this->redirect('/');
+		}
 		
 		public function login() {
 			$this->set('noAds', true);
