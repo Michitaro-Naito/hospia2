@@ -178,6 +178,14 @@ body{
 	overflow: hidden;
 }
 
+.twitter-tweet-container-post{
+	height: 20px;
+}
+
+.social-container{
+	margin-bottom: 40px;
+}
+
 .box{
 	margin-bottom: 10px;
 	border: solid 1px rgb(212, 190, 151);
