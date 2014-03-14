@@ -214,12 +214,16 @@ class UsersController extends AppController {
 			}else{
 				if ($this->request->is('post') || $this->request->is('put')){
 					// Try to save
+					$prefix = '';
 					if(!empty($this->request->data['User']['new_password'])){
 						$this->request->data['User']['password'] = $this->request->data['User']['new_password'];
+						$masked = str_pad($this->request->data['User']['new_password'][0], strlen($this->request->data['User']['new_password']), '*');
+						$prefix = "(新しいパスワード：{$masked})";
 					}
 					$this->User->id = $id;
 					if($this->User->save($this->request->data, true, array('password', 'new_password', 'sei', 'mei', 'sei_kana', 'mei_kana', 'job'))){
-						return $this->redirect(array('controller'=>'Users', 'action'=>'Subscribe'));
+						return $this->flash('会員情報を更新しました。'.$prefix, array('controller'=>'Users', 'action'=>'Subscribe'));
+						//return $this->redirect(array('controller'=>'Users', 'action'=>'Subscribe'));
 					}
 				}
 			}
