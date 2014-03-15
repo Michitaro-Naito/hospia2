@@ -17,6 +17,7 @@
 	</tr>
 </table>
 
+<div class="fbcomment">Facebookでこの病院の情報を共有する</div>
 <div class="fb-comments"
 	<?php if(!$this->request->is('mobile')): ?>
 		data-width="718"

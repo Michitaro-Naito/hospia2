@@ -211,7 +211,6 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 	<div class="col-sm-6">
 		<div class="box">
 			<h2>
-				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
 				病院検索
 			</h2>
 			<div class="content">
@@ -222,7 +221,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>
 					</tr>
 					<tr>
-						<td>医療圏</td>
+						<td>医療圏　<?php echo $this->My->tip('医療圏'); ?></td>
 						<td><select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select></td>
 					</tr>
 					<tr>
@@ -230,7 +229,7 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 						<td><input type="text" data-bind="value: hospitalName"/></td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="2" style="padding-top: 10px;">
 							<button type="button" class="search" data-bind="click: getHospitals">
 								<?php echo $this->Html->image('icon/search.png', array('style'=>'padding-bottom:3px;')); ?>
 								検索
@@ -245,22 +244,21 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 	<div class="col-sm-6">
 		<div class="box">
 			<h2>
-				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-				表示切替<?php echo $this->My->tip('病院検索-表示切替', array('image'=>true)); ?>
+				並べ替え<?php echo $this->My->tip('病院検索-表示切替', array('image'=>true)); ?>
 			</h2>
 			<div class="content">
-				<div style="margin-top: 20px;">
+				<div style="margin-top: 10px;">
 					<label>
 						<input type="radio" name="displayTypeGroup" value="0" data-bind="checked: displayTypeGroup" />
-						基本項目<?php echo $this->My->tip('病院検索-基本項目'); ?>
-					</label>
+						基本項目　<?php echo $this->My->tip('病院検索-基本項目'); ?>
+					</label><br />
 					<label>
 						<input type="radio" name="displayTypeGroup" value="1" data-bind="checked: displayTypeGroup" />
-						診断分類別患者数<?php echo $this->My->tip('病院検索-診断分類別患者数'); ?>
+						診断分類別患者数　<?php echo $this->My->tip('病院検索-診断分類別患者数'); ?>
 					</label>
 				</div>
 				<select data-bind="options: displayTypes, optionsText: 'name', value: selectedDisplayType"></select>
-				<button type="button" class="" data-bind="click: getHospitals">表示</button>
+				<button type="button" class="" data-bind="click: getHospitals">並べ替える</button>
 			</div>
 		</div>
 	</div>
@@ -272,9 +270,9 @@ if(model.selectedPrefecture().id == null) model.getHospitals();
 		<table>
 			<thead>
 				<tr>
-					<th class="name">病院名<?php echo $this->My->tip('病院名'); ?></th>
+					<th class="name">病院名<br /><?php echo $this->My->tip('病院名'); ?></th>
 					<th class="address">所在地</th>
-					<th class="dpc">DPC<?php echo $this->My->tip('DPC'); ?></th>
+					<th class="dpc">DPC参加<?php echo $this->My->tip('DPC'); ?></th>
 					<th class="jcqhc">機能評価<?php echo $this->My->tip('機能評価'); ?></th>
 					<th class="training">臨床研修<?php echo $this->My->tip('臨床研修'); ?></th>
 				</tr>

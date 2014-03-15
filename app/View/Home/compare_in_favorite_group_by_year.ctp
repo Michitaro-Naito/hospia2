@@ -13,7 +13,7 @@ function AppModel(){
 	s.mdcs = dat.mdcs;												// 選択可能なMDC一覧
 	s.displayTypes = dat.displayTypesForDpc;	// 選択可能な表示方法一覧
 	
-	s.selectedMdc = ko.observable();					// 選択されたMDC
+	s.selectedMdc = ko.observable(s.mdcs[0]);	// 選択されたMDC
 	s.selectedDisplayType = ko.observable();	// 選択された表示方法
 	
 	s.chartData = ko.observableArray();
@@ -116,6 +116,7 @@ function AppModel(){
 
 var model = new AppModel();
 ko.applyBindings(model);
+model.GetData();
 </script>
 <?php $this->end(); ?>
 
@@ -126,6 +127,9 @@ ko.applyBindings(model);
 		グループ名：
 		<span data-bind="text: group.FavoriteHospital.name"></span>
 	</h2>
+	<div class="content">
+		診断分類：<span data-bind="text: selectedMdc().name"></span>
+	</div>
 </div>
 <div id="chartdiv"></div>
 <div class="box">

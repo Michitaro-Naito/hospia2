@@ -144,12 +144,12 @@ ko.applyBindings(model);
 
 <!-- Menu -->
 <div class="box">
-	<h2>傷病別統計データ</h2>
+	<h2>傷病別全国統計</h2>
 	<div class="content">
 		<ul class="elements">
-			<li>診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select></li>
-			<li>傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc" style="max-width: 200px;"></select></li>
-			<li><button data-bind="click: search">検索</button></li>
+			<li>診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>　</li>
+			<li>傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc" style="max-width: 200px;"></select>　</li>
+			<li><button data-bind="click: search">集計する</button></li>
 		</ul>
 	</div>
 </div>
@@ -203,7 +203,7 @@ ko.applyBindings(model);
 	<h2 data-bind="text: Wound.operation" class="dpc"></h2>
 	<div class="row">
 		<div class="col-sm-6">
-			<h3 class="dpc">患者数の多い病院</h3>
+			<h3 class="dpc">患者数が多い病院ランキング</h3>
 			<table class="dpc-half" border="1" bordercolor="#CCC">
 				<thead>
 					<tr><th>病院名</th><th>患者数</th><th>日数</th></tr>
@@ -220,7 +220,7 @@ ko.applyBindings(model);
 			</table>
 		</div>
 		<div class="col-sm-6">
-			<h3 class="dpc">在院日数の短い病院</h3>
+			<h3 class="dpc">在院日数が短い病院ランキング</h3>
 			<table class="dpc-half" border="1" bordercolor="#CCC">
 				<tr><th>病院名</th><th>患者数</th><th>日数</th></tr>
 				<tbody data-bind="foreach: Details_Days">

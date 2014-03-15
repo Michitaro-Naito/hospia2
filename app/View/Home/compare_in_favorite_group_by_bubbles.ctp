@@ -156,9 +156,9 @@ model.GetData();
 		<span data-bind="text: group.FavoriteHospital.name"></span>
 	</h2>
 	<div class="content">
-		<span data-bind="text: selectedMdc().name"></span>
-		・<span data-bind="text: selectedYear().name"></span>
-		大きさ：<span data-bind="text: selectedDisplayTypeValue().name"></span>
+		診断分類：<span data-bind="text: selectedMdc().name"></span>
+		｜時期：<span data-bind="text: selectedYear().name"></span>
+		｜バブルの大きさ：<span data-bind="text: selectedDisplayTypeValue().name"></span>
 	</div>
 </div>
 <div id="chartdiv" class="bubbles"></div>

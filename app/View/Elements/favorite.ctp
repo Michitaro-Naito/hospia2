@@ -267,7 +267,7 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 	<div class="box">
 		<h2>
 			<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
-			お気に入り管理
+			お気に入り病院グループ
 		</h2>
 	<?php else: ?>
 	<div>
@@ -286,11 +286,17 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			
 			<table>
 				<tr>
-					<td>
+					<td valign="top">
 						<!-- グループ選択 -->
 						<select data-bind="visible: favoriteGroups().length > 0, options: favoriteGroups, optionsText: 'name', value: selectedFavoriteGroup" class="form-control"></select>
 					</td>
 					<?php if(empty($compact)): ?>
+			<!-- ヘルプ -->
+			<p><ul class="basic">
+			<li class="li2">1. まず最初に、「操作」→「お気に入りグループを作成する」で、お気に入りグループを作成してください。</li>
+			<li class="li2">2. 各病院ページで、病院名の下に表示されるメニューで「登録したいグループ名」を選択してください。</li>
+			<li class="li2">3. 「この病院をお気に入りに登録」ボタンを押すと、グループへの登録が完了します。</li>
+			</ul></p>
 					<td>
 						<!-- グループ操作 -->
 						<div class="btn-group">
@@ -301,20 +307,23 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						    <li><a data-bind="visible: favoriteGroups().length < 10" data-toggle="modal" onclick="$('#AddGroupModal').modal('show');">お気に入りグループを作成する</a></li>
 						    <li><a data-bind="visible: selectedFavoriteGroup()" data-toggle="modal" onclick="$('#RenameGroupModal').modal('show');">グループ名を変更する</a></li>
 						    <li data-bind="visible: selectedFavoriteGroup()? (selectedFavoriteGroup().hospitals.length < 15 && wamId): false"><a data-bind="click: AddHospital">閲覧中の病院を登録する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}">折れ線グラフで比較する</a></li>
-						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}">バブルチャートで比較する</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:LineChartUrl}">グループ内時系列分析（折れ線グラフ）</a></li>
+						    <li><a data-bind="visible: selectedFavoriteGroup() && isPremium, attr:{href:BubbleChartUrl}">グループ内ポジション分析（バブルチャート）</a></li>
 						  </ul>
 						</div>
 					</td>
+				</tr>
+			</table>
 					<?php else: ?>
 					<!-- リストに追加(コンパクト版) -->
 					<td>
 						<div data-bind="if: selectedFavoriteGroup() != null"><button type="button" class="btn btn-default" data-bind="click: AddHospital">この病院をお気に入りに登録</button></div>
 						<div data-bind="if: selectedFavoriteGroup() == null"><?php echo $this->Html->link('お気に入り管理からリストを作成して下さい。', '/Users/Subscribe'); ?></div>
 					</td>
-					<?php endif; ?>
 				</tr>
 			</table>
+			<p class="muted">「登録したいグループ名」を選択した上で、「この病院をお気に入りに登録」ボタンを押してください。<br/>（※新しいグループは、<a href="http://hospia.jp/Users/Subscribe">「お気に入り管理画面」</a>で作成できます。）</p>
+					<?php endif; ?>
 			
 			<!-- モーダル(新しいグループ) -->
 			<div class="modal fade" id="AddGroupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -370,11 +379,11 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						</table>
 					</li>
 				</ul>
-				<span data-bind="text: hospitals.length"></span>件登録されています。
-				(あと<span data-bind="text: 15-hospitals.length"></span>件登録可)<br/>
-				<span data-bind="text: $root.favoriteGroups().length"></span>グループ登録されています。
+				<p><div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div></p>
+				・このグループには<span data-bind="text: hospitals.length"></span>病院登録されています。
+				(あと<span data-bind="text: 15-hospitals.length"></span>病院登録可)<br/>
+				・<span data-bind="text: $root.favoriteGroups().length"></span>グループ登録されています。
 				(あと<span data-bind="text: 10-$root.favoriteGroups().length"></span>グループ登録可)
-				<div data-bind="visible: hospitals.length == 0">登録されている病院はありません。</div>
 			</div>
 			
 			<!-- プレミアム会員権管理(ログインしていてプレミアム会員である場合) -->
@@ -384,11 +393,9 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 			
 			<!-- 課金を促すメッセージ(ログインしていてプレミアムでない場合) -->
 			<p data-bind="visible: !isPremium">
-				<?php echo $this->Html->link('毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
+				<?php echo $this->Html->link('・月額1,000円でプレミアム機能をご利用いただけます。お支払いはいつでも停止が可能です。', array('controller'=>'Users', 'action'=>'Subscribe')); ?>
 			</p>
 			
-			<!-- ヘルプ -->
-			<p class="muted">各病院の詳細ページからお気に入りへ登録できます。</p>
 			<?php endif; ?>
 			
 		</div>

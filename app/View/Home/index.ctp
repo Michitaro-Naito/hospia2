@@ -75,7 +75,6 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 	<div class="col-sm-4" id="IndexSearch">
 		<div class="box">
 			<h2>
-				<?php echo $this->Html->image('icon/h2.png', array('style'=>'padding-bottom:2px;')); ?>
 				病院検索
 			</h2>
 			<div class="content">
@@ -86,7 +85,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 						<td><select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select></td>
 					</tr>
 					<tr>
-						<td>医療圏<?php echo $this->My->tip('医療圏'); ?></td>
+						<td>医療圏　<?php echo $this->My->tip('医療圏'); ?></td>
 						<td><select data-bind="options: zones, optionsText: 'name', value: selectedZone"></select></td>
 					</tr>
 					<tr>
@@ -94,7 +93,7 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 						<td><input type="text" data-bind="value: hospitalName"/></td>
 					</tr>
 					<tr>
-						<td colspan="2">
+						<td colspan="2" style="padding-top: 10px;">
 							<button type="button" class="search" data-bind="click: gotoHoslst">
 								<?php echo $this->Html->image('icon/search.png', array('style'=>'padding-bottom:3px;')); ?>
 								検索
@@ -114,6 +113,15 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 
 <div class="row">
 	<div class="col-sm-9">
+		
+		<!-- ソーシャル連携 -->
+		<div class="">
+			<div><?php echo $this->element('twitter_follow'); ?></div>
+			<div><?php echo $this->element('fb_follow'); ?></div>
+		</div>
+		
+		<!-- お気に入りグループ一覧 -->
+		<?php echo $this->element('favorite'); ?>
 		
 		<!-- 最近チェックした病院　と　閲覧数の多い病院 -->
 		<div class="row">
@@ -151,12 +159,6 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
   		<div style="clear: both;"> </div>
 		</div>
 		
-		<!-- ソーシャル連携 -->
-		<div class="">
-			<div><?php echo $this->element('twitter_follow'); ?></div>
-			<div><?php echo $this->element('fb_follow'); ?></div>
-		</div>
-		
 		<!-- 新着情報 -->
 		<div class="box">
 			<h2>
@@ -187,9 +189,6 @@ ko.applyBindings(model, document.getElementById('IndexSearch'));
 				</ul>
 			</div>
 		</div>
-		
-		<!-- お気に入りグループ一覧 -->
-		<?php echo $this->element('favorite'); ?>
 		
 		<!-- 広告ユニット(下部) -->
 		<?php echo $this->element('ad_bottom'); ?>

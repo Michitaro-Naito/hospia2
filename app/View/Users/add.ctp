@@ -1,9 +1,11 @@
 <!-- app/View/Users/add.ctp -->
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
-	<div class="box">
-		<h2>ユーザー登録</h2>
+	<div class="box" style="margin: 20px;">
+		<h2>病院情報局　会員登録</h2>
 		<div class="content">
+			<p>以下の利用規約をよくお読みいただき、ご同意の上で会員登録をお願いいたします。</p>
+			<ul class="basic"><li class="li2"><?php echo $this->Html->link('［病院情報局利用規約］', '/wp/archives/217'); ?></li></ul>
 			<?php echo $this->Session->flash(); ?>
 			<table>
 				<tr>
@@ -49,13 +51,15 @@
 				</tr>
 				
 				<tr>
-					<td colspan="2">
-						<?php echo $this->Html->link('利用規約', '/wp/archives/217', array('target'=>'_blank')); ?>
+					<td colspan="2" style="padding: 20px;">
 						<?php echo $this->Form->submit('利用規約に同意して登録する'); ?>
 					</td>
 				</tr>
 			</table>
 		</div>
 	</div>
+<ul class="basic">
+<li class="li2"><?php echo $this->Html->link('会員機能のご案内', '/wp/archives/225'); ?></li>
+</ul>
 <?php echo $this->Form->end(); ?>
 </div>

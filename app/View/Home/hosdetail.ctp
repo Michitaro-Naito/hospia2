@@ -130,8 +130,8 @@ model.search();
 	<div class="box">
 		<h2>診療実績</h2>
 		<div class="content">
-			年度<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
-			<button data-bind="click: search">検索</button>
+			表示年度<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
+			<button data-bind="click: search">変更する</button>
 		</div>
 	</div>
 	
@@ -140,7 +140,7 @@ model.search();
 		<div class="col-sm-6">
 			<table class="hosdetail-head">
 				<tr>
-					<th data-bind="click: function(){sortField('mdc_cd')}" class="">診断分類<?php echo $this->My->tip('診療実績-診断分類'); ?></th>
+					<th data-bind="click: function(){sortField('mdc_cd')}" class="">診断分類<br /><?php echo $this->My->tip('診療実績-診断分類'); ?></th>
 					<th data-bind="click: function(){sortField('ave_month')}" class="ave_month">月平均患者数<?php echo $this->My->tip('診療実績-月平均患者数'); ?></th>
 					<th data-bind="click: function(){sortField('zone_share')}" class="zone_share">医療圏シェア<?php echo $this->My->tip('診療実績-医療圏シェア'); ?></th>
 					<th data-bind="click: function(){sortField('ave_in')}" class="ave_in">平均在院日数<?php echo $this->My->tip('診療実績-平均在院日数'); ?></th>
@@ -153,7 +153,7 @@ model.search();
 			<table>
 				<tr>
 					<th>
-						<select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
+						グラフ表示：<select data-bind="options: displayTypesForDpc, optionsText: 'name', value: selectedDisplayTypeForDpc"></select>
 						<?php echo $this->My->tip('グラフ表示'); ?>
 					</th>
 				</tr>

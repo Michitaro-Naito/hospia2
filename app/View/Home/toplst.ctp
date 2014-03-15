@@ -148,7 +148,7 @@ model.setDefaultValues();
 						　診断分類　
 						<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc, event: {change: getHospitals}"></select>
 					</td>
-					<td>
+					<td style="padding-left: 20px;">
 						都道府県<?php echo $this->My->tip('患者数ランキング-都道府県'); ?>
 						<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
 					</td>
@@ -163,7 +163,7 @@ model.setDefaultValues();
 	<div class="col-sm-6">
 		<table>
 			<tr>
-				<th class="name">病院名<?php echo $this->My->tip('病院名'); ?></th>
+				<th class="name">病院名<br /><?php echo $this->My->tip('病院名'); ?></th>
 				<th class="address">都道府県</th>
 				<th class="ave_month">月平均患者数</th>
 			</tr>
@@ -173,7 +173,7 @@ model.setDefaultValues();
 		<table>
 			<tr>
 				<th>
-					グラフ表示
+					グラフ表示の変更
 					<select data-bind="options: cmplst, optionsText: 'name', value: selectedCmp"></select>
 				</th>
 			</tr>
@@ -191,7 +191,7 @@ model.setDefaultValues();
 				<tr>
 					<td class="name"><a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a></td>
 					<td class="address"><span data-bind="text: Area.addr1"></span></td>
-					<td class="ave_month"><span data-bind="text: addFigure((Number(Dpc.ave_month)).toFixed(1))" class="ar"></span></td>
+					<td class="ave_month" style="text-align: right;"><span data-bind="text: addFigure((Number(Dpc.ave_month)).toFixed(1))" class="ar"></span></td>
 				</tr>
 			</table>
 		</div>
@@ -199,7 +199,7 @@ model.setDefaultValues();
 		<div class="col-sm-6 right">
 			<table>
 				<tr>
-					<td data-bind="text: addFigure(fmValue())" class="value"></td>
+					<td data-bind="text: addFigure(fmValue())" class="value" style="text-align: right;"></td>
 					<td>
 						<div class="progress">
 						  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">

@@ -84,7 +84,7 @@
 								array('label'=>'患者数ランキング', 'small'=>'Top Hospitals', 'url'=>'/toplst'),
 								array('label'=>'DPC全国統計', 'small'=>'DPC Statistics', 'url'=>'/dpc'),
 								array('label'=>'病院ニュース', 'small'=>'Hospital News', 'url'=>'/wp/archives/category/news/'),
-								array('label'=>'情報活用の視点', 'small'=>'Point of View', 'url'=>'/wp/archives/category/topics/'),
+								array('label'=>'情報活用', 'small'=>'Point of View', 'url'=>'/wp/archives/category/topics/'),
 								array('label'=>'特集', 'small'=>'Special', 'url'=>'/wp/archives/category/month/'),
 								array('label'=>'お知らせ', 'small'=>'Information', 'url'=>'/wp/archives/category/info/'),
 							);
@@ -144,8 +144,8 @@
       	<div class="nav">
 	      	<?php
 		      	echo $this->Html->link('ＴＯＰ', '/'); 
-		      	echo $this->Html->link('ご利用ガイド(一般)', '/wp/archives/216');
-		      	echo $this->Html->link('ご利用ガイド(医療関係)', '/wp/gu/');
+		      	echo $this->Html->link('病院情報局ナビ', '/wp/archives/216');
+		      	echo $this->Html->link('ご利用ガイド', '/wp/gu/');
 		      	echo $this->Html->link('サイトポリシー', '/wp/policy/'); 
 		      	echo $this->Html->link('運営会社', '/wp/company/'); 
 		      	echo $this->Html->link('サイトマップ', '/Sitemap'); 

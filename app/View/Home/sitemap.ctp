@@ -1,22 +1,22 @@
 <div class="pagebox">
 	<h2 class="posttitle">サイトマップ</h2>
 	
-	<!-- TOP〜お問い合わせ -->
+	<!-- TOP?お問い合わせ -->
 	<?php
 		$links = array(
 			'TOP' => '/',
-			'病院検索・一覧表示' => '/hoslist',
+			'病院検索' => '/hoslist',
 			'DPC全国統計' => '/dpc',
 			'患者数ランキング' => '/toplst',
-			'ご利用ガイド（一般の方）' => '/wp/archives/216',
-			'ご利用ガイド（医療関係の方）' => '/wp/gu',
+			'病院情報局ナビ' => '/wp/archives/216',
+			'ご利用ガイド' => '/wp/gu',
 			'サイトポリシー' => '/wp/policy',
+			'利用規約' => '/wp/archives/217',
 			'運営会社' => '/wp/company',
+			'お問い合わせ' => '/wp/inquiry',
 			'サイトマップ' => '/Sitemap',
 			//'投稿募集' => '/wp/post',
-			//'広告掲載' => '/wp/ad',
-			'利用規約' => '/wp/archives/217',
-			'お問い合わせ' => '/wp/inquiry'
+			//'広告掲載' => '/wp/ad'
 		);
 	?>
 	<ul class="basic">
@@ -52,7 +52,7 @@
 		<?php endforeach; ?>
 	</ul>
 	<?php
-    echo $this->Paginator->prev('« Previous ', null, null, array('class' => 'disabled'));
-    echo $this->Paginator->next(' Next »', null, null, array('class' => 'disabled'));
+    echo $this->Paginator->prev('≪ Previous ', null, null, array('class' => 'disabled'));
+    echo $this->Paginator->next(' Next ≫', null, null, array('class' => 'disabled'));
 	?>
 </div>
