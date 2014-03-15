@@ -20,7 +20,8 @@ var urls = {
 	detail: '<?php echo h(Router::url('/hosdetail')); ?>',
 	compare: '<?php echo h(Router::url('/Compare')); ?>',
 	lineChart: '<?php echo h(Router::url('/LineChart')); ?>',
-	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>'
+	bubbleChart: '<?php echo h(Router::url('/BubbleChart')); ?>',
+	position: '<?php echo h(Router::url('/Position')); ?>'
 };
 var wamId = null;
 <?php if(isset($wamId)): ?>
@@ -53,6 +54,9 @@ function Hospital(parent, data){
 	});
 	s.CompareUrl = ko.computed(function(){
 		return urls.compare + '/' + s.data.wam_id;
+	});
+	s.PositionUrl = ko.computed(function(){
+		return urls.position + '/' + s.data.wam_id;
 	});
 }
 
@@ -359,7 +363,8 @@ ko.applyBindings(model, document.getElementById('<?php echo h($uid); ?>'));
 						<table>
 							<tr>
 								<td><a data-bind="text: data.name, attr:{href:DetailUrl}"></a></td>
-								<td data-bind="visible: $root.isPremium" style="width: 80px;"><a data-bind="attr:{href:CompareUrl}">過年度比較</a></td>
+								<td data-bind="visible: $root.isPremium" style="width: 80px;"><a data-bind="attr:{href:CompareUrl}">時系列分析</a></td>
+								<td data-bind="visible: $root.isPremium" style="width: 90px;"><a data-bind="attr:{href:PositionUrl}">ポジション分析</a></td>
 								<td style="width: 80px;"><button type="button" data-bind="click: RemoveFromParent">解除する</button></td>
 							</tr>
 						</table>

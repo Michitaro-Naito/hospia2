@@ -154,7 +154,7 @@ class HomeController extends AppController {
 	 * Premium User only.
 	 */
 	public function CompareMdcsByYear($wamId){
-		if(!$this->isPremiumUser && $wamId != '1130514836')
+		if(!$this->isPremiumUser && $wamId != '1138814790')
 			throw new Exception('プレミアム会員になるとこの機能にアクセスできます。');
 		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
@@ -178,7 +178,7 @@ class HomeController extends AppController {
 			'chartData'=>$chartData,
 			'hospital'=>$hospital,
 			'mdcs'=>$this->Data->GetMdcs(),
-			'displayTypesForDpc'=>$displayTypesForDpc,
+			'displayTypesForDpc'=>$displayTypesForDpc
 		));
 	}
 	
@@ -242,6 +242,27 @@ class HomeController extends AppController {
 			'years'=>$years,
 			'displayTypesForDpc'=>$displayTypesForDpc,
 			'getDpcsUrl'=>Router::url('/Ajax/GetDpcsByIdsAndMdc.json'),
+		));
+	}
+	
+	public function CompareMdcsByBubbles($wamId = null){
+		if(!$this->isPremiumUser && $wamId != '1138814790')
+			throw new Exception('プレミアム会員になるとこの機能にアクセスできます。');
+		
+		$years = array();
+		$max = $this->Data->GetFiscalYear();
+		$min = $max - 6;
+		for($year=$max; $year>=$min; $year--){
+			array_push($years, array('id'=>$year, 'name'=>'平成'.($year-1988).'年度'));
+		}
+		
+		$this->set('dat', array(
+			'wamId'=>$wamId,
+			'hospital'=>$this->Data->GetHospitalWithDpcs($wamId),
+			'mdcs'=>$this->Data->GetMdcs(),
+			'years'=>$years,
+			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
+			'getDpcsUrl'=>Router::url('/Ajax/GetDpcsByWamIdAndYear.json')
 		));
 	}
 	

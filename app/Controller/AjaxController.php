@@ -57,6 +57,12 @@ class AjaxController extends AppController {
 		$this->set('_serialize', array('dpcs'));
 	}
 	
+	public function GetDpcsByWamIdAndYear(){
+		$dpcs = $this->Data->GetDpcsByWamIdAndYear($this->data['wamId'], $this->data['year']);
+		$this->set('dpcs', $dpcs);
+		$this->set('_serialize', array('dpcs'));
+	}
+	
 	/**
 	 * Dpcテーブルから、医療機関IDと会計年度を指定して診療実績を取得する。
 	 */

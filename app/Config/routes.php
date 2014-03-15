@@ -51,6 +51,7 @@
 	Router::connect('/Compare/*', array('controller'=>'Home', 'action'=>'CompareMdcsByYear'));
 	Router::connect('/LineChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByYear'));
 	Router::connect('/BubbleChart/*', array('controller'=>'Home', 'action'=>'CompareInFavoriteGroupByBubbles'));
+	Router::connect('/Position/*', array('controller'=>'Home', 'action'=>'CompareMdcsByBubbles'));
 	Router::connect('/Sitemap/*', array('controller'=>'Home', 'action'=>'Sitemap'));
 	
 /**

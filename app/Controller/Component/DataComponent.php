@@ -83,14 +83,38 @@ class DataComponent extends Component {
 		$data = array();
 		$displayTypesForDpc = $this->GetDisplayTypesForDpc();
 		for($year=$minFiscalYear; $year<=$maxFiscalYear; $year++){
-			/*$data[$year] = array(
-				'year'=>$year
-			);*/
 			array_push($data, array('year'=>$year));
 		}
 		foreach($dpcs as $d){
 			foreach($displayTypesForDpc as $type){
 				$data[intval($d['Dpc']['fiscal_year'])-$minFiscalYear][$d['Dpc']['wam_id'].'.'.$type['id']] = $d['Dpc'][$type['id']];
+			}
+		}
+		return $data;
+	}
+	
+	public function GetDpcsByWamIdAndYear($wamId, $year){
+		$maxFiscalYear = $this->GetFiscalYear();
+		$minFiscalYear = $maxFiscalYear-6;
+		$this->Dpc = ClassRegistry::init('Dpc');
+		$dpcs = $this->Dpc->find('all', array(
+			'conditions'=>array(
+				'Dpc.wam_id'=>$wamId,
+				'Dpc.mdc_cd !='=>0,
+				'Dpc.fiscal_year >='=>$minFiscalYear,
+				'Dpc.fiscal_year <='=>$maxFiscalYear
+			)
+		));
+		
+		// Forms Data
+		$data = array();
+		$displayTypesForDpc = $this->GetDisplayTypesForDpc();
+		for($year=$minFiscalYear; $year<=$maxFiscalYear; $year++){
+			array_push($data, array('year'=>$year));
+		}
+		foreach($dpcs as $d){
+			foreach($displayTypesForDpc as $type){
+				$data[intval($d['Dpc']['fiscal_year'])-$minFiscalYear][$d['Dpc']['mdc_cd'].'.'.$type['id']] = $d['Dpc'][$type['id']];
 			}
 		}
 		return $data;
