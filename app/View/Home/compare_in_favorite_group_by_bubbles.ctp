@@ -88,10 +88,21 @@ function AppModel(){
 			row.x = dataOfYear[id + '.' + s.selectedDisplayTypeX().id];
 			row.y = dataOfYear[id + '.' + s.selectedDisplayTypeY().id];
 			if(s.selectedDisplayTypeValue().id == 'none')
-				row.value = 1;
+				row.realValue = 1;
 			else
-				row.value = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
+				row.realValue = dataOfYear[id + '.' + s.selectedDisplayTypeValue().id];
 			chartData.push(row);
+		}
+		
+		// 表示される大きさを正規化する。
+		var maxValue = 1.0;
+		for(var n=0; n<chartData.length; n++){
+			var row = chartData[n];
+			if(row.value > maxValue)
+				maxValue = row.realValue;
+		}
+		for(var n=0; n<chartData.length; n++){
+			chartData[n].value = chartData[n].realValue / maxValue;
 		}
 		
 		// XY Chart
@@ -122,7 +133,7 @@ function AppModel(){
 		graph.yField = "y";
 		graph.lineAlpha = 0;
 		graph.bullet = "bubble";
-		graph.balloonText = "[[name]]</br>x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[value]]</b>";
+		graph.balloonText = "[[name]]</br>x:<b>[[x]]</b> y:<b>[[y]]</b><br>value:<b>[[realValue]]</b>";
 		graph.labelText = "[[alias]]";
 		chart.addGraph(graph);
 		
