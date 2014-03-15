@@ -97,12 +97,12 @@ function purchase(){
 					<td rowspan="2">病院内比較</td>
 					<td>時系列分析</td>
 					<td>ひとつの病院について、過去からの実績推移を折れ線グラフで比較できます。</td>
-					<td><?php echo $this->Html->link('順天堂大学医学部附属　順天堂医院', '/Home/CompareMdcsByYear/1130514836', array('target'=>'_blank')); ?></td>
+					<td><?php echo $this->Html->link('東大病院', '/Home/CompareMdcsByYear/1138814790', array('target'=>'_blank')); ?></td>
 				</tr>
 				<tr>
 					<td>ポジション分析</td>
 					<td>ひとつの病院について、診療実績の特徴をバブルチャートで比較できます。</td>
-					<td>---Coming soon!---</td>
+					<td><?php echo $this->Html->link('東大病院', '/Position/1138814790', array('target'=>'_blank')); ?></td>
 				</tr>
 				<tr>
 					<td rowspan="2">グループ内比較</td>
