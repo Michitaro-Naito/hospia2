@@ -17,7 +17,7 @@
 	</tr>
 </table>
 
-<div class="fbcomment">Facebookでこの病院の情報を共有する</div>
+<div class="fbcomment">以下のコメント欄を使用すると、この病院ページに投稿内容が表示されます。</div>
 <div class="fb-comments"
 	<?php if(!$this->request->is('mobile')): ?>
 		data-width="718"
