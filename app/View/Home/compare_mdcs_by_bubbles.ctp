@@ -71,6 +71,9 @@ function AppModel(){
 		// AmChartsの形式に直す
 		for(var n=0; n<s.mdcs.length; n++){
 			var mdc = s.mdcs[n];
+			if(dataOfYear[mdc.id + '.ave_month'] == 0)
+				// 月平均患者数が0の場合は表示しない。
+				continue;
 			var row = {};
 			row.name = mdc.name;
 			row.alias = mdc.name;
