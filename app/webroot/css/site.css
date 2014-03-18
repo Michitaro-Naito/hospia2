@@ -645,6 +645,11 @@ table.maladylist tr td{
 	font-size: 14px;
 	padding: 5px;
 }
+#hosdetail-menu a.premium{
+	padding-left: 24px;
+	background-image: url('img/premium.png');
+	background-repeat: no-repeat;
+}
 #hosdetail-menu .box h2{
 	font-size: 22px;
 }
