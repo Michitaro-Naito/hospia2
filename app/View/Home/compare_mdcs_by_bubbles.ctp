@@ -1,3 +1,9 @@
+<?php
+	$title = '診療実績';
+	if(!empty($dat['hospital']['Hospital']['name']))
+		$title = $dat['hospital']['Hospital']['name'];
+	$this->assign('title', $title);
+?>
 <?php $this->start('script'); ?>
 <?php echo $this->Html->script('amcharts/amcharts'); ?>
 <?php echo $this->Html->script('amcharts/xy'); ?>
