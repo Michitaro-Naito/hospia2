@@ -156,9 +156,9 @@ class HomeController extends AppController {
 	public function CompareMdcsByYear($wamId){
 		if(!$this->isPremiumUser && $wamId != '1138814790')
 			if($this->Auth->loggedIn())
-				return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/Users/Subscribe');
+				return $this->flash('プレミアム会員になると、この機能をご利用いただけます。', '/Users/Subscribe');
 			else
-				return $this->flash('会員登録後にプレミアム会員になるとこの機能にアクセスできます。', '/Users/Add');
+				return $this->flash('会員登録をしてプレミアム会員になると、この機能をご利用いただけます。', '/Users/Add');
 		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
@@ -193,7 +193,7 @@ class HomeController extends AppController {
 	 */
 	public function CompareInFavoriteGroupByYear($id){
 		if(!$this->isPremiumUser && $id != '1')
-			return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/');
+			return $this->flash('プレミアム会員になると、この機能をご利用いただけます。', '/');
 		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
@@ -221,7 +221,7 @@ class HomeController extends AppController {
 	 */
 	public function CompareInFavoriteGroupByBubbles($id){
 		if(!$this->isPremiumUser && $id != '1')
-			return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/');
+			return $this->flash('プレミアム会員になると、この機能をご利用いただけます。', '/');
 		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$this->FavoriteHospital = ClassRegistry::init('FavoriteHospital');
@@ -251,9 +251,9 @@ class HomeController extends AppController {
 	public function CompareMdcsByBubbles($wamId = null){
 		if(!$this->isPremiumUser && $wamId != '1138814790')
 			if($this->Auth->loggedIn())
-				return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/Users/Subscribe');
+				return $this->flash('プレミアム会員になると、この機能をご利用いただけます。', '/Users/Subscribe');
 			else
-				return $this->flash('会員登録後にプレミアム会員になるとこの機能にアクセスできます。', '/Users/Add');
+				return $this->flash('会員登録をしてプレミアム会員になると、この機能をご利用いただけます。', '/Users/Add');
 		
 		$years = array();
 		$max = $this->Data->GetFiscalYear();
