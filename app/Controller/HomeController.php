@@ -155,7 +155,10 @@ class HomeController extends AppController {
 	 */
 	public function CompareMdcsByYear($wamId){
 		if(!$this->isPremiumUser && $wamId != '1138814790')
-			return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/');
+			if($this->Auth->loggedIn())
+				return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/Users/Subscribe');
+			else
+				return $this->flash('会員登録後にプレミアム会員になるとこの機能にアクセスできます。', '/Users/Add');
 		
 		$displayTypesForDpc = $this->Data->GetDisplayTypesForDpc();
 		$hospital = $this->Data->GetHospitalWithDpcs($wamId);
@@ -247,7 +250,10 @@ class HomeController extends AppController {
 	
 	public function CompareMdcsByBubbles($wamId = null){
 		if(!$this->isPremiumUser && $wamId != '1138814790')
-			return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/');
+			if($this->Auth->loggedIn())
+				return $this->flash('プレミアム会員になるとこの機能にアクセスできます。', '/Users/Subscribe');
+			else
+				return $this->flash('会員登録後にプレミアム会員になるとこの機能にアクセスできます。', '/Users/Add');
 		
 		$years = array();
 		$max = $this->Data->GetFiscalYear();
