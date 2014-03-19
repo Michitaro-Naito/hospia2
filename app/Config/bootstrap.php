@@ -202,6 +202,7 @@ Configure::write('categoryDisp', array(
 	'ranking' => '各種ランキング',
 	'policy' => 'サイトポリシー',
 	'news' => '病院ニュース',
+	'list' => '病院リスト'
 ));
 
 // 会員の職業
