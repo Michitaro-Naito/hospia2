@@ -25,10 +25,19 @@ function Hospital(root, data){
 		return Number(value);
 	}, this);
 	s.fmValueForSelection = ko.computed(function(){
-		var str = addFigure(s.valueForSelection().toFixed(1));
-		if(s.root.currentComparisonCategory().id == 'dpc' 
-			&& s.root.selectedDisplayTypeForDpc().id == 'zone_share')
-			str += '%';
+		var value = s.valueForSelection();
+		var str = addFigure(value.toFixed(1));
+		if(s.root.currentComparisonCategory().id == 'dpc'){
+			switch(s.root.selectedDisplayTypeForDpc().id){
+				case 'zone_share':
+					str = addFigure((100.0*value).toFixed(1)) + '%';
+					break;
+				case 'complex':
+				case 'efficiency':
+					str = addFigure(value.toFixed(2));
+					break;
+			}
+		}
 		return str;
 	});
 	s.fmDistance = ko.computed(function(){
