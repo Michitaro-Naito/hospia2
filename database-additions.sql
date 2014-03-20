@@ -99,3 +99,13 @@ create table password_reset(
   user_id int not null comment 'ユーザーID',
   hash varchar(255) not null comment '確認用MD5ハッシュ'
 ) comment 'パスワード再設定手続きの状態';
+
+alter table users add insentive_until datetime not null default '2000/1/1 0:00:00';
+alter table users add insentive_count int(11) not null default 0;
+
+create table settings(
+  id int primary key auto_increment,
+  insentive_active int(1) not null comment 'インセンティブ提供の有無' default 1,
+  insentive_hours int(11) not null comment '1回のインセンティブで延長される時間' default 24,
+  insentive_max_count int(11) not null comment '1会員がインセンティブを得られる最大回数' default 3
+) comment '管理側の設定。最初の行のみ使用します。';

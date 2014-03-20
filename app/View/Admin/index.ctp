@@ -29,6 +29,10 @@
 			<td>通常会員とプレミアム会員をそれぞれ数え上げるためのツールです。</td>
 		</tr>
 		<tr>
+			<td><?php echo $this->Html->link('各種設定', '/Admin/Settings'); ?></td>
+			<td>各種設定を行うための画面です。インセンティブの設定もこちらです。</td>
+		</tr>
+		<tr>
 			<td><?php echo $this->Html->link('ログアウト', '/users/logout'); ?></td>
 			<td>hospia.jpからログアウトします。</td>
 		</tr>

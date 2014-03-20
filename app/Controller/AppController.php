@@ -101,12 +101,20 @@ class AppController extends Controller {
 			$this->User->id = $this->Auth->user('id');
 			$user = $this->User->read();
 			$result = false;
+			
+			// true if payed.
 			foreach($user['Subscription'] as $s){
 				if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
 					$result = true;
 					break;
 				}
 			}
+			
+			// true if free trial (insentive)
+			$until = new DateTime($user['User']['insentive_until']);
+			$now = new DateTime();
+			if($until > $now)
+				$result = true;
 		}
 		
 		// Caches to Session

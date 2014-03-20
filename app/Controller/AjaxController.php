@@ -82,4 +82,66 @@ class AjaxController extends AppController {
 		$this->set('_serialize', array('wounds'));
 	}
 	
+	/**
+	 * インセンティブの取得を試みる。
+	 */
+	public function GetInsentive(){
+		$success = false;
+		$hours = 0;
+		$nextUntil = '';
+		if($this->Auth->loggedIn()){
+			
+			// Gets User
+			$this->loadModel('User');
+			$this->User->bindModel(array(
+				'hasMany'=>array(
+					'Subscription'
+				)
+			));
+			$user = $this->User->find('first', array(
+				'conditions'=>array(
+					'User.username'=>$this->Auth->user('username')
+				)
+			));
+			
+			// Gets Settings
+			$this->loadModel('Settings');
+			$settings = $this->Settings->find('first');
+			
+			if(
+				!empty($user)																	// User exits
+				&& !empty($settings)													// Settings exists
+				&& $settings['Settings']['insentive_active']	// Insentive is active
+				&& empty($user['Subscription'])								// User is not paid
+				&& $user['User']['insentive_count'] < $settings['Settings']['insentive_max_count']	// Limit not exceeded
+			){
+				// Extends User.insentive_until
+				$now = new DateTime();
+				$until = new DateTime($user['User']['insentive_until']);
+				$hours = $settings['Settings']['insentive_hours'];
+				if($until > $now)
+					$nextUntil = $until->modify("+{$hours} hours")->format('Y-m-d H:i:s');
+				else
+					$nextUntil = $now->modify("+{$hours} hours")->format('Y-m-d H:i:s');
+				$user['User']['insentive_until'] = $nextUntil;
+				$user['User']['insentive_count']++;
+				if($this->User->save($user))
+					$success = true;
+			}
+		}
+		
+		// Checks again that this User is Premium
+		$this->IsPremiumUser(true);
+		
+		// Returns Results
+		$dt = new DateTime($user['User']['insentive_until']);
+		$this->set('result', array(
+			'success'=>$success,
+			'hours'=>$hours,
+			'until'=>$dt->format('Y年m月d日 H:i'),
+			'count'=>$user['User']['insentive_count'],
+			'max'=>$settings['Settings']['insentive_max_count']
+		));
+		$this->set('_serialize', array('result'));
+	}
 }

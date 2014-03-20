@@ -182,6 +182,18 @@ body{
 	height: 20px;
 }
 
+button#fb-feed{
+	background: -webkit-linear-gradient(#4c69ba, #3b55a0);
+	color: #fff;
+	font-size: 11px;
+	height: 20px;
+	border: none;
+	border-radius: 2px;
+}
+button#fb-feed:hover{
+	background: -webkit-linear-gradient(#5c79ca, #4b65b0);
+}
+
 .social-container{
 	margin-bottom: 40px;
 }

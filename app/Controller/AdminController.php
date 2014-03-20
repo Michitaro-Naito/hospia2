@@ -16,6 +16,25 @@ class AdminController extends AppController{
 		
 	}
 	
+	public function Settings(){
+	 	if(!$this->IsAdmin())
+			return $this->redirect('/');
+		
+		$this->loadModel('Settings');
+		if(empty($this->request->data)){
+				$this->request->data = $this->Settings->find('first');
+				if(empty($this->request->data))
+					throw new Exception('settingsテーブルにレコードが見当たりません。1行挿入して下さい。');
+			}else{
+				if ($this->request->is('post') || $this->request->is('put')){
+					// Try to save
+					if($this->Settings->save($this->request->data)){
+						return $this->flash('保存されました。', '/Admin/Settings');
+					}
+				}
+			}
+	}
+	
 	// Coordinates -> Distance
 	public function distance(){
 	 	if(!$this->IsAdmin())
