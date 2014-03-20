@@ -220,3 +220,5 @@ Configure::write('jobs', array(
 	'パート・アルバイト' => 'パート・アルバイト',
 	'主婦・無職 その他'
 ));
+
+date_default_timezone_set('Asia/Tokyo');
