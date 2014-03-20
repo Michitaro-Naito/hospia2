@@ -16,7 +16,7 @@
 	   {
 	     method: 'feed',
 	     name: '<?php echo h($this->fetch('title')); ?>'+' - 病院情報局',
-	     link: '<?php echo h(Router::url($this->here, true)); ?>',	//'http://hospia.jp/',
+	     link: '<?php echo h(Router::url(null, true)); ?>',	//'http://hospia.jp/',
 	     picture: '<?php echo h(Router::url('/img/logo_fb.png', true)); ?>',	//'http://hospia.jp/img/logo_fb.png',
 	     description: '全国の急性期病院の診療実績（患者数、平均在院平均など）を比較'
 	   },
