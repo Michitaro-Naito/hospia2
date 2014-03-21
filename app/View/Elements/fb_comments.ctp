@@ -19,7 +19,7 @@
 			      </div>
 			      <div class="modal-body">
 			      	<p>
-			      		無料でプレミアム機能をご利用いただける権利を、<span class="hours"></span>時間設定(延長)させていただきました。<br/>
+			      		無料でプレミアム機能をご利用いただける権利を、<span class="hours"></span>時間設定(延長)させていただきました。<br/>
 			      		<span class="until"></span>ごろまでプレミアム機能をご利用いただけます。<br/>
 			      		現在までの獲得回数：<span class="count"></span>回<br/>
 			      		最大獲得回数：<span class="max"></span>回

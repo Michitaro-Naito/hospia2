@@ -125,7 +125,7 @@ class AjaxController extends AppController {
 					$nextUntil = $now->modify("+{$hours} hours")->format('Y-m-d H:i:s');
 				$user['User']['insentive_until'] = $nextUntil;
 				$user['User']['insentive_count']++;
-				if($this->User->save($user))
+				if($this->User->save($user, true, array('insentive_until', 'insentive_count')))
 					$success = true;
 			}
 		}
