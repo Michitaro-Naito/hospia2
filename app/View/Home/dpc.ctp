@@ -22,6 +22,7 @@ function Wound(root, data){
 	s.Wound = data.Wound;
 	s.Details_Count = data.Details_Count;
 	s.Details_Days = data.Details_Days;
+	s.isTotal = data.isTotal;
 	s.Rate = ko.computed(function(){
 		if(typeof root.Total == 'undefined')
 			return 0;
@@ -102,14 +103,16 @@ function AppModel(){
 			total.Wound.days += parseFloat(w.Wound.count) * parseFloat(w.Wound.days);
 		}
 		total.Wound.days /= total.Wound.count;
+		total.isTotal = true;
 		return new Wound(s, total);
 	});
 	s.MaxDays = ko.computed(function(){
-		var max = 0;
+		var max = 0.0;
 		for(var n=0; n<s.wounds().length; n++){
 			var w = s.wounds()[n];
-			if(w.Wound.days > max)
-				max = w.Wound.days;
+			var days = new Number(w.Wound.days);
+			if(days > max)
+				max = days;
 		}
 		return max;
 	});
@@ -172,7 +175,7 @@ ko.applyBindings(model);
 			<td data-bind="text: addFigure(Wound.count)" class="count ar"></td>
 			<td data-bind="text: fmRate" class="rate ar"></td>
 			<td class="bar">
-				<div data-bind="visible: $index()!=3" class="progress">
+				<div data-bind="visible: !isTotal" class="progress">
 				  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;" data-bind="attr: {style:GetStyle}">
 				    <span class="sr-only">60% Complete</span>
 				  </div>
