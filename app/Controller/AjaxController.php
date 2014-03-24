@@ -119,10 +119,13 @@ class AjaxController extends AppController {
 				$now = new DateTime();
 				$until = new DateTime($user['User']['insentive_until']);
 				$hours = $settings['Settings']['insentive_hours'];
-				if($until > $now)
-					$nextUntil = $until->modify("+{$hours} hours")->format('Y-m-d H:i:s');
-				else
-					$nextUntil = $now->modify("+{$hours} hours")->format('Y-m-d H:i:s');
+				if($until > $now){
+					$until->modify("+{$hours} hours");
+					$nextUntil = $until->format('Y-m-d H:i:s');
+				}else{
+					$now->modify("+{$hours} hours");
+					$nextUntil = $now->format('Y-m-d H:i:s');
+				}
 				$user['User']['insentive_until'] = $nextUntil;
 				$user['User']['insentive_count']++;
 				if($this->User->save($user, true, array('insentive_until', 'insentive_count')))
