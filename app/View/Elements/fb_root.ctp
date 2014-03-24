@@ -7,7 +7,8 @@
 	
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : '371990586279310',
+      //appId      : '371990586279310',
+      appId      : '<?php echo h(Configure::read('Facebook_AppId')); ?>',
       status     : true,
       xfbml      : true
     });

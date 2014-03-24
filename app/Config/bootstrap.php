@@ -178,17 +178,25 @@ Configure::write('cmplst', array(
 	'efficiency@dpc'		=> '在院日数指標'
 ));
 
-// Google Wallet
 if($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.168.100.2' || $_SERVER['SERVER_NAME'] == 'v157-7-208-129.myvps.jp'){
 	// テスト用アカウント
+	// GoogleWallet
 	Configure::write('GoogleWallet_SellerId', '04806629248295947480');
 	Configure::write('GoogleWallet_SellerSecret', 'xzFzun3WgEG6nAc1x0rtOQ');
 	Configure::write('GoogleWallet_ScriptUrl', 'https://sandbox.google.com/checkout/inapp/lib/buy.js');
+	
+	// Facebook
+	Configure::write('Facebook_AppId', '371990586279310');
+	
 }else{
 	// 本番用アカウント
+	// GoogleWallet
 	Configure::write('GoogleWallet_SellerId', '08098458298793310506');
 	Configure::write('GoogleWallet_SellerSecret', '_2JSZL20XpIyKO9n6XJw0A');
 	Configure::write('GoogleWallet_ScriptUrl', 'https://wallet.google.com/inapp/lib/buy.js');
+	
+	// Facebook
+	Configure::write('Facebook_AppId', '616515881759269');
 }
 
 // Product ID
