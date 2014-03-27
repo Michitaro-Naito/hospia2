@@ -15,9 +15,11 @@
 		'email',
 		//'displayname',
 		'sei', 'mei', 'sei_kana', 'mei_kana',
-		'job' => array('options'=>Configure::read('jobs'), 'empty'=>'選択して下さい'),
-		'active'
+		'job' => array('options'=>Configure::read('jobs'), 'empty'=>'選択して下さい')
 	));
+	echo $this->Form->input('active', array('label'=>'メール確認済み', 'type'=>'checkbox', 'class'=>false));
+	echo $this->Form->input('special', array('label'=>'特別会員', 'type'=>'checkbox', 'class'=>false));
+	
 	if(!empty($this->data['User']['created']))
 		echo $this->Form->input('created', array('type'=>'text', 'disabled'=>'disabled'));
 	if(!empty($this->data['User']['modified']))
