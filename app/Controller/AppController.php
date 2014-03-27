@@ -110,10 +110,10 @@ class AppController extends Controller {
 				}
 			}
 			
-			// true if free trial (insentive)
+			// true if free trial (insentive) or SpecialUser
 			$until = new DateTime($user['User']['insentive_until']);
 			$now = new DateTime();
-			if($until > $now)
+			if($until > $now || !empty($user['User']['special']))
 				$result = true;
 		}
 		
