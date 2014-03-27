@@ -38,7 +38,7 @@ function purchase(){
 <div class="box">
 	<h2>プレミアム会員権管理</h2>
 	<div class="content">
-		<?php if(empty($dat['user']['Subscription'])): ?>
+		<?php if(empty($dat['user']['Subscription']) && empty($dat['user']['User']['special'])): ?>
 			<div class="alert">現在は通常会員です。</div>
 			<p>
 				毎月の会費をお支払いいただくと、プレミアム機能をご利用いただけます。<br/>
