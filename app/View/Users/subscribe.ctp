@@ -57,7 +57,11 @@ function purchase(){
 			</button>
 			
 		<?php else: ?>
-			<div class="alert alert-success">現在はプレミアム会員です。</div>
+			<?php if(!empty($dat['user']['Subscription'])): ?>
+				<div class="alert alert-success">現在はプレミアム会員です。</div>
+			<?php else: ?>
+				<div class="alert alert-success">現在は特別会員です。</div>
+			<?php endif; ?>
 			<p>
 				プレミアム機能をご利用いただき誠にありがとうございます。<br/>
 				会費の支払いを停止される場合は、以下のリンクからGoogleウォレットへアクセスし、「もっと見る」→「定期購入」から、「病院情報局 - プレミアム会費」をご解約ください。<br/>
