@@ -109,3 +109,5 @@ create table settings(
   insentive_hours int(11) not null comment '1回のインセンティブで延長される時間' default 24,
   insentive_max_count int(11) not null comment '1会員がインセンティブを得られる最大回数' default 3
 ) comment '管理側の設定。最初の行のみ使用します。';
+
+alter table users add special int(1) not null comment '特別会員' default 0;
