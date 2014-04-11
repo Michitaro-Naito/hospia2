@@ -292,7 +292,7 @@ class UsersController extends AppController {
 			$this->User->id = $row['EmailChange']['user_id'];
 			$this->User->read();
 			$this->User->data['User']['email'] = $row['EmailChange']['new_email'];
-			if(!$this->User->save())
+			if(!$this->User->save(null, true, array('email')))
 				throw new Exception("不明なエラーにより会員情報の更新に失敗しました。");
 			$this->EmailChange->delete($row['EmailChange']['id']);
 			
