@@ -23,7 +23,7 @@ class Ticket extends AppModel {
         $this->_garbage();
         if ( $url && $data ) {
             if ( empty($deadline) ) {
-                $deadline = date('Y-m-d H:i:s', time() + (24 * 60 * 60));
+                $deadline = date('Y-m-d H:i:s', time() + (365 * 24 * 60 * 60));
             }
             $record[$this->alias]['hash'] = Security::hash(time().$url, 'md5');
             $record[$this->alias]['caller'] = $url;

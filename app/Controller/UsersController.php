@@ -88,6 +88,7 @@ class UsersController extends AppController {
 ******************************
 病院情報局 http://hospia.jp/
 
+※URLをクリックしてもうまくアクセスできない場合は、Webブラウザのアドレス欄に、URLが1行になるように貼り付けてアクセスして下さい。
 ※このメールは自動で送信されておりますので、このメールには返信しないようお願いいたします。";
 							$body = str_replace("\n", "\r\n", $body);
 							$email->send($body);
