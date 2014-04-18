@@ -377,6 +377,7 @@ class UsersController extends AppController {
 			$this->User->id = $row['PasswordReset']['user_id'];
 			$user = $this->User->read();
 			$this->User->data['User']['password'] = $password;
+			$this->User->data['User']['active'] = true;
 			if(!$this->User->save())
 				throw new Exception("不明なエラーにより会員情報の更新に失敗しました。");
 			
