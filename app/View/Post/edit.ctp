@@ -13,7 +13,8 @@ tinymce.init({
 	convert_urls: false,
   toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
   toolbar2: "print preview media | forecolor backcolor emoticons",
-	autosave_ask_before_unload: false
+	autosave_ask_before_unload: false,
+	extended_valid_elements : "a[class|name|href|target|title|onclick|rel]"
 });
 
 function InsertLink(link){
