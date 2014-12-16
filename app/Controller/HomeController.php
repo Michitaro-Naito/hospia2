@@ -356,7 +356,7 @@ class HomeController extends AppController {
 			$wamId = $_REQUEST['wam_id'];
 			return $this->redirect($path . $wamId);
 		}
-		if(!empty($wamId) && preg_match('/W[0-9]{7}/', $wamId)){
+		if(!empty($wamId) && preg_match('/W[0-9]{7}|[0-9]{10}/', $wamId)){
 			$this->loadModel('WamToNew');
 			$row = $this->WamToNew->find('first', array(
 				'conditions'=>array(
