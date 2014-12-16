@@ -609,7 +609,7 @@ class DataComponent extends Component {
 			usort($hospitals, '_CompareHospitalsByDistance');
 			
 			$ids = array();
-			foreach($hospitals as $h)
+			foreach($hospitals as &$h)
 				array_push($ids, $h['Hospital']['addr2_cd']);
 			
 			// Areaを結合する。（パフォーマンスのため後から）
