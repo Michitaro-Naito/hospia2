@@ -43,6 +43,7 @@ class HomeController extends AppController {
 		define("MDC_DEFAULT", "0");
 		define("PREFECTURE_DEFAULT", "00");
 		define("CMP_DEFAULT", "ave_month@dpc");
+		$recentFiscalYear = $this->Data->GetFiscalYear();
 		// メニューの一覧に表示する項目を取得する
 		$prefectures = $this->Data->GetPrefectures();
 		$prefectures[0]['id'] = PREFECTURE_DEFAULT;
@@ -50,15 +51,18 @@ class HomeController extends AppController {
 		$this->set('prefectures', $prefectures);
 		$this->set('mdcs', $this->Data->GetMdcs());
 		$this->set('cmplst', $this->Data->GetCmplst());
+		$this->set('years', $this->Data->GetFiscalYears());
 		// 検索項目の値を初期化する
 		$selectedMdc = MDC_DEFAULT;
 		$selectedPrefecture = PREFECTURE_DEFAULT;
 		$selectedCmp = CMP_DEFAULT;
+		$selectedYear = $recentFiscalYear;
 		if ($this->request->data) {
 			// フォーム送信されてきた場合は選択された値を取得する
 			$selectedMdc = $this->request->data("valueMdc");
 			$selectedPrefecture = $this->request->data("valuePrefecture");
 			$selectedCmp = $this->request->data("valueCmp");
+			$selectedYear = $this->request->data('valueYear');
 		}else{
 			// GETパラメーターからMDCの初期値を取得する
 			if(!empty($_GET['id'])) $selectedMdc = $_GET['id'];
@@ -67,11 +71,20 @@ class HomeController extends AppController {
 		$condMdcValue = $selectedMdc;
 		$condPrefectureValue = $selectedPrefecture;
 		if ($condPrefectureValue === PREFECTURE_DEFAULT) $condPrefectureValue = null;
-		$hospitals = $this->Data->GetHospitalsByMdcAndPrefecture($condMdcValue, $condPrefectureValue);
+		
+		// Redirects non premium user
+		if(empty($this->isPremiumUser) && $selectedYear != $recentFiscalYear){
+			$this->redirect('/users/premium_content');
+		}
+		
+		// 検索する
+		$hospitals = $this->Data->GetHospitalsByMdcAndPrefecture($condMdcValue, $condPrefectureValue, $selectedYear);
+		
 		// 選択された検索項目の値をビューに反映させる
 		$this->set("defMdc", $selectedMdc);
 		$this->set("defPrefecture", $selectedPrefecture);
 		$this->set("defCmp", $selectedCmp);
+		$this->set('defYear', $selectedYear);
 		$this->set("hospitals", $hospitals);
 	}
 

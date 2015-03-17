@@ -891,7 +891,7 @@ class DataComponent extends Component {
 	/**
 	 * 診断分類と都道府県から医療機関一覧を検索取得する。
 	 */
-	public function GetHospitalsByMdcAndPrefecture($mdcId, $prefectureId){
+	public function GetHospitalsByMdcAndPrefecture($mdcId, $prefectureId, $year){
 
 		// 医療機関一覧用のModelを取得する
 		$this->Hospital = ClassRegistry::init('Hospital');
@@ -903,7 +903,9 @@ class DataComponent extends Component {
 		// 診療実績の結合条件を設定する
 		$condDpc = array();
 		if(isset($mdcId)) $condDpc['Dpc.mdc_cd'] = $mdcId;
-		$condDpc['Dpc.fiscal_year'] = $this->getFiscalYear(); //2012
+		//$condDpc['Dpc.fiscal_year'] = $this->getFiscalYear(); //2012
+		//$year = $this->GetFiscalYear();
+		$condDpc['Dpc.fiscal_year'] = $year;
 
 		// 並び順を設定する
 		$order = array('Dpc.ave_month'=>'desc');

@@ -6,6 +6,7 @@
 var mdcs = JSON.parse('<?php echo json_encode($mdcs); ?>');					// 診断分類一覧
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');	// 都道府県一覧
 var cmplst = JSON.parse('<?php echo json_encode($cmplst); ?>');				// 比較指数一覧
+var years = JSON.parse('<?php echo json_encode($years); ?>');	// 会計年度一覧
 var hospitals = JSON.parse('<?php echo json_encode($hospitals); ?>');		// 医療機関一覧
 var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
 
@@ -13,6 +14,7 @@ var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
 var defMdc = '<?php echo $defMdc; ?>';										// 診断分類
 var defPrefecture = '<?php echo $defPrefecture; ?>';						// 都道府県
 var defCmp = '<?php echo $defCmp; ?>';										// 比較指数
+var defYear = '<?php echo $defYear; ?>';
 
 // Represents a Hospital
 function Hospital(root, data){
@@ -77,10 +79,12 @@ function AppModel(){
 	self.mdcs = mdcs;											// 診断分類一覧
 	self.prefectures = prefectures;								// 都道府県一覧
 	self.cmplst = cmplst;										// 比較指数一覧
+	self.years = years;
 	//self.selectedMdc = ko.observable(defMdc);					// 選択された診断分類
 	self.selectedMdc = ko.observable(self.mdcs[defMdc]);
 	self.selectedPrefecture = ko.observable(defPrefecture);		// 選択された都道府県
 	self.selectedCmp = ko.observable();					// 選択された比較指数
+	self.selectedYear = ko.observable(defYear);
 	self.barInitialized = ko.observable(false);
 	var hs = [];
 	for(var n=0; n<hospitals.length; n++){
@@ -142,6 +146,7 @@ model.setDefaultValues();
 			<input type="hidden" name="valueMdc" data-bind="value: selectedMdc().id"/>
 			<input type="hidden" name="valuePrefecture" data-bind="value: selectedPrefecture"/>
 			<input type="hidden" name="valueCmp" data-bind="value: selectedCmp"/>
+			<input type="hidden" name="valueYear" data-bind="value: selectedYear"/>
 			<table>
 				<tr>
 					<td>
@@ -151,6 +156,10 @@ model.setDefaultValues();
 					<td style="padding-left: 20px;">
 						都道府県<?php echo $this->My->tip('患者数ランキング-都道府県'); ?>
 						<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
+					</td>
+					<td>
+						<span class="premium">会計年度</span>
+						<select data-bind="options: years, optionsValue: 'id', optionsText: 'name', value: selectedYear, event: {change: getHospitals}"></select>
 					</td>
 				</tr>
 			</table>
