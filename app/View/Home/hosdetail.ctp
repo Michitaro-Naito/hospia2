@@ -48,6 +48,8 @@ function AppModel(){
 	s.barInitialized = ko.observable(false);
 	s.sortField = ko.observable('mdc_cd');	// ソート方法
 	
+	s.onceSearched = ko.observable(false);
+	
 	s.MaxValue = ko.computed(function(){
 		var display = s.selectedDisplayTypeForDpc();
 		if(typeof display == 'undefined')
@@ -94,6 +96,13 @@ function AppModel(){
 	}
 	
 	s.search = function(){
+		<?php if(empty($isPremiumUser)): ?>
+		// Redirects non-premium user
+		if(s.onceSearched())
+			location.href = dat.premiumContentUrl;
+		s.onceSearched(true);
+		<?php endif; ?>
+			
 		$.postJSON({
 			url: dat.getDpcsUrl,
 			data: {
@@ -129,9 +138,12 @@ model.search();
 	<!-- Menu -->
 	<div class="box">
 		<h2>診療実績</h2>
-		<div class="content">
-			表示年度<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear"></select>
-			<button data-bind="click: search">変更する</button>
+		<div class="content form-inline">
+			<div class="form-group">
+				<label>表示年度</label>
+				<select data-bind="options: fiscalYears, optionsText: 'name', value: selectedFiscalYear" class=""></select>
+			</div>
+			<button data-bind="click: search" class="btn btn-default premium">変更する</button>
 		</div>
 	</div>
 	

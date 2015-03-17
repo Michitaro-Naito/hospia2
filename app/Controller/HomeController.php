@@ -102,7 +102,8 @@ class HomeController extends AppController {
 			'fiscalYears'=>$this->Data->GetFiscalYears(),
 			'displayTypesForDpc'=>$this->Data->GetDisplayTypesForDpc(),
 			'mdcs'=>$this->Data->GetMdcs(),
-			'getDpcsUrl'=>Router::url('/ajax/getDpcsByHospitalIdAndFiscalYear.json')
+			'getDpcsUrl'=>Router::url('/ajax/getDpcsByHospitalIdAndFiscalYear.json'),
+			'premiumContentUrl'=>Router::url('/users/premium_content')
 		));
 	}
 

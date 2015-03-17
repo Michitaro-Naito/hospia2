@@ -447,6 +447,17 @@ ID: {$user['User']['username']}
 			$this->set('noAds', true);
 		}
 		
+		/**
+		 * Non premium User will be redirected to here.
+		 * Redirect User again to the right page. (Users/Subscribe or Users/Add)
+		 */
+		function premium_content(){
+			if($this->Auth->loggedIn())
+				return $this->flash('プレミアム会員になると、この機能をご利用いただけます。', '/Users/Subscribe');
+			else
+				return $this->flash('会員登録をしてプレミアム会員になると、この機能をご利用いただけます。', '/Users/Add');
+		}
+		
 		//Activation for email confirmation.
 		function activate($hash = null) { 
 			$this->Ticket = ClassRegistry::init('Ticket'); //Issue with $this->loadModel('Ticket');

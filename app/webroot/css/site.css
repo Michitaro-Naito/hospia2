@@ -442,6 +442,13 @@ div.icon-like{
 	border-radius: 3px;
 }
 
+button.btn.premium{
+	padding-left: 32px;
+	background-image: url('img/premium.png');
+	background-repeat: no-repeat;
+	background-position: 4px 4px;
+}
+
 /* Page Specific */
 /* Table Haader */
 .thead{
