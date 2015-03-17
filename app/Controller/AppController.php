@@ -95,7 +95,8 @@ class AppController extends Controller {
 			$this->User = ClassRegistry::init('User');
 			$this->User->bindModel(array(
 				'hasMany'=>array(
-					'Subscription'=>array()
+					'Subscription'=>array(),
+					'SubscriptionCloudPayment'=>array()
 				)
 			));
 			$this->User->id = $this->Auth->user('id');
@@ -104,6 +105,12 @@ class AppController extends Controller {
 			
 			// true if payed.
 			foreach($user['Subscription'] as $s){
+				if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
+					$result = true;
+					break;
+				}
+			}
+			foreach($user['SubscriptionCloudPayment'] as $s){
 				if($s['product_id'] === Configure::read('ProductId_PremiumSubscription')){
 					$result = true;
 					break;

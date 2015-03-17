@@ -111,3 +111,18 @@ create table settings(
 ) comment '管理側の設定。最初の行のみ使用します。';
 
 alter table users add special int(1) not null comment '特別会員' default 0;
+
+
+create table transaction_cloud_payment(
+  id int primary key auto_increment,
+  created datetime comment '作成日時',
+  query longtext comment 'GETパラメータ'
+)engine=innodb comment = 'トランザクション(記録のみ,クラウドペイメント)';
+
+create table subscription_cloud_payment(
+  id int primary key auto_increment,
+  user_id int comment '購入者のユーザーID',
+  order_id varchar(255) unique comment 'クラウドペイメントの決済番号',
+  subscription_id varchar(255) unique comment 'クラウドペイメントの自動課金番号',
+  product_id varchar(255) comment '製品ID'
+)engine=innodb comment = '現在有効なサブスクリプション(月額課金,クラウドペイメント)';

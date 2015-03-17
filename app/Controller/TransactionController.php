@@ -90,4 +90,113 @@ class TransactionController extends AppController{
 		$this->response->body('ERROR');
 		return;
 	}
+
+	/**
+	 * Cloud Payment notifies here when the first payment is done.
+	 * Activates premium features.
+	 */
+	public function CloudPaymentKickback_FirstPayment(){
+		
+		// Records payload
+		$this->TransactionCloudPayment = ClassRegistry::init('TransactionCloudPayment');
+		$this->TransactionCloudPayment->create(array(
+			'TransactionCloudPayment' => array(
+				'query' => print_r($this->request->query, true)
+			)
+		));
+		$this->TransactionCloudPayment->save();
+		
+		/*
+Incoming data ($this->request->query):
+Array (
+   [gid] => 12027473
+   [rst] => 1
+   [ap] => TestMod
+   [ec] => 
+   [god] => 12027126
+   [cod] => 
+   [am] => 1000
+   [tx] => 80
+   [sf] => 0
+   [ta] => 1080
+   [pt] => 1
+   [submit] => 購入
+   [acid] => 1000179835
+)
+		 */
+		if($this->request->query['rst'] == 1){	// Payed successfully?
+			try{
+				// Adds Subscription
+				$this->SubscriptionCloudPayment = ClassRegistry::init('SubscriptionCloudPayment');
+				$this->SubscriptionCloudPayment->create(array('SubscriptionCloudPayment'=>array(
+					'user_id' => $this->request->query['cod'],						// UserId of this site
+					'order_id' => $this->request->query['gid'],						// Unique order ID of Cloud Payment
+					'subscription_id' => $this->request->query['acid'],		// Unique subscription ID of Cloud Payment
+					'product_id' => $this->request->query['product_id']		// ProductId, jp.hospia.premium_subscription
+				)));
+				$this->SubscriptionCloudPayment->save();
+				
+			}catch (Exception $e){
+				// Failed. Notifies Admin.
+				$email = new CakeEmail('smtp');
+		  	$email->to('m-naito@amlitek.com');
+				$email->subject('キックバック通知(first payment)の処理に失敗しました');
+				$body = $e;
+				$email->send($body);
+			}
+		}
+		
+		// Returns OK
+		$this->autoRender = false;
+		$this->response->body('OK');
+		return;
+	}
+
+	/**
+	 * Cloud Payment notifies subscription status here.
+	 * If succeeded, does nothing. (Continues to provide premium features.)
+	 * If failed, disables premium features.
+	 */
+	public function CloudPaymentKickback_SubscriptionStatus(){
+		
+		// Records payload
+		$this->TransactionCloudPayment = ClassRegistry::init('TransactionCloudPayment');
+		$this->TransactionCloudPayment->create(array(
+			'TransactionCloudPayment' => array(
+				'query' => print_r($this->request->query, true)
+			)
+		));
+		$this->TransactionCloudPayment->save();
+		
+		// Disables premium features if unsubscribed.
+		// 2: Failed
+		// 3: Retry failed (won't come)
+		// 4: Unsubsribed by User
+		// 5: Failed after demo (won't come)
+		if(in_array($this->request->query['rst'], array(2, 3, 4, 5))){
+			try{
+				// Deletes active subscription
+				$this->SubscriptionCloudPayment = ClassRegistry::init('SubscriptionCloudPayment');
+				$this->SubscriptionCloudPayment->data = $this->SubscriptionCloudPayment->find('first', array(
+					'conditions'=>array(
+						'SubscriptionCloudPayment.subscription_id' => $this->request->query['acid']
+					)
+				));
+				$this->SubscriptionCloudPayment->id = $this->SubscriptionCloudPayment->data['SubscriptionCloudPayment']['id'];
+				$this->SubscriptionCloudPayment->delete();
+			}catch(Exception $e){
+				// Failed. Notifies Admin.
+				$email = new CakeEmail('smtp');
+		  	$email->to('m-naito@amlitek.com');
+				$email->subject('キックバック通知(subscription)の処理に失敗しました');
+				$body = $e;
+				$email->send($body);
+			}
+		}
+		
+		// Returns OK
+		$this->autoRender = false;
+		$this->response->body('OK');
+		return;
+	}
 }

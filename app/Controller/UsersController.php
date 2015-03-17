@@ -34,16 +34,16 @@ class UsersController extends AppController {
 					array_push($ids, $u['User']['id']);
 					$u['Subscription'] = array();
 				}
-				$this->loadModel('Subscription');
-				$subscriptions = $this->Subscription->find('all', array(
+				$this->loadModel('SubscriptionCloudPayment');
+				$subscriptions = $this->SubscriptionCloudPayment->find('all', array(
 					'conditions'=>array(
-						'Subscription.user_id'=>$ids
+						'SubscriptionCloudPayment.user_id'=>$ids
 					)
 				));
 				foreach($subscriptions as $s){
 					foreach($users as &$u){
-						if($u['User']['id'] === $s['Subscription']['user_id']){
-							array_push($u['Subscription'], $s['Subscription']);
+						if($u['User']['id'] === $s['SubscriptionCloudPayment']['user_id']){
+							array_push($u['Subscription'], $s['SubscriptionCloudPayment']);
 						}
 					}
 				}
@@ -169,16 +169,17 @@ class UsersController extends AppController {
 				array_push($ids, $u['User']['id']);
 				$u['Subscription'] = array();
 			}
-			$this->loadModel('Subscription');
-			$subscriptions = $this->Subscription->find('all', array(
+			
+			$this->loadModel('SubscriptionCloudPayment');
+			$subscriptions = $this->SubscriptionCloudPayment->find('all', array(
 				'conditions'=>array(
-					'Subscription.user_id'=>$ids
+					'SubscriptionCloudPayment.user_id'=>$ids
 				)
 			));
 			foreach($subscriptions as $s){
 				foreach($users as &$u){
-					if($u['User']['id'] === $s['Subscription']['user_id']){
-						array_push($u['Subscription'], $s['Subscription']);
+					if($u['User']['id'] === $s['SubscriptionCloudPayment']['user_id']){
+						array_push($u['Subscription'], $s['SubscriptionCloudPayment']);
 					}
 				}
 			}
@@ -421,7 +422,8 @@ ID: {$user['User']['username']}
 			// Get active subscriptions
 			$this->User->bindModel(array(
 				'hasMany'=>array(
-					'Subscription'=>array()
+					'Subscription'=>array(),
+					'SubscriptionCloudPayment'=>array()
 				)
 			));
 			$this->User->id = $this->Auth->user('id');
@@ -435,6 +437,14 @@ ID: {$user['User']['username']}
 				'user' => $user,
 				'jwt' => $jwt
 			));
+		}
+		
+		/**
+		 * User has payed successfully.
+		 * User waits 1 minute here and redirected to User/Subscribe.
+		 */
+		function Processing(){
+			$this->set('noAds', true);
 		}
 		
 		//Activation for email confirmation.
