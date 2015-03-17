@@ -409,8 +409,9 @@ class DataComponent extends Component {
 	/**
 	 * 疾患カテゴリと都道府県から、その疾患で患者数が多いトップ100の医療機関一覧を検索する。
 	 */
-	public function GetHospitalsByMalady($maladyId, $prefectureId){
-		$fiscalYear = $this->GetFiscalYear();
+	public function GetHospitalsByMalady($maladyId, $prefectureId, $fiscalYear){
+		if(empty($fiscalYear))
+			$fiscalYear = $this->GetFiscalYear();
 
 		// トップ100のMaladyDataを取得
 		$this->MaladyData = ClassRegistry::init('MaladyData');

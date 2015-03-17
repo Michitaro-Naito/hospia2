@@ -37,7 +37,7 @@ class AjaxController extends AppController {
 	 * 疾患カテゴリと都道府県から、その疾患で患者数が多いトップ100の医療機関一覧を検索する。
 	 */
 	public function GetHospitalsByMalady(){
-		$hospitals = $this->Data->GetHospitalsByMalady($this->data['maladyId'], $this->data['prefectureId']);
+		$hospitals = $this->Data->GetHospitalsByMalady($this->data['maladyId'], $this->data['prefectureId'], $this->data['year']);
 		$this->set('hospitals', $hospitals);
 		$this->set('_serialize', array('hospitals'));
 	}

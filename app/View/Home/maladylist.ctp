@@ -4,9 +4,11 @@
 // Get initial variables from server
 var maladyCategories = JSON.parse('<?php echo json_encode($maladyCategories); ?>');
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
+var years = JSON.parse('<?php echo json_encode($years); ?>');
 var getHospitalsByMaladyUrl = '<?php echo Router::url('/ajax/getHospitalsByMalady.json'); ?>';
 var defaultMaladyCategory = JSON.parse('<?php echo json_encode($defaultMaladyCategory); ?>');
 var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
+var premiumContentUrl = '<?php echo Router::url('/users/premium_content'); ?>';
 
 function Hospital(data){
 	var s = this;
@@ -47,20 +49,29 @@ function AppModel(){
 		s.maladyCategories.push(new MaladyCategory(maladyCategories[n]));
 	}
 	s.prefectures = prefectures;									// 都道府県一覧
+	s.years = years;
 	s.hospitals = ko.observableArray();						// 検索取得された病院一覧(トップ100)
 	
 	s.selectedMaladyCategory = ko.observable();		// 選択された疾患カテゴリ
 	s.selectedPrefecture = ko.observable();				// 選択された都道府県
+	s.selectedYear = ko.observable();
 	s.currentMaladyCategory = ko.observable();
 	
 	// 選択された疾患カテゴリと都道府県から、病院一覧を検索する。
 	s.search = function(){
+		<?php if(empty($isPremiumUser)): ?>
+		// Redirects non premium user
+		if(s.selectedYear().id != s.years[0].id)
+			location.href = premiumContentUrl;
+		<?php endif; ?>
+		
 		s.currentMaladyCategory(s.selectedMaladyCategory());
 		$.postJSON({
 			url: getHospitalsByMaladyUrl,
 			data: {
 				maladyId: s.selectedMaladyCategory().id,
-				prefectureId: s.selectedPrefecture().id
+				prefectureId: s.selectedPrefecture().id,
+				year: s.selectedYear().id
 			}
 		}).done(function(data){
 			//s.hospitals(data.hospitals);
@@ -97,6 +108,8 @@ model.search();
 	<div class="content">
 		<select data-bind="options: maladyCategories, optionsText: 'fmName', value: selectedMaladyCategory"></select>
 		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
+		<span class="premium">会計年度：</span>
+		<select data-bind="options: years, optionsText: 'name', value: selectedYear"></select>
 		<button data-bind="click: search">他の疾患・地域に変更する</button>
 	</div>
 </div>

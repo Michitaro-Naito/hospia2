@@ -97,6 +97,7 @@ class HomeController extends AppController {
 		if(isset($_GET['mdata'])) $mdata = $_GET['mdata'];
 		$this->set('maladyCategories', $this->Data->GetMaladyCategories());
 		$this->set('prefectures', $this->Data->GetPrefectures());
+		$this->set('years', $this->Data->GetFiscalYears());
 		$this->set('defaultMaladyCategory', $mdata);
 	}
 
