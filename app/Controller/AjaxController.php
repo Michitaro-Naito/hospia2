@@ -77,7 +77,7 @@ class AjaxController extends AppController {
 	 * TODO: DBのworkloadが大きいため、要キャッシュ。
 	 */
 	public function GetWounds(){
-		$wounds = $this->Data->GetWounds($this->data['dpcId'], $this->data['prefectureId']);
+		$wounds = $this->Data->GetWounds($this->data['dpcId'], $this->data['prefectureId'], $this->data['year']);
 		$this->set('wounds', $wounds);
 		$this->set('_serialize', array('wounds'));
 	}

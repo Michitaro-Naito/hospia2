@@ -4,9 +4,11 @@
 // Get initial values from server
 var mdcs = JSON.parse('<?php echo json_encode($mdcs); ?>');
 var prefectures = JSON.parse('<?php echo json_encode($prefectures); ?>');
+var years = JSON.parse('<?php echo json_encode($years); ?>');
 var getDpcsUrl = '<?php echo Router::url('/ajax/getDpcs.json'); ?>';
 var getWoundsUrl = '<?php echo Router::url('/ajax/getWounds.json'); ?>';
 var detailUrl = '<?php echo Router::url('/hosdetail'); ?>';
+var premiumContentUrl = '<?php echo Router::url('/users/premium_content'); ?>';
 
 // Knockout
 
@@ -52,11 +54,13 @@ function AppModel(){
 	s.mdcs = mdcs;
 	s.dpcs = ko.observableArray();
 	s.prefectures = ko.observableArray(prefectures);
+	s.years = ko.observableArray(years);
 	s.wounds = ko.observableArray();									// 検索結果
 	s.selectedMdc = ko.observable();
 	s.selectedDpc = ko.observable();
 	s.currentDpc = ko.observable();
 	s.selectedPrefecture = ko.observable();
+	s.selectedYear = ko.observable();
 	s.firstLoad = ko.observable(false);
 	s.detailUrl = detailUrl;
 	
@@ -119,12 +123,19 @@ function AppModel(){
 	
 	// 検索
 	s.search = function(){
+		<?php if(empty($isPremiumUser)): ?>
+		// Redirects non premium user
+		if(s.selectedYear().id != s.years()[0].id)
+			location.href = premiumContentUrl;
+		<?php endif; ?>
+		
 		$.postJSON({
 			url: getWoundsUrl,
 			data: {
 				mdcId: s.selectedMdc().id,
 				dpcId: s.selectedDpc().id,
-				prefectureId: s.selectedPrefecture().id
+				prefectureId: s.selectedPrefecture().id,
+				year: s.selectedYear().id
 			}
 		}).done(function(data){
 			s.currentDpc(s.selectedDpc());
@@ -152,6 +163,7 @@ ko.applyBindings(model);
 		<ul class="elements">
 			<li>診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>　</li>
 			<li>傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc" style="max-width: 200px;"></select>　</li>
+			<li><span class="premium">会計年度：</span><select data-bind="options: years, optionsText: 'name', value: selectedYear"></select></li>
 			<li><button data-bind="click: search">集計する</button></li>
 		</ul>
 	</div>

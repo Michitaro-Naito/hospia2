@@ -33,6 +33,7 @@ class HomeController extends AppController {
 	public function Dpc(){
 		$this->set('mdcs', $this->Data->GetMdcs(true));
 		$this->set('prefectures', $this->Data->GetPrefectures());
+		$this->set('years', $this->Data->GetFiscalYears());
 	}
 
 	/**
