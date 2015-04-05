@@ -44,6 +44,7 @@ function AppModel(){
 	s.dpcs = ko.observableArray();									// 検索取得したDpc一覧
 	
 	s.selectedFiscalYear = ko.observable();					// 選択された会計年度
+	s.currentFiscalYear = ko.observable();					// 表示中の会計年度
 	s.selectedDisplayTypeForDpc = ko.observable();	// 選択された表示方法
 	s.barInitialized = ko.observable(false);
 	s.sortField = ko.observable('mdc_cd');	// ソート方法
@@ -102,7 +103,10 @@ function AppModel(){
 			location.href = dat.premiumContentUrl;
 		s.onceSearched(true);
 		<?php endif; ?>
-			
+		
+		s.currentFiscalYear(s.selectedFiscalYear());
+		s.dpcs([]);
+		
 		$.postJSON({
 			url: dat.getDpcsUrl,
 			data: {
@@ -146,6 +150,7 @@ model.search();
 			<button data-bind="click: search" class="btn btn-default premium">変更する</button>
 		</div>
 	</div>
+	<h2 data-bind="if: currentFiscalYear() != null" class="dpc">表示年度：<span data-bind="text: currentFiscalYear().name"></span></h2>
 	
 	<!-- Head -->
 	<div class="row thead">

@@ -16,7 +16,24 @@ function Hospital(data){
 	s.Area = data.Area;
 	s.MaladyData = data.MaladyData;
 	s.DetailUrl = ko.computed(function(){
+		if(s.Hospital == null)
+			return '#';
 		return detailUrl + '/' + s.Hospital.wam_id;
+	});
+	s.fmName = ko.computed(function(){
+		if(s.Hospital == null)
+			return s.MaladyData.wam_id + '(※統合された医療機関)';
+		return s.Hospital.name;
+	});
+	s.fmAddr1 = ko.computed(function(){
+		if(s.Area == null)
+			return '-';
+		return s.Area.addr1;
+	});
+	s.fmAddr2 = ko.computed(function(){
+		if(s.Area == null)
+			return '-';
+		return s.Area.addr2;
 	});
 }
 
@@ -56,6 +73,16 @@ function AppModel(){
 	s.selectedPrefecture = ko.observable();				// 選択された都道府県
 	s.selectedYear = ko.observable();
 	s.currentMaladyCategory = ko.observable();
+	s.currentPrefecture = ko.observable();				// 現在表示中の都道府県
+	s.currentYear = ko.observable();							// 現在表示中の会計年度
+	
+	s.fmCurrentPrefecture = ko.computed(function(){
+		if(s.currentPrefecture() == null)
+			return '';
+		if(s.currentPrefecture().id == null)
+			return '全国';
+		return s.currentPrefecture().name;
+	});
 	
 	// 選択された疾患カテゴリと都道府県から、病院一覧を検索する。
 	s.search = function(){
@@ -66,6 +93,9 @@ function AppModel(){
 		<?php endif; ?>
 		
 		s.currentMaladyCategory(s.selectedMaladyCategory());
+		s.currentPrefecture(s.selectedPrefecture());
+		s.currentYear(s.selectedYear());
+		
 		$.postJSON({
 			url: getHospitalsByMaladyUrl,
 			data: {
@@ -104,15 +134,22 @@ model.search();
 
 <!-- Menu -->
 <div class="box">
-	<h2 data-bind="if: currentMaladyCategory()"><span data-bind="text: currentMaladyCategory().name"></span>の病院ランキング</h2>
+	<h2>主な疾患別患者数ランキング</h2>
 	<div class="content">
+		<span>疾患名</span>
 		<select data-bind="options: maladyCategories, optionsText: 'fmName', value: selectedMaladyCategory"></select>
+		<span>都道府県</span>
 		<select data-bind="options: prefectures, optionsText: 'name', value: selectedPrefecture"></select>
-		<span class="premium">会計年度：</span>
+		<span class="premium">表示年度：</span>
 		<select data-bind="options: years, optionsText: 'name', value: selectedYear"></select>
-		<button data-bind="click: search">他の疾患・地域に変更する</button>
+		<button data-bind="click: search">変更する</button>
 	</div>
 </div>
+<h2 class="dpc">
+	疾患名：<span data-bind="if: currentMaladyCategory()"><span data-bind="text: currentMaladyCategory().name"></span></span>
+	&nbsp;都道府県：<span data-bind="text: fmCurrentPrefecture"></span>
+	&nbsp;表示年度：<span data-bind="if: currentYear()"><span data-bind="text: currentYear().name"></span></span>
+</h2>
 
 <!-- Head -->
 
@@ -125,10 +162,10 @@ model.search();
 		<tr>
 			<td data-bind="text: $index()+1" class="ar"></td>
 			<td>
-				<a data-bind="text: Hospital.name, attr: { href: DetailUrl }"></a>
+				<a data-bind="text: fmName, attr: { href: DetailUrl }"></a>
 			</td>
-			<td data-bind="text: Area.addr1"></td>
-			<td data-bind="text: Area.addr2"></td>
+			<td data-bind="text: fmAddr1"></td>
+			<td data-bind="text: fmAddr2"></td>
 			<td data-bind="text: addFigure(MaladyData.mcounts)" class="ar"></td>
 			<td data-bind="text: addFigure(Number(MaladyData.mdays).toFixed(1))" class="ar"></td>
 		</tr>
@@ -136,11 +173,12 @@ model.search();
 </table>
 
 <!-- Note -->
-<blockquote><p>
-【集計方法】<br>
-2013年9月20日開催の診療報酬調査専門組織・ＤＰＣ評価分科会において報告された、平成24年度「ＤＰＣ導入の影響評価に関する調査」資料より、該当するDPCコードの患者数および平均在院日数を当社で集計しました。<br>
-・元データ⇒ <a href="http://www.mhlw.go.jp/stf/shingi/0000023522.html" target="_brank">平成25年度 第7回 診療報酬調査専門組織・ＤＰＣ評価分科会 資料</a> （厚生労働省のサイトが開きます）</p>
-<p>【注意事項】<br>
-・患者数および平均在院日数は、2012年4月～2013年3月の12ヶ月間の集計値です。<br>
-・元データは手術方式や処置内容別に細分化され、各区分の患者数が10件未満の病院の情報が公開されていないため、各病院の実際の患者数とは異なる場合があります。
-</p></blockquote>
+<blockquote>
+	<p>
+	【集計方法】 各疾患に該当するDPCコードの患者数および平均在院日数を当社で集計しました。
+	</p>
+	<p>
+	【注意事項】<br/>
+	・集計期間は年度により以下のとおり異なります。  平成20~21年:6ヶ月間(7~12月)、平成22年:9ヵ月間(7月~翌3月)、平成23年以降:12ヵ月間(4月 ~翌3月) <br/>・元データは手術方式や処置内容別に細分化され、各区分の患者数が10件未満の病院の情報が公開されてい ないため、各病院の実際の患者数とは異なる場合があります。
+	</p>
+</blockquote>

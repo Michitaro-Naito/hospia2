@@ -171,6 +171,10 @@ function purchase(){
 					<td><?php echo $this->Html->link('東京都中央区周辺', '/BubbleChart/1', array('target'=>'_blank')); ?></td>
 				</tr>
 				<tr>
+					<td colspan="2">過去年度データ表示</td>
+					<td colspan="2">以下の各ページの過去年度データを表示することができます。病院別診療実績ページ、MDC別患者数ランキング、DPC全国統計・手術情報別病院ランキング、主な疾患別患者数ランキング</td>
+				</tr>
+				<tr>
 					<td colspan="2">広告非表示</td>
 					<td colspan="2">サイトの閲覧時に広告が表示されなくなります。</td>
 				</tr>

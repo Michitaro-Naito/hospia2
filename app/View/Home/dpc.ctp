@@ -61,6 +61,7 @@ function AppModel(){
 	s.currentDpc = ko.observable();
 	s.selectedPrefecture = ko.observable();
 	s.selectedYear = ko.observable();
+	s.currentYear = ko.observable();
 	s.firstLoad = ko.observable(false);
 	s.detailUrl = detailUrl;
 	
@@ -129,6 +130,9 @@ function AppModel(){
 			location.href = premiumContentUrl;
 		<?php endif; ?>
 		
+		s.currentYear(s.selectedYear());
+		s.wounds([]);
+		
 		$.postJSON({
 			url: getWoundsUrl,
 			data: {
@@ -163,8 +167,8 @@ ko.applyBindings(model);
 		<ul class="elements">
 			<li>診断分類<?php echo $this->My->tip('DPC-診断分類'); ?>：<select data-bind="options: mdcs, optionsText: 'name', value: selectedMdc"></select>　</li>
 			<li>傷病名<?php echo $this->My->tip('DPC-傷病名'); ?>：<select data-bind="options: dpcs, optionsText: 'name', value: selectedDpc" style="max-width: 200px;"></select>　</li>
-			<li><span class="premium">会計年度：</span><select data-bind="options: years, optionsText: 'name', value: selectedYear"></select></li>
-			<li><button data-bind="click: search">集計する</button></li>
+			<li><span class="premium">表示年度：</span><select data-bind="options: years, optionsText: 'name', value: selectedYear"></select></li>
+			<li><button data-bind="click: search">変更する</button></li>
 		</ul>
 	</div>
 </div>
@@ -172,6 +176,7 @@ ko.applyBindings(model);
 <!-- Data -->
 <h2 data-bind="if: currentDpc()" class="dpc">
 	<span data-bind="text: currentDpc().name"></span>
+	&nbsp;&nbsp;&nbsp;&nbsp;<span data-bind="if: currentYear() != null">表示年度：<span data-bind="text: currentYear().name"></span></span>
 </h2>
 <table class="dpc" border="1" bordercolor="#CCC">
 	<thead>

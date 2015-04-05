@@ -33,7 +33,7 @@ class HomeController extends AppController {
 	public function Dpc(){
 		$this->set('mdcs', $this->Data->GetMdcs(true));
 		$this->set('prefectures', $this->Data->GetPrefectures());
-		$this->set('years', $this->Data->GetFiscalYears());
+		$this->set('years', $this->Data->GetFiscalYearsWithout2006And2007());
 	}
 
 	/**
@@ -97,7 +97,7 @@ class HomeController extends AppController {
 		if(isset($_GET['mdata'])) $mdata = $_GET['mdata'];
 		$this->set('maladyCategories', $this->Data->GetMaladyCategories());
 		$this->set('prefectures', $this->Data->GetPrefectures());
-		$this->set('years', $this->Data->GetFiscalYears());
+		$this->set('years', $this->Data->GetFiscalYearsWithout2006And2007());
 		$this->set('defaultMaladyCategory', $mdata);
 	}
 

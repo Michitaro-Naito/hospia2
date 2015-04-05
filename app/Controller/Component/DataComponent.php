@@ -220,6 +220,15 @@ class DataComponent extends Component {
 		}
 		return $fiscalYears;
 	}
+	
+	public function GetFiscalYearsWithout2006And2007(){
+		$original = $this->GetFiscalYears();
+		$years = array();
+		foreach($original as &$year)
+			if($year['id'] != 2006 && $year['id'] != 2007)
+				array_push($years, $year);
+		return $years;
+	}
 
 	/**
 	 * Hospital, Jcqhcテーブルから医療機関情報を1件取得する。
@@ -747,7 +756,7 @@ class DataComponent extends Component {
 			'group'=>'Area.addr1_cd'
 		));
 		$prefs = array();
-		array_push($prefs, array('id'=>null, 'name'=>null));
+		array_push($prefs, array('id'=>null, 'name'=>''));
 		foreach($rows as $row){
 			array_push($prefs, array('id'=>$row['Area']['addr1_cd'], 'name'=>$row['Area']['addr1']));
 		}

@@ -158,7 +158,7 @@ model.setDefaultValues();
 						<select data-bind="options: prefectures, optionsValue: 'id', optionsText: 'name', value: selectedPrefecture, event: {change: getHospitals}"></select>
 					</td>
 					<td>
-						<span class="premium">会計年度</span>
+						<span class="premium">表示年度</span>
 						<select data-bind="options: years, optionsValue: 'id', optionsText: 'name', value: selectedYear, event: {change: getHospitals}"></select>
 					</td>
 				</tr>
